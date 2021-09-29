@@ -1,0 +1,10 @@
+#!/bin/bash
+
+touch ~/postinst.txt
+touch ~/postrm.txt
+
+
+echo "asdf" > /tmp/aaa
+echo "asdf" > /tmp/bbb
+echo "asdf" > /tmp/ccc
+

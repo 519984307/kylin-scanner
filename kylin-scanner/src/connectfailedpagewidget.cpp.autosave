@@ -1,0 +1,64 @@
+#include "connectfailedpagewidget.h"
+#include <ukui-log4qt.h>
+
+ConnectFailedPageWidget::ConnectFailedPageWidget(QWidget *parent) :
+    QWidget(parent),
+    m_connectFailedIcon(new QLabel()),
+    m_connectFailedText(new QLabel()),
+    m_connectFailedButton(new QPushButton()),
+    m_connectFailedVLayout(new QVBoxLayout())
+{
+    initLayout();
+    initConnect();
+
+}
+
+void ConnectFailedPageWidget::initLayout()
+{
+    m_connectFailedIcon->setPixmap(QPixmap(":/default-connect-page/detect-failed.svg"));
+    m_connectFailedIcon->setFixedSize(DEFAULT_CONNECT_PAGE_ICON_SIZE);
+
+    m_connectFailedText->setEnabled(false);
+    m_connectFailedText->setText(tr("Not detect scanners, please connect scanners firstly!"));
+
+    m_connectFailedButton->setText(tr("Connect"));
+    m_connectFailedButton->setFixedSize(DEFAULT_CONNECT_PAGE_BUTTON_SIZE);
+
+    m_connectFailedVLayout->setSpacing(0);
+    m_connectFailedVLayout->addStretch();
+    m_connectFailedVLayout->addWidget(m_connectFailedIcon, 0,  Qt::AlignCenter);
+    m_connectFailedVLayout->addSpacing(13);
+    m_connectFailedVLayout->addWidget(m_connectFailedText, 0,  Qt::AlignCenter);
+    m_connectFailedVLayout->addSpacing(29);
+    m_connectFailedVLayout->addWidget(m_connectFailedButton, 0,  Qt::AlignCenter);
+    m_connectFailedVLayout->addStretch();
+    m_connectFailedVLayout->setContentsMargins(0, 0, 0, 0);
+
+    setLayout(m_connectFailedVLayout);
+
+}
+
+void ConnectFailedPageWidget::initConnect()
+{
+    connect(m_connectFailedButton, &QPushButton::clicked, this, [=](){
+        //m_scanThread.start();
+
+        emit scanButtonClicked();
+    });
+}
+
+#if 0
+void ScanThread::run()
+{
+    SaneWidget &instance = SaneWidget::getInstance();
+
+    int ret;
+    KyInfo() << "start_scanning begin";
+    ret = instance.startScanning(instance.userInfo);
+    KyInfo() << "start_scanning end, status = " << ret;
+
+    emit scanThreadFinishedSignal(ret);
+    quit();
+}
+
+#endif

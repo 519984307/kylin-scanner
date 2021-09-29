@@ -1,0 +1,32 @@
+<RCC>
+    <qresource prefix="/default-connect-page">
+        <file>detect-failed.svg</file>
+        <file>detect-success.svg</file>
+        <file>begin-scan.svg</file>
+    </qresource>
+    <qresource prefix="/toolbar">
+        <file>beauty.svg</file>
+        <file>begin-scan.svg</file>
+        <file>crop.svg</file>
+        <file>detect-failed.svg</file>
+        <file>detect-success.svg</file>
+        <file>icons.qrc</file>
+        <file>mirror.svg</file>
+        <file>ocr.svg</file>
+        <file>rectify.svg</file>
+        <file>rotate.svg</file>
+        <file>watermark.svg</file>
+        <file>zoomin.svg</file>
+        <file>zoomout.svg</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>waiting/loading1.svg</file>
+        <file>waiting/loading2.svg</file>
+        <file>waiting/loading3.svg</file>
+        <file>waiting/loading4.svg</file>
+        <file>waiting/loading5.svg</file>
+        <file>waiting/loading6.svg</file>
+        <file>waiting/loading7.svg</file>
+        <file>scanIcon.svg</file>
+    </qresource>
+</RCC>
