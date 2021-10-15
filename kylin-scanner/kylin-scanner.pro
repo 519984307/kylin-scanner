@@ -66,6 +66,7 @@ SOURCES += \
     src/scandialog.cpp \
     src/scansettingswidget.cpp \
     src/showimagewidget.cpp \
+    src/singleapplication.cpp \
     src/successpagewidget.cpp \
     src/svghandler.cpp \
     src/thumbnaildelegate.cpp \
@@ -90,6 +91,7 @@ HEADERS += \
     src/scandialog.h \
     src/scansettingswidget.h \
     src/showimagewidget.h \
+    src/singleapplication.h \
     src/successpagewidget.h \
     src/svghandler.h \
     src/thumbnaildelegate.h \

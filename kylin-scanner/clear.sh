@@ -14,4 +14,5 @@ rm -f kylin-scanner.pro.user \
     debian/kylin-scanner.debhelper.log
 
 rm -rf debian/.debhelper/ \
-    debian/kylin-scanner
+    debian/kylin-scanner \
+    ./kylin-scanner

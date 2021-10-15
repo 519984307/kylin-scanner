@@ -19,6 +19,7 @@
 #include "globalsignal.h"
 #include "mainwidget.h"
 #include "scandialog.h"
+#include "singleapplication.h"
 #include <ukui-log4qt.h>
 
 #include <QApplication>
@@ -40,12 +41,6 @@
 #include <stdio.h>
 using namespace std;
 
-
-typedef struct UsedUsernameAndPid{
-    QString usedUsername; 	// Exist app's currently username
-    QString usedPid;		// Exist app's pid
-}UsedUsernameAndPid;
-UsedUsernameAndPid uuap;
 
 static void createScannerDir()
 {
@@ -112,122 +107,6 @@ static void doWrite(QString userNow, int pidNow)
     file.close();
 }
 
-static void doRead()
-{
-    QString line;
-
-    QFile file(UserExistFile);
-    if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
-        qDebug() << "file read error!";
-        return;
-    }
-
-    QTextStream in(&file);
-    while (!in.atEnd()) {
-        line = in.readLine();
-    }
-    qDebug() << "line: " << line;
-
-    QStringList list = line.split(',', QString::SkipEmptyParts);
-    uuap.usedUsername = list.at(0);
-    uuap.usedPid = list.at(1);
-    qDebug() << "uuap.usedUsername = " << uuap.usedUsername
-             << "uuap.usedPid = " << uuap.usedPid;
-
-    file.close();
-}
-
-void writeCurrentAppUsernameAndPid(QString userNow, int pidNow)
-{
-    doWrite(userNow, pidNow);
-}
-
-/**
- * @brief doKill
- * @return
- * Cancel: exitCode():127	exitStatus():QProcess::NormalExit	error():QProcess::UnknownError
- * Timeout: exitCode():0 	exitStatus():QProcess::NormalExit	error():QProcess::Timedout => so -1, do not timeout
- * Normal Password Input Correctly: exitCode():1 exitStatus():QProcess::NormalExit
- */
-static int doKill()
-{
-    QString cmd(BashType);
-    QStringList arglists;
-
-    QString args = QString("pkexec kill -9 ") + uuap.usedPid;
-
-    arglists << "-c";
-    arglists << args;
-
-    QProcess *process = new QProcess();
-    process->start(cmd, arglists);
-    process->waitForFinished(-1);
-
-    qDebug() << "exitCode: " << process->exitCode()
-             << ", exitStatus: " << process->exitStatus()
-             << ", error: " << process->error()
-             << ", result err: " << process->readAllStandardError()
-             << ", result out: " << process->readAllStandardOutput();
-
-    if (process->exitCode() == 1 || process->exitCode() == 0)
-        // Password Input is correctly
-        return SUCCESS;
-
-    return FAIL;
-}
-
-static bool pidIsNotExist()
-{
-    QString cmd(BashType);
-    QStringList arglists;
-
-    arglists << "-c";
-    QString args = QString("ps -ef | grep ") + uuap.usedPid + QString(" |grep -v log |grep -v pts |grep -v grep");
-    arglists<< args;
-
-    QProcess *process = new QProcess();
-    process->start(cmd, arglists);
-    process->waitForFinished();
-    QString strOutput = QString::fromLocal8Bit(process->readAllStandardOutput().trimmed());
-    qDebug() << "strOutput = " << strOutput;
-
-    return strOutput.isEmpty();
-}
-
-/**
- * @brief singleWarnMsg
- * 当前xx用户正在使用该软件，打开将会关闭xx用户正在进行的操作
- * @return
- */
-int singleWarnMsg()
-{
-    // normal user: cannot read by `ps -ef`
-    //userUsed = getUsedUserName();
-
-    doRead();
-    QString userUsed = uuap.usedUsername;
-    QString userNow = getCurrentUserName();
-
-#if 1
-    // current user straight return
-    if (userUsed.compare(userNow) == 0) {
-        qDebug() << "user: " << userNow << " " << userUsed;
-        return 0;
-    }
-#endif
-
-    // Q, Because vnc login, so we should message it again ?
-    QMessageBox::StandardButton msgBox;
-    QString msg = QObject::tr("User ") + userUsed + QObject::tr(" has already opened kylin-scanner, continue open will close ")
-            + userUsed + QObject::tr("'s operations.");
-    msgBox = QMessageBox::question(0, QObject::tr("Question"), msg);
-
-    if (msgBox == QMessageBox::Yes)
-        return 1;
-    else
-        return 0;
-}
-
 int getScreenWidth()
 {
     Display *disp = XOpenDisplay(NULL);
@@ -241,41 +120,6 @@ int getScreenWidth()
         XCloseDisplay(disp);
 
     return width;
-}
-
-static bool checkStarted()
-{
-    QString comm;
-    QDir dir("/proc/");
-    QFileInfo file;
-    ifstream in;
-    std::string s;
-
-    foreach (QFileInfo f, dir.entryInfoList()) {
-        //qDebug() << QString("%1").arg(getpid()) << f.baseName();
-        if (f.baseName() == QString("%1").arg(getpid())
-                || f.baseName() == "self"
-                || f.baseName() == "thread-self")
-            continue;
-
-        comm = QString("/proc/%1/comm").arg(f.baseName());
-        file.setFile(comm);
-
-        if (file.exists()) {
-            in.open(file.absoluteFilePath().toStdString());
-            if (in.is_open()) {
-                getline(in, s);
-                comm = QString::fromStdString(s);
-                if (comm == "kylin-scanner") {
-                    qDebug() << "exist pid = " << f.baseName();
-                    return true;
-                }
-            }
-            in.close();
-        }
-    }
-
-    return false;
 }
 
 static QString getSystemArchitecture()
@@ -313,7 +157,7 @@ int main(int argc, char *argv[])
   QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
 
-    QApplication app(argc, argv);
+    SingleApplication app(argc, argv);
 
     createScannerDir();
 
@@ -355,54 +199,19 @@ int main(int argc, char *argv[])
         }
     }
 
-    bool isRunning = false;
-    if (checkStarted()) {
-        qDebug() << "App is running, What's your choice ?";
-        //QMessageBox::information(NULL, "Cannot start KylinScanner", "KylinScanner has started in current system now.");
-        doRead();
-
-        QString userUsed = uuap.usedUsername;
-        QMessageBox::StandardButton msgBox;
-        QString msg = QObject::tr("Current ") + userUsed + QObject::tr(" User")
-                + QObject::tr(" has already opened kylin-scanner, open will close ")
-                + userUsed + QObject::tr("'s operations. Are you continue?");
-        msgBox = QMessageBox::question(0, QObject::tr("Question"), msg);
-
-        if (msgBox == QMessageBox::Yes) {
-            int retKill = doKill();
-            if (FAIL == retKill) {
-                qDebug() << "Maybe you close this messagebox or choose cancel button!";
-                return 0;
-            } else {
-                // retKill value (0,1) are not fixed, it's reasonable for us to judge whether exist's pid has been killed.
-                if (pidIsNotExist()) {
-                    qDebug() << "kill " << uuap.usedPid << " success, congratulations!";
-                    isRunning = false;
-                } else {
-                    qDebug() << "kill " << uuap.usedPid << " error!";
-                    isRunning = true;
-                }
-            }
-        } else {
-            qDebug() << "You choose not open again, so directly close!";
-            isRunning = true;
-            return 0;
-        }
-    } else {
-         qDebug() << "App is not running, let's start it!";
-         isRunning = false;
+    if (app.isExitWindow()) {
+        return 0;
     }
 
-    if (isRunning) {
-        qDebug() << "isRunning.";
-    } else {
+    if (! app.isRunning()) {
         QString userNow = getCurrentUserName();
         int pidNow = app.applicationPid();
-        qDebug() << "Exist user= " << userNow << ", pid= " << pidNow;
+        KyInfo() << "Exist user= " << userNow << ", pid= " << pidNow;
 
         doWrite(userNow, pidNow);
 
         MainWidget w;
+        app.w = &w; // Need by SingleApplication class
         w.show();
         return app.exec();
     }

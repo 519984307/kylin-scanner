@@ -1649,6 +1649,11 @@ void SaneObject::setSaneTypeByUser()
     SANE_String s_type;
     QMap<QString, QString>::iterator it;
 
+    QString tmp = g_sane_object->userInfo.type;
+    if (tmp == "") {
+        // avoid crashed unexpected
+        return ;
+    }
     QString type = getSaneTypeByUser(g_sane_object->userInfo.type);
 
     it = g_sane_object->sourceModesMap.find(type);
@@ -1828,7 +1833,7 @@ int SaneObject::startScanning(UserSelectedInfo info)
     int index = g_sane_object->userInfo.deviceNameIndex;
 
     openSaneDeviceForPage(index);
-#if 0
+#if 1
     bool retStatus = getSaneStatus();
     if (retStatus) {
         KyInfo() << "open_device true";
