@@ -41,28 +41,20 @@
 #include <stdio.h>
 using namespace std;
 
+static void createDir(QString dirPath)
+{
+    QDir configDir(dirPath);
+    if (! configDir.exists()) {
+        configDir.mkdir(dirPath);
+    }
+}
 
 static void createScannerDir()
 {
-    QDir configDir(g_config_signal->configPath);
-    if (! configDir.exists()) {
-        configDir.mkdir(g_config_signal->configPath);
-    }
-
-    QDir scannerDir(g_config_signal->scannerPath);
-    if (! scannerDir.exists()) {
-        scannerDir.mkdir(g_config_signal->scannerPath);
-    }
-
-    QDir scannerImageDir(g_config_signal->scannerImagePath);
-    if (! scannerImageDir.exists()) {
-        scannerImageDir.mkdir(g_config_signal->scannerImagePath);
-    }
-
-    QDir scannerTempDir(g_config_signal->scannerTempPath);
-    if (!scannerTempDir.exists()) {
-        scannerTempDir.mkdir(g_config_signal->scannerTempPath);
-    }
+    createDir(g_config_signal->configPath);
+    createDir(g_config_signal->scannerPath);
+    createDir(g_config_signal->scannerImagePath);
+    createDir(g_config_signal->scannerTempPath);
 }
 
 
@@ -122,26 +114,27 @@ int getScreenWidth()
     return width;
 }
 
-static QString getSystemArchitecture()
+static QString execCmd(QString cmd)
 {
+    KyInfo() << "cmd = " << cmd;
     QProcess process;
-    process.start(QString("arch"));
+    process.start(QString(cmd));
     process.waitForFinished();
     QByteArray result = process.readAllStandardOutput();
     result = result.left(result.length()-1);
-    qDebug() << "arch = " << result;
+    KyInfo() << "arch = " << result;
     return result;
+}
+static QString getSystemArchitecture()
+{
+    QString archResult = execCmd("arch");
+    return archResult;
 }
 
 static QString getAppVersion()
 {
-    QProcess process;
-    process.start(QString("dpkg-parsechangelog -l %1 --show-field Version").arg(ChangelogFilePath));
-    process.waitForFinished();
-    QByteArray result = process.readAllStandardOutput();
-    result = result.left(result.length()-1);
-    qDebug() << "version = " << result;
-    return result;
+    QString versionResult = execCmd(QString("dpkg-parsechangelog -l %1 --show-field Version").arg(ChangelogFilePath));
+    return versionResult;
 }
 
 int main(int argc, char *argv[])

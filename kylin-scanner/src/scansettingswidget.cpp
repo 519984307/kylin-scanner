@@ -504,6 +504,7 @@ void ScanSettingsWidget::updateTypeSettings()
 
     bool saneStatus = g_sane_object->getSaneStatus();
 
+
     if (! saneStatus) {
         typeStringList << tr("Flatbed") << tr("ADF");
     } else {
@@ -515,7 +516,7 @@ void ScanSettingsWidget::updateTypeSettings()
     m_typeComboBox->setEnabled(saneStatus);
     if (g_sane_object->haveSourceFlag == 0) {
         // For ESCL scanner device, which not get source type parameter
-        m_typeComboBox->setEnabled(false);
+        //m_typeComboBox->setEnabled(false);
     }
     setComboboxAttributes(m_typeComboBox, typeStringList);
 }

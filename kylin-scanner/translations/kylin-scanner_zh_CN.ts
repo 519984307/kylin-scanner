@@ -85,7 +85,7 @@
 <context>
     <name>DetectPageWidget</name>
     <message>
-        <location filename="../src/detectpagewidget.cpp" line="24"/>
+        <location filename="../src/detectpagewidget.cpp" line="41"/>
         <source>Detect scanners, please waiting ...</source>
         <translation>检测扫描设备中，请稍后 ……</translation>
     </message>
@@ -144,7 +144,7 @@
 <context>
     <name>LeftSuccessPageWidget</name>
     <message>
-        <location filename="../src/leftsuccesspagewidget.cpp" line="19"/>
+        <location filename="../src/leftsuccesspagewidget.cpp" line="36"/>
         <source>Connect scanners, please click scan button to start scanning.</source>
         <translation>已连接扫描设备，点击按钮开始扫描</translation>
     </message>
@@ -152,237 +152,345 @@
 <context>
     <name>MainWidget</name>
     <message>
-        <location filename="../src/mainwidget.cpp" line="60"/>
+        <location filename="../src/mainwidget.cpp" line="63"/>
         <source>kylin-scanner</source>
         <translation>麒麟扫描</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwidget.cpp" line="338"/>
+        <source>Single</source>
+        <translation>单页扫描</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/main.cpp" line="177"/>
         <source>User </source>
+        <translation type="vanished">用户</translation>
+    </message>
+    <message>
+        <location filename="../src/singleapplication.cpp" line="303"/>
+        <source>Question</source>
+        <translation>询问</translation>
+    </message>
+    <message>
+        <location filename="../src/singleapplication.cpp" line="300"/>
+        <source>Current </source>
+        <translation>目前</translation>
+    </message>
+    <message>
+        <location filename="../src/singleapplication.cpp" line="300"/>
+        <source> User</source>
         <translation>用户</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="177"/>
-        <source> has already opened kylin-scanner, continue open will close </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="178"/>
-        <source>&apos;s operations.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="179"/>
-        <location filename="../src/main.cpp" line="331"/>
-        <source>Question</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="328"/>
-        <source>Current </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="328"/>
-        <source> User</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="329"/>
+        <location filename="../src/singleapplication.cpp" line="301"/>
         <source> has already opened kylin-scanner, open will close </source>
-        <translation type="unfinished"></translation>
+        <translation>已经打开扫描应用，再次打开将会关闭</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="330"/>
+        <location filename="../src/singleapplication.cpp" line="302"/>
         <source>&apos;s operations. Are you continue?</source>
-        <translation type="unfinished"></translation>
+        <translation>的操作。是否继续？</translation>
     </message>
     <message>
-        <location filename="../src/saneobject.cpp" line="569"/>
+        <location filename="../src/saneobject.cpp" line="560"/>
         <source>Color</source>
-        <translation type="unfinished">色彩</translation>
+        <translation>色彩</translation>
     </message>
     <message>
-        <location filename="../src/saneobject.cpp" line="576"/>
+        <location filename="../src/saneobject.cpp" line="567"/>
         <source>Gray</source>
-        <translation type="unfinished">灰度</translation>
+        <translation>灰度</translation>
     </message>
     <message>
-        <location filename="../src/saneobject.cpp" line="582"/>
+        <location filename="../src/saneobject.cpp" line="573"/>
         <source>Lineart</source>
-        <translation type="unfinished">黑白</translation>
+        <translation>黑白</translation>
     </message>
     <message>
-        <location filename="../src/saneobject.cpp" line="710"/>
+        <location filename="../src/saneobject.cpp" line="622"/>
+        <source>Default Type</source>
+        <translation>默认类型</translation>
+    </message>
+    <message>
+        <location filename="../src/saneobject.cpp" line="698"/>
         <source>Flatbed</source>
-        <translation type="unfinished">平板式</translation>
+        <translation>平板式</translation>
     </message>
     <message>
-        <location filename="../src/saneobject.cpp" line="720"/>
+        <location filename="../src/saneobject.cpp" line="708"/>
         <source>ADF</source>
-        <translation type="unfinished">馈纸式</translation>
+        <translation>馈纸式</translation>
     </message>
     <message>
-        <location filename="../src/saneobject.cpp" line="729"/>
+        <location filename="../src/saneobject.cpp" line="717"/>
         <source>ADF Front</source>
-        <translation type="unfinished"></translation>
+        <translation>ADF 正面</translation>
     </message>
     <message>
-        <location filename="../src/saneobject.cpp" line="738"/>
+        <location filename="../src/saneobject.cpp" line="726"/>
         <source>ADF Back</source>
-        <translation type="unfinished"></translation>
+        <translation>ADF背面</translation>
     </message>
     <message>
-        <location filename="../src/saneobject.cpp" line="747"/>
+        <location filename="../src/saneobject.cpp" line="735"/>
         <source>ADF Duplex</source>
-        <translation type="unfinished"></translation>
+        <translation>ADF 双面</translation>
     </message>
     <message>
-        <location filename="../src/saneobject.cpp" line="818"/>
+        <location filename="../src/saneobject.cpp" line="786"/>
         <source>4800 dpi</source>
-        <translation type="unfinished">75 dpi {4800 ?}</translation>
+        <translation>4800 dpi</translation>
     </message>
     <message>
-        <location filename="../src/saneobject.cpp" line="821"/>
+        <location filename="../src/saneobject.cpp" line="789"/>
         <source>2400 dpi</source>
-        <translation type="unfinished">75 dpi {2400 ?}</translation>
+        <translation>2400 dpi</translation>
     </message>
     <message>
-        <location filename="../src/saneobject.cpp" line="824"/>
+        <location filename="../src/saneobject.cpp" line="792"/>
         <source>1200 dpi</source>
-        <translation type="unfinished">75 dpi {1200 ?}</translation>
+        <translation>1200 dpi</translation>
     </message>
     <message>
-        <location filename="../src/saneobject.cpp" line="827"/>
+        <location filename="../src/saneobject.cpp" line="795"/>
         <source>600 dpi</source>
-        <translation type="unfinished">75 dpi {600 ?}</translation>
+        <translation>600 dpi</translation>
     </message>
     <message>
-        <location filename="../src/saneobject.cpp" line="830"/>
+        <location filename="../src/saneobject.cpp" line="798"/>
         <source>300 dpi</source>
-        <translation type="unfinished">75 dpi {300 ?}</translation>
+        <translation>300 dpi</translation>
     </message>
     <message>
-        <location filename="../src/saneobject.cpp" line="833"/>
+        <location filename="../src/saneobject.cpp" line="801"/>
         <source>200 dpi</source>
-        <translation type="unfinished">75 dpi {200 ?}</translation>
+        <translation>200 dpi</translation>
     </message>
     <message>
-        <location filename="../src/saneobject.cpp" line="836"/>
+        <location filename="../src/saneobject.cpp" line="804"/>
         <source>150 dpi</source>
-        <translation type="unfinished">75 dpi {150 ?}</translation>
+        <translation>150 dpi</translation>
     </message>
     <message>
-        <location filename="../src/saneobject.cpp" line="839"/>
+        <location filename="../src/saneobject.cpp" line="807"/>
         <source>100 dpi</source>
-        <translation type="unfinished">75 dpi {100 ?}</translation>
+        <translation>100 dpi</translation>
     </message>
     <message>
-        <location filename="../src/saneobject.cpp" line="842"/>
+        <location filename="../src/saneobject.cpp" line="810"/>
         <source>75 dpi</source>
-        <translation type="unfinished">75 dpi</translation>
+        <translation>75 dpi</translation>
     </message>
     <message>
-        <location filename="../src/saneobject.cpp" line="853"/>
+        <location filename="../src/saneobject.cpp" line="826"/>
         <source>Auto</source>
-        <translation type="unfinished"></translation>
+        <translation>自动</translation>
+    </message>
+</context>
+<context>
+    <name>SaneObject</name>
+    <message>
+        <location filename="../src/saneobject.cpp" line="1698"/>
+        <source>Flatbed</source>
+        <translation>平板式</translation>
+    </message>
+    <message>
+        <location filename="../src/saneobject.cpp" line="1700"/>
+        <source>ADF</source>
+        <translation>馈纸式</translation>
+    </message>
+    <message>
+        <location filename="../src/saneobject.cpp" line="1702"/>
+        <source>ADF Front</source>
+        <translation>ADF 正面</translation>
+    </message>
+    <message>
+        <location filename="../src/saneobject.cpp" line="1704"/>
+        <source>ADF Back</source>
+        <translation>ADF 背面</translation>
+    </message>
+    <message>
+        <location filename="../src/saneobject.cpp" line="1737"/>
+        <source>Lineart</source>
+        <translation>黑白</translation>
+    </message>
+    <message>
+        <location filename="../src/saneobject.cpp" line="1739"/>
+        <source>Gray</source>
+        <translation>灰度</translation>
+    </message>
+    <message>
+        <location filename="../src/saneobject.cpp" line="1741"/>
+        <source>Color</source>
+        <translation>色彩</translation>
+    </message>
+    <message>
+        <location filename="../src/saneobject.cpp" line="1765"/>
+        <source>Auto</source>
+        <translation>自动</translation>
+    </message>
+    <message>
+        <location filename="../src/saneobject.cpp" line="1767"/>
+        <source>75 dpi</source>
+        <translation>75 dpi</translation>
+    </message>
+    <message>
+        <location filename="../src/saneobject.cpp" line="1769"/>
+        <source>150 dpi</source>
+        <translation>150 dpi</translation>
+    </message>
+    <message>
+        <location filename="../src/saneobject.cpp" line="1771"/>
+        <source>200 dpi</source>
+        <translation>200 dpi</translation>
+    </message>
+    <message>
+        <location filename="../src/saneobject.cpp" line="1773"/>
+        <source>300 dpi</source>
+        <translation>300 dpi</translation>
+    </message>
+    <message>
+        <location filename="../src/saneobject.cpp" line="1775"/>
+        <source>600 dpi</source>
+        <translation>600 dpi</translation>
+    </message>
+    <message>
+        <location filename="../src/saneobject.cpp" line="1777"/>
+        <source>1200 dpi</source>
+        <translation>1200 dpi</translation>
+    </message>
+    <message>
+        <location filename="../src/saneobject.cpp" line="1779"/>
+        <source>2400 dpi</source>
+        <translation>2400 dpi</translation>
+    </message>
+    <message>
+        <location filename="../src/saneobject.cpp" line="1781"/>
+        <source>4800 dpi</source>
+        <translation>4800 dpi</translation>
+    </message>
+</context>
+<context>
+    <name>ScanDialog</name>
+    <message>
+        <location filename="../src/scandialog.cpp" line="30"/>
+        <location filename="../src/scandialog.cpp" line="33"/>
+        <source>Scanner</source>
+        <translation>扫描</translation>
+    </message>
+    <message>
+        <location filename="../src/scandialog.cpp" line="36"/>
+        <source>Close</source>
+        <translation>关闭</translation>
+    </message>
+    <message>
+        <location filename="../src/scandialog.cpp" line="54"/>
+        <location filename="../src/scandialog.cpp" line="130"/>
+        <source>Number of pages being scanned: </source>
+        <translation>已经扫描页数：</translation>
+    </message>
+    <message>
+        <location filename="../src/scandialog.cpp" line="63"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
     <name>ScanSettingsWidget</name>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="197"/>
+        <location filename="../src/scansettingswidget.cpp" line="296"/>
         <source>Begin Scan</source>
         <translation>开始扫描</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="211"/>
+        <location filename="../src/scansettingswidget.cpp" line="314"/>
         <source>Scanner device</source>
         <translation>扫描仪设备</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="165"/>
-        <location filename="../src/scansettingswidget.cpp" line="311"/>
+        <location filename="../src/scansettingswidget.cpp" line="264"/>
+        <location filename="../src/scansettingswidget.cpp" line="421"/>
         <source>Time</source>
         <translation>延时</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="223"/>
+        <location filename="../src/scansettingswidget.cpp" line="326"/>
         <source>File settings</source>
         <translation>文件预设</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="163"/>
+        <location filename="../src/scansettingswidget.cpp" line="262"/>
         <source>Device</source>
         <translation>设备</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="73"/>
-        <source>Select a directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/scansettingswidget.cpp" line="95"/>
-        <source>Currently user has no permission to modify directory </source>
-        <translation type="unfinished"></translation>
+        <source>Select a directory</source>
+        <translation>选择目录</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="146"/>
-        <location filename="../src/scansettingswidget.cpp" line="367"/>
+        <location filename="../src/scansettingswidget.cpp" line="117"/>
+        <source>Currently user has no permission to modify directory </source>
+        <translation>目前用户没有权限更改目录</translation>
+    </message>
+    <message>
+        <location filename="../src/scansettingswidget.cpp" line="168"/>
+        <location filename="../src/scansettingswidget.cpp" line="171"/>
+        <location filename="../src/scansettingswidget.cpp" line="478"/>
         <source>Multiple</source>
         <translation>多页扫描</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="164"/>
+        <location filename="../src/scansettingswidget.cpp" line="263"/>
         <source>Pages</source>
         <translation>页数</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="166"/>
+        <location filename="../src/scansettingswidget.cpp" line="265"/>
         <source>Type</source>
         <translation>类型</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="167"/>
-        <location filename="../src/scansettingswidget.cpp" line="419"/>
+        <location filename="../src/scansettingswidget.cpp" line="197"/>
+        <location filename="../src/scansettingswidget.cpp" line="266"/>
+        <location filename="../src/scansettingswidget.cpp" line="531"/>
         <source>Color</source>
         <translation>色彩</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="168"/>
+        <location filename="../src/scansettingswidget.cpp" line="267"/>
         <source>Resolution</source>
         <translation>分辨率</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="169"/>
+        <location filename="../src/scansettingswidget.cpp" line="268"/>
         <source>Size</source>
         <translation>尺寸</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="170"/>
+        <location filename="../src/scansettingswidget.cpp" line="269"/>
         <source>Format</source>
         <translation>格式</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="171"/>
+        <location filename="../src/scansettingswidget.cpp" line="270"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="229"/>
+        <location filename="../src/scansettingswidget.cpp" line="332"/>
         <source>scanner01</source>
-        <translation type="unfinished"></translation>
+        <translation>scanner01</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="172"/>
+        <location filename="../src/scansettingswidget.cpp" line="271"/>
         <source>Save</source>
         <translation>扫描至</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="175"/>
+        <location filename="../src/scansettingswidget.cpp" line="274"/>
         <source>Mail to</source>
         <translation>发送邮件</translation>
     </message>
@@ -391,99 +499,169 @@
         <translation type="vanished">发送至邮箱</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="261"/>
+        <location filename="../src/scansettingswidget.cpp" line="364"/>
         <source>Save as</source>
         <translation>另存为</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="342"/>
+        <location filename="../src/scansettingswidget.cpp" line="453"/>
         <source>No available scanners</source>
         <translation>无可用设备</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="367"/>
+        <location filename="../src/scansettingswidget.cpp" line="175"/>
+        <location filename="../src/scansettingswidget.cpp" line="478"/>
         <source>Single</source>
         <translation>单页扫描</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="381"/>
+        <location filename="../src/scansettingswidget.cpp" line="210"/>
+        <source>4800 dpi</source>
+        <translation>4800 dpi</translation>
+    </message>
+    <message>
+        <location filename="../src/scansettingswidget.cpp" line="211"/>
+        <source>2400 dpi</source>
+        <translation>2400 dpi</translation>
+    </message>
+    <message>
+        <location filename="../src/scansettingswidget.cpp" line="212"/>
+        <source>1200 dpi</source>
+        <translation>1200 dpi</translation>
+    </message>
+    <message>
+        <location filename="../src/scansettingswidget.cpp" line="214"/>
+        <source>This resolution will take a loog time to scan, please choose carelly.</source>
+        <translation>该分辨率将会花费很长时间扫描，请谨慎选择！</translation>
+    </message>
+    <message>
+        <location filename="../src/scansettingswidget.cpp" line="239"/>
+        <source>cannot contain &apos;/&apos; character.</source>
+        <translation>不能包含字符 / 。</translation>
+    </message>
+    <message>
+        <location filename="../src/scansettingswidget.cpp" line="245"/>
+        <source>cannot save as hidden file.</source>
+        <translation>不能存为隐藏文件。</translation>
+    </message>
+    <message>
+        <location filename="../src/scansettingswidget.cpp" line="492"/>
         <source>3s</source>
         <translation>3 秒</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="381"/>
+        <location filename="../src/scansettingswidget.cpp" line="492"/>
         <source>5s</source>
         <translation>5 秒</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="381"/>
+        <location filename="../src/scansettingswidget.cpp" line="492"/>
         <source>7s</source>
         <translation>7 秒</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="381"/>
+        <location filename="../src/scansettingswidget.cpp" line="492"/>
         <source>10s</source>
         <translation>10 秒</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="381"/>
+        <location filename="../src/scansettingswidget.cpp" line="492"/>
         <source>15s</source>
         <translation>15 秒</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="397"/>
+        <location filename="../src/scansettingswidget.cpp" line="509"/>
         <source>Flatbed</source>
         <translation>平板式</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="397"/>
+        <location filename="../src/scansettingswidget.cpp" line="509"/>
         <source>ADF</source>
         <translation>馈纸式</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="419"/>
+        <location filename="../src/scansettingswidget.cpp" line="531"/>
         <source>Gray</source>
         <translation>灰度</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="419"/>
+        <location filename="../src/scansettingswidget.cpp" line="199"/>
+        <location filename="../src/scansettingswidget.cpp" line="531"/>
         <source>Lineart</source>
         <translation>黑白</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="439"/>
+        <location filename="../src/scansettingswidget.cpp" line="554"/>
         <source>75 dpi</source>
         <translation>75 dpi</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="439"/>
+        <location filename="../src/scansettingswidget.cpp" line="554"/>
         <source>100 dpi</source>
-        <translation type="unfinished">75 dpi {100 ?}</translation>
+        <translation>100 dpi</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="439"/>
+        <location filename="../src/scansettingswidget.cpp" line="554"/>
         <source>150 dpi</source>
-        <translation type="unfinished">75 dpi {150 ?}</translation>
+        <translation>150 dpi</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="457"/>
+        <location filename="../src/scansettingswidget.cpp" line="574"/>
         <source>A4</source>
-        <translation type="unfinished"></translation>
+        <translation>A4</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="457"/>
+        <location filename="../src/scansettingswidget.cpp" line="574"/>
         <source>A5</source>
-        <translation type="unfinished"></translation>
+        <translation>A5</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="622"/>
+        <location filename="../src/scansettingswidget.cpp" line="739"/>
+        <source>Scanning images&apos;s length cannot be large than 252</source>
+        <translation>扫描文档名称的长度不能超过252。</translation>
+    </message>
+    <message>
+        <location filename="../src/scansettingswidget.cpp" line="752"/>
         <source>Scanner</source>
         <translation>扫描</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="625"/>
+        <location filename="../src/scansettingswidget.cpp" line="755"/>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation>是</translation>
+    </message>
+</context>
+<context>
+    <name>ScanThread</name>
+    <message>
+        <location filename="../src/mainwidget.cpp" line="369"/>
+        <source>Multiple</source>
+        <translation>多页扫描</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwidget.cpp" line="396"/>
+        <source>3s</source>
+        <translation>3 秒</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwidget.cpp" line="398"/>
+        <source>5s</source>
+        <translation>5 秒</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwidget.cpp" line="400"/>
+        <source>7s</source>
+        <translation>7 秒</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwidget.cpp" line="402"/>
+        <source>10s</source>
+        <translation>10 秒</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwidget.cpp" line="404"/>
+        <source>15s</source>
+        <translation>15 秒</translation>
     </message>
 </context>
 <context>
@@ -520,7 +698,7 @@
     </message>
     <message>
         <location filename="../src/titlebar/titlebar.ui" line="251"/>
-        <location filename="../src/titlebar/titlebar.cpp" line="75"/>
+        <location filename="../src/titlebar/titlebar.cpp" line="92"/>
         <source>Maximize</source>
         <translation>最大化</translation>
     </message>
@@ -534,22 +712,22 @@
         <translation type="vanished">最大化</translation>
     </message>
     <message>
-        <location filename="../src/titlebar/titlebar.cpp" line="17"/>
+        <location filename="../src/titlebar/titlebar.cpp" line="34"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../src/titlebar/titlebar.cpp" line="21"/>
+        <location filename="../src/titlebar/titlebar.cpp" line="38"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../src/titlebar/titlebar.cpp" line="24"/>
+        <location filename="../src/titlebar/titlebar.cpp" line="41"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../src/titlebar/titlebar.cpp" line="72"/>
+        <location filename="../src/titlebar/titlebar.cpp" line="89"/>
         <source>Restore</source>
         <translation>还原</translation>
     </message>

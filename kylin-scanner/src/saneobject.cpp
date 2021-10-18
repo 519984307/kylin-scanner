@@ -614,9 +614,29 @@ SANE_Status setOptionColors(SANE_Handle sane_handle, SANE_String val_color)
     return status;
 }
 
+SANE_Status getOptionSourcesDefaultFailed()
+{
+    QStringList typeStringList;
+    SANE_Status status = SANE_STATUS_GOOD;
+
+    typeStringList << QObject::tr("Default Type");
+
+    g_sane_object->haveSourceFlag = 0;
+
+    KyInfo() << "Default Type: " << typeStringList;
+
+    g_sane_object->setSaneTypes(typeStringList);
+
+    return status;
+
+}
+
 SANE_Status getOptionSources(SANE_Handle sane_handle, int optnum)
 {
     QStringList typeStringList;
+    SANE_Status status = SANE_STATUS_INVAL;
+    const SANE_Option_Descriptor *opt;
+    QVector<string>::iterator it;
 
     QVector<string> flatbedSources;
     flatbedSources.push_back("Auto");
@@ -654,8 +674,6 @@ SANE_Status getOptionSources(SANE_Handle sane_handle, int optnum)
     adfDuplexSources.push_back("Automatic Document Feeder(centrally aligned,Duplex)"); /* Brother duplex scan support. LP: #1343773 */
     adfDuplexSources.push_back("Automatic Document Feeder(left aligned,Duplex)");
 
-    SANE_Status status = SANE_STATUS_INVAL;
-    const SANE_Option_Descriptor *opt;
 
     KyInfo() << "GetOptionSource: " << optnum;
 
@@ -667,7 +685,6 @@ SANE_Status getOptionSources(SANE_Handle sane_handle, int optnum)
 
     for (int i = 0; opt->constraint.string_list[i] != nullptr; ++i) {
         const char *tmp = *(opt->constraint.string_list + i);
-        QVector<string>::iterator it;
 
         status = SANE_STATUS_GOOD;
 
@@ -1210,6 +1227,10 @@ static SANE_Status getOptionValue(SANE_Handle device, const char *option_name)
     }
 
     KyInfo() << "option_name = " << option_name << "str = " << str;
+    if ((strcmp(str, "backend default") == 0)
+            && (strcmp(option_name, SANE_NAME_SCAN_SOURCE) == 0)) {
+        getOptionSourcesDefaultFailed();
+    }
 
     return status;
 }
