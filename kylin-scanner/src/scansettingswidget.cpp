@@ -263,7 +263,7 @@ void ScanSettingsWidget::fontSizeChanged()
     setLabelAttributes(m_pageNumberLabel, tr("Pages"));
     setLabelAttributes(m_timeLabel, tr("Time"));
     setLabelAttributes(m_typeLabel, tr("Type"));
-    setLabelAttributes(m_colorLabel, tr("Color"));
+    setLabelAttributes(m_colorLabel, tr("Colour"));
     setLabelAttributes(m_resolutionLabel, tr("Resolution"));
     setLabelAttributes(m_sizeLabel, tr("Size"));
     setLabelAttributes(m_formatLabel, tr("Format"));
@@ -449,8 +449,15 @@ void ScanSettingsWidget::updateDeviceSettings()
     KyInfo() << "getSaneTypes " << saneStatus;
 
     if (! saneStatus) {
-        // not find scan device
-        deviceStringList << tr("No available scanners");
+        /// 1. Not find any scan device
+        /// 2. This device open false
+
+        deviceStringList = g_sane_object->getSaneNames();
+        if (deviceStringList.count() > 1) {
+            // Not only one scan device
+        } else {
+            deviceStringList << tr("No available scanners");
+        }
     } else {
         deviceStringList = g_sane_object->getSaneNames();
     }
@@ -623,6 +630,24 @@ void ScanSettingsWidget::updateNameTextSettings()
     m_nameEdit->setEnabled(saneStatus);
 }
 
+void ScanSettingsWidget::updateSaveDirectorySettings()
+{
+    bool saneStatus = g_sane_object->getSaneStatus();
+    m_saveButton->setEnabled(saneStatus);
+}
+
+void ScanSettingsWidget::updateSendMailSettings()
+{
+    bool saneStatus = g_sane_object->getSaneStatus();
+    m_emailButton->setEnabled(saneStatus);
+}
+
+void ScanSettingsWidget::updateSaveAsSettings()
+{
+    bool saneStatus = g_sane_object->getSaneStatus();
+    m_SaveAsButton->setEnabled(saneStatus);
+}
+
 
 /**
  * @brief ScanSettingsWidget::updateSettings
@@ -639,6 +664,9 @@ void ScanSettingsWidget::updateSettings()
     updateSizeSettings();
     updateFormatSettings();
     updateNameTextSettings();
+    updateSaveDirectorySettings();
+    updateSendMailSettings();
+    updateSaveAsSettings();
 }
 
 /**
@@ -649,12 +677,16 @@ void ScanSettingsWidget::updateSettingsForSwitchDevices()
 {
 //    updatePageNumberSettings();
 //    updateTimerSettings();
+    updatePageNumberSettings();
     updateTypeSettings();
     updateColorSettings();
     updateResolutionSettings();
     updateSizeSettings();
     updateFormatSettings();
     updateNameTextSettings();
+    updateSaveDirectorySettings();
+    updateSendMailSettings();
+    updateSaveAsSettings();
 }
 
 void ScanSettingsWidget::setDeviceComboBoxTextChangedIsWork(bool isWork)

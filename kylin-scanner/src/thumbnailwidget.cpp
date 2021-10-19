@@ -87,12 +87,10 @@ void ThumbnailWidget::showThumbnailIcon()
     }
         QStandardItem *item = new QStandardItem();
         item->setIcon(QIcon("/home/yushuoqi/out1.pnm"));
-        //item->setSizeHint(QSize(38, 38));
         m_thumbnailItemModel->insertRow(20, item);
 #endif
 
     this->setModel(m_thumbnailItemModel);
-
 }
 
 void ThumbnailWidget::themeChangedWhite()

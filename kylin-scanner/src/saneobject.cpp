@@ -1224,13 +1224,15 @@ static SANE_Status getOptionValue(SANE_Handle device, const char *option_name)
     } else {
         /* The option does not exists. */
         strcpy(str, "backend default");
+
+        KyInfo() << "option_name = " << option_name << "str = " << str;
+        if ((strcmp(str, "backend default") == 0)
+                && (strcmp(option_name, SANE_NAME_SCAN_SOURCE) == 0)) {
+            getOptionSourcesDefaultFailed();
+        }
     }
 
     KyInfo() << "option_name = " << option_name << "str = " << str;
-    if ((strcmp(str, "backend default") == 0)
-            && (strcmp(option_name, SANE_NAME_SCAN_SOURCE) == 0)) {
-        getOptionSourcesDefaultFailed();
-    }
 
     return status;
 }
@@ -1670,12 +1672,17 @@ void SaneObject::setSaneTypeByUser()
     SANE_String s_type;
     QMap<QString, QString>::iterator it;
 
-    QString tmp = g_sane_object->userInfo.type;
-    if (tmp == "") {
+    QString userType = g_sane_object->userInfo.type;
+    if (userType == "") {
         // avoid crashed unexpected
         return ;
     }
-    QString type = getSaneTypeByUser(g_sane_object->userInfo.type);
+
+    if (QString::compare(userType, tr("Default Type"), Qt::CaseInsensitive) == 0) {
+        status = SANE_STATUS_GOOD;
+        return;
+    }
+    QString type = getSaneTypeByUser(userType);
 
     it = g_sane_object->sourceModesMap.find(type);
     if (it != g_sane_object->sourceModesMap.end()) {
@@ -1703,6 +1710,8 @@ QString SaneObject::getSaneTypeByUser(QString type)
         return QString("ADF Front");
     } else if (QString::compare(type, tr("ADF Back"), Qt::CaseInsensitive) == 0) {
         return QString("ADF Back");
+    } else if (QString::compare(type, tr("Default Type"), Qt::CaseInsensitive) == 0) {
+        return QString("Default Type");
     }
 }
 
@@ -1713,7 +1722,9 @@ void SaneObject::setSaneColorByUser()
     SANE_String s_color;
     QMap<QString, QString>::iterator it;
 
-    QString color = getSaneColorByUser(g_sane_object->userInfo.color);
+    QString userColor = g_sane_object->userInfo.color;
+
+    QString color = getSaneColorByUser(userColor);
 
     it = g_sane_object->colorModesMap.find(color);
     if (it != g_sane_object->colorModesMap.end()) {
@@ -1734,11 +1745,14 @@ void SaneObject::setSaneColorByUser()
 
 QString SaneObject::getSaneColorByUser(QString color)
 {
-    if (QString::compare(color, tr("Lineart"), Qt::CaseInsensitive) == 0) {
+    if ((QString::compare(color, "Lineart", Qt::CaseInsensitive) == 0)
+            || (QString::compare(color, "黑白", Qt::CaseInsensitive) == 0)) {
         return QString("Lineart");
-    } else if (QString::compare(color, tr("Gray"), Qt::CaseInsensitive) == 0) {
+    } else if ((QString::compare(color, "Gray", Qt::CaseInsensitive) == 0)
+               || (QString::compare(color, "Gray", Qt::CaseInsensitive) == 0)) {
         return QString("Gray");
-    } else if (QString::compare(color, tr("Color"), Qt::CaseInsensitive) == 0) {
+    } else if ((QString::compare(color, tr("Color"), Qt::CaseInsensitive) == 0)
+               || (QString::compare(color, "彩色", Qt::CaseInsensitive) == 0)) {
         return QString("Color");
     }
 }

@@ -18,7 +18,7 @@
 
 #include "mainwidget.h"
 
-bool isExited = false; //! exit scan thread
+static bool isExited = false; //! exit scan thread
 
 MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent),
@@ -303,10 +303,25 @@ void MainWidget::detectScanDeviceThreadFinishedSlot(bool isDetected)
     }
 }
 
+/**
+ * @brief MainWidget::startScanOperationSlot
+ * There are two scan methods:
+ * 1. Single scan
+ *      - Not show scan dialog
+ *
+ * 2. Multiple scan
+ *      - Do show scan dialog
+ */
 void MainWidget::startScanOperationSlot()
 {
-
     m_scanThread.start();
+
+    QString pageNumber = g_sane_object->userInfo.pageNumber;
+    int retCompare = QString::compare(pageNumber, tr("Single"), Qt::CaseInsensitive);
+    if (retCompare == 0 ) {
+        return;
+    }
+
     showScanDialogSlot();
 }
 
@@ -334,11 +349,13 @@ void MainWidget::showScanDialogSlot()
 
 void MainWidget::scanThreadFinishedSlot()
 {
+#if 0
     QString pageNumber = g_sane_object->userInfo.pageNumber;
     int retCompare = QString::compare(pageNumber, tr("Single"), Qt::CaseInsensitive);
     if ((retCompare == 0) && (! m_scanDialog->isHidden())) {
         m_scanDialog->hide();
     }
+#endif
 
     m_displayWidget->showSuccessImageHandlePageSlot();
 }
@@ -364,11 +381,12 @@ void DetectScanDevicesThread::run()
 
 void ScanThread::run()
 {
+    int sleepTime = 0;
+    int ret = 0;
 
     QString pageNumber = g_sane_object->userInfo.pageNumber;
     int retCompare = QString::compare(pageNumber, tr("Multiple"), Qt::CaseInsensitive);
-    int sleepTime = 0;
-    int ret = 0;
+
     if (retCompare == 0) {
         sleepTime = getSleepTime(g_sane_object->userInfo.time);
         KyInfo() << "sleepTime = " << sleepTime;
@@ -376,18 +394,18 @@ void ScanThread::run()
 
     do {
         KyInfo() << "start_scanning ..............................";
+        KyInfo() << ".............................................";
 
         // scan format and name, we should update it at actually time
         g_sane_object->startScanning(g_sane_object->userInfo);
         KyInfo() << "start_scanning end, status = " << ret;
 
         emit scanThreadFinishedSignal(ret);
-        sleep(sleepTime);
-
         g_user_signal->scanThreadFinished();
-    } while ((sleepTime != 0) && (! isExited));
 
-    quit();
+        sleep(sleepTime);
+        KyInfo() << "sleep time end, do other operation.";
+    } while ((sleepTime != 0) && (! isExited));
 }
 
 int ScanThread::getSleepTime(QString &time)

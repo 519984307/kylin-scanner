@@ -72,6 +72,9 @@ public:
     void updateSizeSettings();
     void updateFormatSettings();
     void updateNameTextSettings();
+    void updateSaveDirectorySettings();
+    void updateSendMailSettings();
+    void updateSaveAsSettings();
     void updateSettings();
     void updateSettingsForSwitchDevices();
 
