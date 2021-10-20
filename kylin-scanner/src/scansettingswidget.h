@@ -63,6 +63,7 @@ public:
     void hideTimeRow();
 
     /// update scan settings throught sane api
+    void updateScanButtonSettings();
     void updateDeviceSettings();
     void updatePageNumberSettings();
     void updateTimeSettings();
@@ -75,11 +76,10 @@ public:
     void updateSaveDirectorySettings();
     void updateSendMailSettings();
     void updateSaveAsSettings();
-    void updateSettings();
+    void updateSettingsForDetectDevices();
     void updateSettingsForSwitchDevices();
 
 
-    void setDeviceComboBoxTextChangedIsWork(bool isWork);
     void setLabelAttributes(QLabel *label, const QString &text);
     void setSaveButtonAttributes(QPushButton *button, const QString &text, int elideWidth);
     void setComboboxAttributes(QComboBox *combobox, QStringList strList);
@@ -119,8 +119,6 @@ public slots:
 private:
     QString currentSaveDirectory;
     QString currentSaveAsDirectory;
-    bool deviceComboBoxTextChangedIsWork = false; // deviceComboBoxTextChangedIsWork will not work before openSaneDevice() successfully
-
 
     QPushButton *m_scanButton;
     QLabel *m_deviceSettingsLabel;
@@ -153,7 +151,5 @@ private:
 
     QVBoxLayout *m_mainVLayout;
 };
-
-//#define g_scan_settings ScanSettingsWidget::getInstance()
 
 #endif // SCANSETTINGSWIDGET_H

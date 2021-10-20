@@ -108,9 +108,10 @@ static void *advance (Image *image)
         }
     }
 
-    if (!image->data)
+    if (!image->data) {
         KyInfo() << "Can't allocate image buffer, width = " << image->width
                 << "height = " << image->height;
+    }
 
     return image->data;
 }
@@ -405,10 +406,12 @@ SANE_Status doScan(const char *fileName)
         }
     } while (0);
 
+#if 0
     if (SANE_STATUS_GOOD != status)
         sane_cancel (g_device);
+#endif
 
-    //sane_cancel (gs_device);
+    sane_cancel (g_device);
     if (ofp) {
         fclose (ofp);
         ofp = nullptr;
@@ -436,16 +439,6 @@ static void saneInit()
     KyInfo() << "version_code = " << version_code;
 }
 
-/**
- * @brief saneGetDevices
- * Get all scan devices.
- *
- * Note:
- *      This will be take a long time, we need wait patiently.
- *
- * @param device_list
- * @return sane status
- */
 static SANE_Status saneGetDevices(const SANE_Device ***device_list)
 {
     SANE_Status status = SANE_STATUS_GOOD;
@@ -454,50 +447,35 @@ static SANE_Status saneGetDevices(const SANE_Device ***device_list)
 
     /// This will be crashed unexpectedly, samples can be followed:
     /// 1. Caused by specific drives, such as `lenovo-image-g-series_1.0-16_arm64`, so we need Vendor developers to handle it
+    /// 2. This will take a long time
     status = sane_get_devices (device_list, SANE_FALSE);
-    KyInfo() << "status = " << status;
 
-    if (status)
+    if (status) {
         KyInfo() << "status = " << sane_strstatus(status);
+    }
 
     return status;
 }
 
-/**
- * @brief saneOpen
- * @param device sane device to via device->name
- * @param sane_handle
- * @return sane status
- */
 SANE_Status saneOpen(SANE_Device *device, SANE_Handle *sane_handle)
 {
     SANE_Status status = SANE_STATUS_INVAL;
-    char name[512] = {0};
 
     KyInfo() << "name = " << device->name
             << "model = " << device->model
             << "vendor = " << device->vendor
             << "type = " << device->type;
 
-    // just for one scan device
-    snprintf(name, 512, "%s %s", device->vendor, device->model);
-    QString openName = QString(QLatin1String(name));
-    KyInfo() << "device name:  " << openName;
 
     status = sane_open(device->name, sane_handle);
-    if (status)
+
+    if (status) {
         KyInfo() << "status = " << sane_strstatus(status);
+    }
 
     return status;
 }
 
-/**
- * @brief get_option_colors
- *
- * @param sane_handle
- * @param optnum scan option value
- * @return scan status
- */
 SANE_Status getOptionColors(SANE_Handle sane_handle, int optnum)
 {
     QStringList colors;
@@ -540,11 +518,10 @@ SANE_Status getOptionColors(SANE_Handle sane_handle, int optnum)
 
     opt = sane_get_option_descriptor(sane_handle, optnum);
 
-    // Avoid duplicate
     g_sane_object->colorModesMap.clear();
 
     for (int i = 0; opt->constraint.string_list[i] != nullptr; ++i) {
-        KyInfo() << "color strings = " << *(opt->constraint.string_list + i);
+//        KyInfo() << "color strings = " << *(opt->constraint.string_list + i);
 
         const char *tmp = *(opt->constraint.string_list + i);
         QVector<string>::iterator it;
@@ -688,7 +665,7 @@ SANE_Status getOptionSources(SANE_Handle sane_handle, int optnum)
 
         status = SANE_STATUS_GOOD;
 
-        KyInfo() << "Sources: " << tmp;
+//        KyInfo() << "Sources: " << tmp;
 
         it = find(flatbedSources.begin(), flatbedSources.end(), tmp);
 
@@ -779,7 +756,7 @@ static SANE_Status getOptionResolutions(SANE_Handle sane_handle, int optnum)
     for (int i = 0; opt->constraint.word_list[i]; ++i) {
         int res = *(opt->constraint.word_list + i);
         status = SANE_STATUS_GOOD;
-        KyInfo() << "resolution int = " << res;
+//        KyInfo() << "resolution int = " << res;
 
         switch (res) {
         case 4800:
@@ -798,7 +775,7 @@ static SANE_Status getOptionResolutions(SANE_Handle sane_handle, int optnum)
             resolutions << QObject::tr("300 dpi");
             break;
         case 200:
-            resolutions << QObject::tr("200 dpi"); // Scanner support: 200 dpi
+            resolutions << QObject::tr("200 dpi");
             break;
         case 150:
             resolutions << QObject::tr("150 dpi");
@@ -838,6 +815,7 @@ SANE_Status setOptionResolutions(SANE_Handle sane_handle, SANE_Int val_resolutio
 
     status = sane_control_option(sane_handle, g_optDesc.numResolution,
                                  SANE_ACTION_SET_VALUE, &val_resolution, nullptr);
+
     if (status != SANE_STATUS_GOOD) {
         KyInfo() << "status = " << status << "desc: " << sane_strstatus(status);
         return status;
@@ -871,7 +849,7 @@ SANE_Status getOptionSizes(SANE_Handle sane_handle, int optnum)
     opt = sane_get_option_descriptor(sane_handle, optnum);
 
     for (int i = 0; opt->constraint.word_list[i]; ++i) {
-        KyInfo() << "int sizes = " << *(opt->constraint.word_list + i);
+        KyInfo() << "sizes = " << *(opt->constraint.word_list + i);
     }
     return status;
 }
@@ -884,6 +862,7 @@ SANE_Status setOptionSizes(SANE_Handle sane_handle, int optnum, SANE_Int val_siz
 
     status = sane_control_option(sane_handle, optnum,
                                  SANE_ACTION_SET_VALUE, &val_size, nullptr);
+
     if (status != SANE_STATUS_GOOD) {
         KyInfo() << "status = " << status << "desc: " << sane_strstatus(status);
         return status;
@@ -940,13 +919,10 @@ SANE_Status setOptionSizesAll(SANE_Handle sane_handle, int type)
     return status;
 }
 
-/*--------------------------------------------------------------------------*/
-
-#define GUARDS_SIZE 4 /* 4 bytes */
+#define GUARDS_SIZE 4
 #define GUARD1 ((SANE_Word)0x5abf8ea5)
 #define GUARD2 ((SANE_Word)0xa58ebf5a)
 
-/* Allocate the requested memory plus enough room to store some guard bytes. */
 static void *guardsMalloc(size_t size)
 {
     unsigned char *ptr;
@@ -961,7 +937,6 @@ static void *guardsMalloc(size_t size)
     return (ptr);
 }
 
-/* Free some memory allocated by guards_malloc. */
 static void guardsFree(void *ptr)
 {
     unsigned char *p = static_cast<unsigned char *>(ptr);
@@ -979,16 +954,16 @@ static const SANE_Option_Descriptor *getOptdescByName(SANE_Handle device, const 
     /* Get the number of options. */
     status = sane_control_option (device, 0,
                                   SANE_ACTION_GET_VALUE, &num_dev_options, nullptr);
-    KyInfo() << "Get option name = " << name << "status = " << status;
+
+    KyInfo() << "\n\n\nGet Option name: " << name << status;
 
     for (*option_num = 0; *option_num < num_dev_options; (*option_num)++) {
         const SANE_Option_Descriptor *opt;
 
-        /* Get the option descriptor */
         opt = sane_get_option_descriptor (device, *option_num);
 
         if (opt->name) {
-            KyInfo() << opt->name;
+//            KyInfo() << opt->name;
         }
 
         if (opt->name && strcmp(opt->name, name) == 0) {
@@ -1031,7 +1006,6 @@ static SANE_Status getOptionValue(SANE_Handle device, const char *option_name)
     SANE_Word val_resolution;
 
     opt = getOptdescByName(device, option_name, &optnum);
-    KyInfo() << "optname = " << option_name << "optnum = " << optnum;
 
     if (opt) {
         void *optval;
@@ -1040,8 +1014,9 @@ static SANE_Status getOptionValue(SANE_Handle device, const char *option_name)
         status = sane_control_option (device, optnum,
                                       SANE_ACTION_GET_VALUE, optval, nullptr);
 
-        if (opt->desc)
+        if (opt->desc) {
             KyInfo() << opt->desc;
+        }
 
         KyInfo() << "opt->type = " << opt->type;
         switch (opt->type) {
@@ -1237,11 +1212,6 @@ static SANE_Status getOptionValue(SANE_Handle device, const char *option_name)
     return status;
 }
 
-/**
- * @brief  showAllSaneParameters
- * @param device
- * @return sane status
- */
 static SANE_Status showAllSaneParameters(SANE_Handle device)
 {
     static char str[150];
@@ -1251,7 +1221,6 @@ static SANE_Status showAllSaneParameters(SANE_Handle device)
 
     *p = 0;
 
-    // Default source
     status = getOptionValue(device, SANE_NAME_SCAN_SOURCE);
     if (status != SANE_STATUS_GOOD) {
         status = SANE_STATUS_INVAL;
@@ -1259,7 +1228,6 @@ static SANE_Status showAllSaneParameters(SANE_Handle device)
         return status;
     }
 
-    // Default color mode
     status = getOptionValue(device, SANE_NAME_SCAN_MODE);
     if (status != SANE_STATUS_GOOD) {
         status = SANE_STATUS_INVAL;
@@ -1267,7 +1235,6 @@ static SANE_Status showAllSaneParameters(SANE_Handle device)
         return status;
     }
 
-    // Default resolution
     status = getOptionValue(device, SANE_NAME_SCAN_RESOLUTION);
     if (status != SANE_STATUS_GOOD) {
         status = SANE_STATUS_INVAL;
@@ -1320,49 +1287,40 @@ static SANE_Status startSaneScan(SANE_Handle sane_handle, SANE_String_Const file
     SANE_Status status = SANE_STATUS_GOOD;
     status = doScan(fileName);
 
-    KyInfo() << "doScan() status = " << status;
+    if (status != SANE_STATUS_GOOD) {
+        KyInfo() << "start scan error, status = " << status;
+    }
 
     return status;
 }
 
-/**
- * @brief sane_cancel
- * End of this `sane_handle`, which could avoid `SANE_STATUS_BUSY` in next scan
- * @param sane_handle
- */
-static void saneCancel(SANE_Handle sane_handle)
+void saneCancel(SANE_Handle sane_handle)
 {
     KyInfo() << "saneCancel()";
 
     if (g_sane_object->getSaneHaveHandle()) {
         g_sane_object->setSaneHaveHandle(false);
 
-        KyInfo() << "sane_cancel()";
-        sane_cancel(sane_handle);
+        KyInfo() << "sane_cancel and sane_close";
 
-        KyInfo() << "sane_close()";
+        sane_cancel(sane_handle);
         sane_close(sane_handle);
     }
 }
 
-/**
- * @brief detectScanDevices
- * Detect scan devices to find available devices
- */
 void detectSaneDevices()
 {
+    KyInfo() << "detectSaneDevices();";
+
     QStringList names;
     QString type;
 
     SANE_Status sane_status;
     char name[512] = {0};
 
-    // 1. initialize SANE
-    KyInfo() << "sane init";
     saneInit();
 
     do {
-        // 2. get all devices
         //const SANE_Device ** device_list = nullptr;
         sane_status = saneGetDevices((&g_deviceList));
         if (sane_status) {
@@ -1371,7 +1329,6 @@ void detectSaneDevices()
             break;
         }
 
-        // display all devices
         int i = 0;
         unsigned int column = 80;
 
@@ -1382,7 +1339,6 @@ void detectSaneDevices()
                 column += 1;
 
             column += strlen (g_deviceList[i]->name);
-            // KyInfo() << "Name: " << g_deviceList[i]->name << "column: " << column;
         }
 
         for (i = 0; g_deviceList[i]; ++i) {
@@ -1391,13 +1347,11 @@ void detectSaneDevices()
                     << "Model: " << g_deviceList[i]->model
                     << "Type: " << g_deviceList[i]->type;
 
-            // just for one scan device
             snprintf(name, 512, "%s %s", g_deviceList[i]->vendor, g_deviceList[i]->model);
 
             names << name;
         }
 
-        // For devices name
         KyInfo() << names;
         g_sane_object->setSaneNames(names);
 
@@ -1418,18 +1372,13 @@ void detectSaneDevices()
     } else {
         g_sane_object->setSaneStatus(true);
     }
-    //sane_cancel(g_sane_object->handle);
 }
 
-/**
- * @brief openScanDevices
- * open scan devices to get all sane parameters
- */
 void openSaneDevice(int index)
 {
-    KyInfo() << "begin open device";
-    QStringList names;
+    KyInfo() << "openSaneDevice";
 
+    QStringList names;
     SANE_Status sane_status;
     char name[512] = {0};
 
@@ -1447,13 +1396,11 @@ void openSaneDevice(int index)
         g_sane_object->setSaneHaveHandle(false);
 
         for (int i = 0; g_deviceList[i]; ++i) {
-            // just for one scan device
             snprintf(name, 512, "%s %s", g_deviceList[i]->vendor, g_deviceList[i]->model);
 
             names << name;
         }
 
-        // For devices name
         if (names.isEmpty()) {
             KyInfo() << "No scan devices !";
 
@@ -1468,7 +1415,6 @@ void openSaneDevice(int index)
             break;
         }
 
-        // 3. open a device
         KyInfo() << "Open a scan device, plese waiting ...";
         SANE_Handle sane_handle;
         g_saneDevice = const_cast<SANE_Device *>(*(g_deviceList + index));
@@ -1491,12 +1437,10 @@ void openSaneDevice(int index)
         g_sane_object->handle = sane_handle;
         g_sane_object->setSaneHaveHandle(true);
 
-        // 4. start scanning
         KyInfo() << "Start scanning, please waiting ...";
 
-        KyInfo() << "================================================================================";
         sane_status = showAllSaneParameters(sane_handle);
-        KyInfo() << "================================================================================";
+
     } while (0);
 
     if (sane_status) {
@@ -1505,6 +1449,7 @@ void openSaneDevice(int index)
     } else {
         g_sane_object->setSaneStatus(true);
     }
+
 }
 #ifdef __cplusplus
 }
@@ -1514,6 +1459,7 @@ SaneObject::SaneObject(QObject *parent) : QObject(parent)
 {
     devicesInfo.have_handle = false;
     devicesInfo.status = false;
+    devicesInfo.haveOpenSaneDevice = false;
     devicesInfo.name << "";
     devicesInfo.type << "";
     devicesInfo.color << "";
@@ -1539,6 +1485,11 @@ bool SaneObject::getSaneStatus()
     return devicesInfo.status;
 }
 
+bool SaneObject::getSaneHaveOpenDevice()
+{
+    return devicesInfo.haveOpenSaneDevice;
+}
+
 bool SaneObject::getSaneHaveHandle()
 {
     return devicesInfo.have_handle;
@@ -1560,12 +1511,6 @@ QStringList SaneObject::getSaneResolutions()
 
 }
 
-/**
- * @brief SaneObject::getNumbersFromQString
- * Get numbers from QString, which could sort for resolutions
- * @param qstring
- * @return
- */
 int SaneObject::getNumbersFromQString(const QString &qstring)
 {
     QString numbers;
@@ -1574,7 +1519,6 @@ int SaneObject::getNumbersFromQString(const QString &qstring)
             numbers += ch;
         }
     }
-    KyInfo() << "numbers: " << numbers;
     return numbers.toInt();
 }
 
@@ -1588,6 +1532,10 @@ QStringList SaneObject::getSaneColors()
     return devicesInfo.color;
 }
 
+void SaneObject::setSaneHaveOpenSaneDevice(bool haveOpenSaneDevice)
+{
+    devicesInfo.haveOpenSaneDevice = haveOpenSaneDevice;
+}
 
 void SaneObject::setSaneHaveHandle(bool have_handle)
 {
@@ -1624,10 +1572,6 @@ void SaneObject::setSaneColors(QStringList color)
     devicesInfo.color = color;
 }
 
-
-/** free sane resource
- * Neglecting to call this function may result in some resources not being released properly.
- */
 void SaneObject::saneExit()
 {
     if (g_sane_object->getSaneHaveHandle()) {
@@ -1635,6 +1579,13 @@ void SaneObject::saneExit()
     }
 
     sane_exit();
+}
+
+void SaneObject::saneClose()
+{
+    if (g_sane_object->getSaneHaveHandle()) {
+        saneCancel(g_sane_object->handle);
+    }
 }
 
 void SaneObject::setSaneAllParametersByUser()
@@ -1725,15 +1676,13 @@ void SaneObject::setSaneColorByUser()
     QString userColor = g_sane_object->userInfo.color;
 
     QString color = getSaneColorByUser(userColor);
+    KyInfo() << "userColor: " << color;
 
     it = g_sane_object->colorModesMap.find(color);
     if (it != g_sane_object->colorModesMap.end()) {
-        // `color` is the key of `colorModesMap`, we need to get the value of `colorModesMap`,
-        KyInfo() << "colorModesMap value: " << it.value();
         strColor = it.value().toStdString();
     }
 
-    // For colors
     s_color = const_cast<SANE_String>(strColor.c_str());
 
     status = setOptionColors(g_sane_object->handle, s_color);
@@ -1751,8 +1700,9 @@ QString SaneObject::getSaneColorByUser(QString color)
     } else if ((QString::compare(color, "Gray", Qt::CaseInsensitive) == 0)
                || (QString::compare(color, "Gray", Qt::CaseInsensitive) == 0)) {
         return QString("Gray");
-    } else if ((QString::compare(color, tr("Color"), Qt::CaseInsensitive) == 0)
+    } else if ((QString::compare(color, "Color", Qt::CaseInsensitive) == 0)
                || (QString::compare(color, "彩色", Qt::CaseInsensitive) == 0)) {
+        // Cannot match tr("Color"), maybe segment fault
         return QString("Color");
     }
 }
@@ -1830,23 +1780,14 @@ void SaneObject::setSaneFormatByUser()
 
 }
 
-/**
- * @brief Sane::detectSaneDeviceForPage
- * Detect all scan device
- */
 void SaneObject::detectSaneDeviceForPage()
 {
     detectSaneDevices();
 }
 
-/**
- * @brief Sane::open_device
- * Open specific scanner which could get this scanner's parameters
- */
 void SaneObject::openSaneDeviceForPage(int index)
 {
     openSaneDevice(index);
-
 }
 
 /**
@@ -1865,19 +1806,19 @@ int SaneObject::startScanning(UserSelectedInfo info)
     int ret = 0;
     SANE_Status status = SANE_STATUS_GOOD;
 
-    int index = g_sane_object->userInfo.deviceNameIndex;
+//    int index = g_sane_object->userInfo.deviceNameIndex;
+    //openSaneDeviceForPage(index);
+#if 0
 
-    openSaneDeviceForPage(index);
-#if 1
     bool retStatus = getSaneStatus();
     if (retStatus) {
-        KyInfo() << "open_device true";
+        KyInfo() << "open_device false";
     } else {
         status = SANE_STATUS_COVER_OPEN;
-        KyInfo() << "open_device false";
-        if (getSaneHaveHandle()) {
-            saneCancel(g_sane_object->handle);
-        }
+        KyInfo() << "open_device true";
+
+        saneClose();
+
         return status;
     }
 #endif
@@ -1888,7 +1829,7 @@ int SaneObject::startScanning(UserSelectedInfo info)
     ret = startSaneScan(g_sane_object->handle, "scan");
 
     if (g_sane_object->getSaneHaveHandle()) {
-        saneCancel(g_sane_object->handle);
+        sane_cancel(g_sane_object->handle);
     }
 
     return ret;

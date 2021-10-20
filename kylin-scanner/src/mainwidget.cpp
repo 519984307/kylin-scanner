@@ -17,6 +17,8 @@
 */
 
 #include "mainwidget.h"
+#include <QMessageBox>
+#include <QWidgetList>
 
 static bool isExited = false; //! exit scan thread
 
@@ -89,10 +91,8 @@ void MainWidget::initConnect()
     connect(g_user_signal, &GlobalUserSignal::exitApplicationSignal, this, &MainWidget::closeWindowSlot);
     connect(g_user_signal, &GlobalUserSignal::showAboutDialogSignal, this, &MainWidget::showAboutWindowSlot);
 
-    // detect scan devices start
     connect(m_displayWidget, &DisplayWidget::detectScanDevicesSignal, this, &MainWidget::detectScanDevicesSlot, Qt::QueuedConnection);
 
-    // detect scan devices finished
     connect(&m_detectScanDevicesThread, &DetectScanDevicesThread::detectScanDevicesFinishedSignal, this, &MainWidget::detectScanDeviceThreadFinishedSlot);
 
     connect(g_user_signal, &GlobalUserSignal::startScanOperationSignal, this, &MainWidget::startScanOperationSlot);
@@ -184,11 +184,39 @@ void MainWidget::transparencyChange()
   this->update();
 }
 
+void MainWidget::warnMsg(QString msg)
+{
+    QMessageBox *msgBox = new QMessageBox();
+
+    msgBox->setText(msg);
+    msgBox->setIcon(QMessageBox::Warning);
+    msgBox->setWindowIcon(QIcon::fromTheme("kylin-scanner"));
+    msgBox->setWindowTitle(tr("Scanner"));
+    msgBox->setStandardButtons(QMessageBox::Yes);
+    msgBox->setContextMenuPolicy(Qt::NoContextMenu);
+    msgBox->button(QMessageBox::Yes)->setText(tr("Yes"));
+
+    QWidget *widget = nullptr;
+    QWidgetList widgetList = QApplication::allWidgets();
+    for (int i=0; i<widgetList.length(); ++i) {
+        if (widgetList.at(i)->objectName() == "MainWindow") {
+            widget = widgetList.at(i);
+        }
+    }
+    if (widget) {
+        msgBox->setParent(widget);
+        QRect rect = widget->geometry();
+        int x = rect.x() + rect.width()/2 - msgBox->width()/2;
+        int y = rect.y() + rect.height()/2 - msgBox->height()/2;
+        msgBox->move(x,y);
+    }
+
+    msgBox->exec();
+}
+
 void MainWidget::resizeEvent(QResizeEvent *event)
 {
     return;
-    //resizeTitleBar();
-    //resizeDisplayWidget();
 
     QWidget::resizeEvent(event);
 }
@@ -285,33 +313,18 @@ void MainWidget::detectScanDevicesSlot()
 
 void MainWidget::detectScanDeviceThreadFinishedSlot(bool isDetected)
 {
-    KyInfo() << "isDetected scan devices: " << isDetected;
-
     g_user_signal->detectPageWaitTimerStop();
 
     if (isDetected) {
-
         // while detect scan device thread finished, we should open the first device to get scan parameters
         g_sane_object->openSaneDeviceForPage(0);
 
         m_displayWidget->showSuccessPageSlot(isDetected);
-
     } else {
         m_displayWidget->showFailedPageSlot();
-
-        // set some widgets isEnable(false)
     }
 }
 
-/**
- * @brief MainWidget::startScanOperationSlot
- * There are two scan methods:
- * 1. Single scan
- *      - Not show scan dialog
- *
- * 2. Multiple scan
- *      - Do show scan dialog
- */
 void MainWidget::startScanOperationSlot()
 {
     m_scanThread.start();
@@ -347,19 +360,22 @@ void MainWidget::showScanDialogSlot()
     m_scanDialog->exec();
 }
 
-void MainWidget::scanThreadFinishedSlot()
+void MainWidget::scanThreadFinishedSlot(int saneStatus)
 {
-#if 0
-    QString pageNumber = g_sane_object->userInfo.pageNumber;
-    int retCompare = QString::compare(pageNumber, tr("Single"), Qt::CaseInsensitive);
-    if ((retCompare == 0) && (! m_scanDialog->isHidden())) {
-        m_scanDialog->hide();
-    }
-#endif
-
     m_displayWidget->showSuccessImageHandlePageSlot();
-}
 
+    if (saneStatus != SANE_STATUS_GOOD) {
+        if (saneStatus == SANE_STATUS_INVAL) {
+            warnMsg(tr("Invalid argument, please change arguments or switch other scanners."));
+        } else if (saneStatus == SANE_STATUS_DEVICE_BUSY) {
+            warnMsg(tr("Device busy, please wait or switch other scanners."));
+        } else if(saneStatus == SANE_STATUS_NO_DOCS) {
+            warnMsg(tr("Document feeder out of documents, please place papers and scan again."));
+        } else {
+            warnMsg(tr("Scan failed, please check your scanner or switch other scanners."));
+        }
+    }
+}
 
 
 void DetectScanDevicesThread::run()
@@ -393,15 +409,10 @@ void ScanThread::run()
     }
 
     do {
-        KyInfo() << "start_scanning ..............................";
-        KyInfo() << ".............................................";
-
-        // scan format and name, we should update it at actually time
-        g_sane_object->startScanning(g_sane_object->userInfo);
+        ret = g_sane_object->startScanning(g_sane_object->userInfo);
         KyInfo() << "start_scanning end, status = " << ret;
 
         emit scanThreadFinishedSignal(ret);
-        g_user_signal->scanThreadFinished();
 
         sleep(sleepTime);
         KyInfo() << "sleep time end, do other operation.";
@@ -410,7 +421,6 @@ void ScanThread::run()
 
 int ScanThread::getSleepTime(QString &time)
 {
-    KyInfo() << "time: " << time;
     if (QString::compare(time, tr("3s"), Qt::CaseInsensitive) == 0) {
         return 3;
     } else if (QString::compare(time, tr("5s"), Qt::CaseInsensitive) == 0) {

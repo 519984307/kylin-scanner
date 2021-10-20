@@ -91,6 +91,7 @@ public:
     void themeChange();
     void fontSizeChange();
     void transparencyChange();
+    void warnMsg(QString msg);
 
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
@@ -125,7 +126,7 @@ public slots:
     void startScanOperationSlot();
     void stopScanOperationSlot();
     void showScanDialogSlot();
-    void scanThreadFinishedSlot();
+    void scanThreadFinishedSlot(int saneStatus);
 
 };
 #endif // MainWidget_H

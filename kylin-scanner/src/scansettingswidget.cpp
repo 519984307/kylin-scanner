@@ -64,11 +64,6 @@ ScanSettingsWidget::ScanSettingsWidget(QWidget *parent) :
     initConnect();
 }
 
-/**
- * @brief ScanSettingsWidget::paintEvent
- * Set background color
- * @param event
- */
 void ScanSettingsWidget::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
@@ -122,19 +117,19 @@ void ScanSettingsWidget::selectSaveDirectorySlot()
 
 void ScanSettingsWidget::deviceCurrentTextChangedSlot(QString text)
 {
-    // Need this, for remove the only one scan device to show dialog
-    g_sane_object->userInfo.name = text;
-    int curTextLen = m_deviceComboBox->currentText().length();
+    KyInfo() << "Sane device name: " << g_sane_object->userInfo.name << "current devece name: " << m_deviceComboBox->currentText();
 
-    KyInfo() << "device name: " << g_sane_object->userInfo.name;
-    KyInfo() << "Text: " << m_deviceComboBox->currentText() << "len= " << curTextLen << "isWork= " << deviceComboBoxTextChangedIsWork;
+    if (g_sane_object->userInfo.name.isEmpty()) {
+        g_sane_object->userInfo.name = text;
 
-    if (! deviceComboBoxTextChangedIsWork) {
-        KyInfo() << "Device changed before openSaneDevice, so this function will not work.";
+        KyInfo() << "We do not need open device again.";
         return;
+    } else {
+        KyInfo() << "Device changed, therefore, we need open device again.";
+        g_sane_object->userInfo.name = text;
     }
 
-    KyInfo() << "Device changed, therefore, we need open device again.";
+    int curTextLen = m_deviceComboBox->currentText().length();
 
     if ( curTextLen >= 20) {
         m_deviceComboBox->setToolTip(m_deviceComboBox->currentText());
@@ -150,7 +145,7 @@ void ScanSettingsWidget::deviceCurrentTextChangedSlot(QString text)
 
     g_sane_object->userInfo.deviceNameIndex = index;
 
-    KyInfo() << "[" << index << "]";
+    g_sane_object->saneClose();
 
     // while switch scan device, we should open the scan device to get some parameters
     g_sane_object->openSaneDeviceForPage(index);
@@ -167,11 +162,9 @@ void ScanSettingsWidget::pageNumberCurrentTextChangedSlot(QString text)
 {
     int retCompare = QString::compare(text, tr("Multiple"), Qt::CaseInsensitive);
     if (retCompare == 0) {
-        // multiple scan
         g_sane_object->userInfo.pageNumber = tr("Multiple");
         showTimeRow();
     } else {
-        // simple scan
         g_sane_object->userInfo.pageNumber = tr("Single");
         hideTimeRow();
     }
@@ -189,7 +182,6 @@ void ScanSettingsWidget::typeCurrentTextChangedSlot(QString text)
     g_sane_object->userInfo.type = text;
 
     KyInfo() << "userInfo.type = " << text;
-
 }
 
 void ScanSettingsWidget::colorCurrentTextChangedSlot(QString text)
@@ -405,7 +397,6 @@ void ScanSettingsWidget::initConnect()
         themeChangedWhiteSlot();
     });
 
-    // select save directory
     connect(m_saveButton, &QPushButton::clicked, this, &ScanSettingsWidget::selectSaveDirectorySlot);
 
 }
@@ -441,12 +432,17 @@ void ScanSettingsWidget::hideTimeRow()
     }
 }
 
+void ScanSettingsWidget::updateScanButtonSettings()
+{
+    bool saneStatus = g_sane_object->getSaneStatus();
+    m_scanButton->setEnabled(saneStatus);
+}
+
 void ScanSettingsWidget::updateDeviceSettings()
 {
     QStringList deviceStringList;
 
     bool saneStatus = g_sane_object->getSaneStatus();
-    KyInfo() << "getSaneTypes " << saneStatus;
 
     if (! saneStatus) {
         /// 1. Not find any scan device
@@ -454,7 +450,7 @@ void ScanSettingsWidget::updateDeviceSettings()
 
         deviceStringList = g_sane_object->getSaneNames();
         if (deviceStringList.count() > 1) {
-            // Not only one scan device
+            // Not only one scan device, just this scanner open false, we need set all sane names
         } else {
             deviceStringList << tr("No available scanners");
         }
@@ -541,8 +537,7 @@ void ScanSettingsWidget::updateColorSettings()
     }
 
 
-
-    // segmentation fault
+    // Avoid segmentation fault
     if (! colorStringList.isEmpty()) {
         KyInfo() << "Color: " << colorStringList;
     }
@@ -583,8 +578,6 @@ void ScanSettingsWidget::updateSizeSettings()
         sizeStringList = g_sane_object->getSaneSizes();
     }
 
-//    KyInfo() << "size: " << sizeStringList;
-
     m_sizeComboBox->setEnabled(saneStatus);
     setComboboxAttributes(m_sizeComboBox, sizeStringList);
 }
@@ -600,8 +593,6 @@ void ScanSettingsWidget::updateFormatSettings()
     bool saneStatus = g_sane_object->getSaneStatus();
 
     formatStringList << "jpg" << "png" << "pdf" << "bmp";
-
-//    KyInfo() << "format: " << formatStringList;
 
     m_formatComboBox->setEnabled(saneStatus);
     setComboboxAttributes(m_formatComboBox, formatStringList);
@@ -622,8 +613,6 @@ void ScanSettingsWidget::updateNameTextSettings()
     QString currentTimeString = currentTime.toString("yyyy_MM_dd-hh_mm_ss_zzz");
     KyInfo() << currentTimeString;
 
-    //int currentTimestamp = currentTime.toTime_t();
-    //m_nameEdit->setText(QString::number(currentTimestamp));
     m_nameEdit->setText(currentTimeString);
     m_nameEdit->setAlignment(Qt::AlignLeft);
 
@@ -653,8 +642,9 @@ void ScanSettingsWidget::updateSaveAsSettings()
  * @brief ScanSettingsWidget::updateSettings
  * update scan settings while detect and open the default scanner successfully
  */
-void ScanSettingsWidget::updateSettings()
+void ScanSettingsWidget::updateSettingsForDetectDevices()
 {
+    updateScanButtonSettings();
     updateDeviceSettings();
     updatePageNumberSettings();
     updateTimeSettings();
@@ -669,14 +659,9 @@ void ScanSettingsWidget::updateSettings()
     updateSaveAsSettings();
 }
 
-/**
- * @brief ScanSettingsWidget::updateSettingsForSwitchDevices
- * update scan settings except some paramers, such as device setting, and so on
- */
 void ScanSettingsWidget::updateSettingsForSwitchDevices()
 {
-//    updatePageNumberSettings();
-//    updateTimerSettings();
+    updateScanButtonSettings();
     updatePageNumberSettings();
     updateTypeSettings();
     updateColorSettings();
@@ -689,20 +674,13 @@ void ScanSettingsWidget::updateSettingsForSwitchDevices()
     updateSaveAsSettings();
 }
 
-void ScanSettingsWidget::setDeviceComboBoxTextChangedIsWork(bool isWork)
-{
-    deviceComboBoxTextChangedIsWork = isWork;
-}
-
 void ScanSettingsWidget::setLabelAttributes(QLabel *label, const QString &text)
 {
     label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     label->setFixedWidth(ScanSettingsLabelElideWidth);
     int elideWidth = ScanSettingsLabelElideWidth;
 
-    QFontMetrics fontMetrics(label->font()); // label font width
-
-    //KyInfo() << "label width: " << label->width() << "font width: " << fontMetrics.width(text);
+    QFontMetrics fontMetrics(label->font());
 
     if (fontMetrics.width(text) > label->width()) {
         QString elideText = QFontMetrics(label->font()).elidedText(text, Qt::ElideRight, elideWidth);
@@ -729,17 +707,11 @@ void ScanSettingsWidget::setSaveButtonAttributes(QPushButton *button, const QStr
     }
 }
 
-/**
- * @brief ScanSettingsWidget::setComboboxAttributes
- * @param combobox
- * @param strList
- *
- * Add tooltips in every rows while len(str) >= 20
- */
 void ScanSettingsWidget::setComboboxAttributes(QComboBox *combobox, QStringList strList)
 {
     QListView *listView = new QListView();
     QStandardItemModel *model = new QStandardItemModel();
+    int maxTooltipTextLength = 20;
 
     combobox->clear();
 
@@ -747,7 +719,7 @@ void ScanSettingsWidget::setComboboxAttributes(QComboBox *combobox, QStringList 
         QStandardItem *item = new QStandardItem(strList.at(i));;
         int curTextLen = strList.at(i).length();
 
-        if ( curTextLen >= 20) {
+        if ( curTextLen >= maxTooltipTextLength) {
             item->setToolTip(strList.at(i));
         } else {
             item->setToolTip("");
@@ -764,10 +736,10 @@ void ScanSettingsWidget::setComboboxAttributes(QComboBox *combobox, QStringList 
 void ScanSettingsWidget::setNameEditTooltip()
 {
     int lenTextName = m_nameEdit->text ().length ();
+    int lenImageFormat = 4;
     const int MaxLengthTextName = 256;
 
-    // Because image format len(.jpg) = 4
-    if (lenTextName >= MaxLengthTextName - 4) {
+    if (lenTextName >= MaxLengthTextName - lenImageFormat) {
         m_nameEdit->setToolTip (tr("Scanning images's length cannot be large than 252"));
     } else {
         m_nameEdit->setToolTip ("");
@@ -786,7 +758,6 @@ void ScanSettingsWidget::warnMsg(QString msg)
     msgBox->setContextMenuPolicy(Qt::NoContextMenu);
     msgBox->button(QMessageBox::Yes)->setText(tr("Yes"));
 
-    // center saveDialog in mainwindow
     QWidget *widget = nullptr;
     QWidgetList widgetList = QApplication::allWidgets();
     for (int i=0; i<widgetList.length(); ++i) {
@@ -795,7 +766,7 @@ void ScanSettingsWidget::warnMsg(QString msg)
         }
     }
     if (widget) {
-        msgBox->setParent(widget); // this is important
+        msgBox->setParent(widget);
         QRect rect = widget->geometry();
         int x = rect.x() + rect.width()/2 - msgBox->width()/2;
         int y = rect.y() + rect.height()/2 - msgBox->height()/2;

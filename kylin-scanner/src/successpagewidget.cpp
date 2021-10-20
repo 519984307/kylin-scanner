@@ -54,8 +54,6 @@ void SuccessPageWidget::showLeftImageHandleSuccessPage()
 
 void SuccessPageWidget::updateScanSettingsSlot(bool isWork)
 {
-    m_scanSettingsWidget->setDeviceComboBoxTextChangedIsWork(isWork);
-
-    m_scanSettingsWidget->updateSettings();
+    m_scanSettingsWidget->updateSettingsForDetectDevices();
 }
 

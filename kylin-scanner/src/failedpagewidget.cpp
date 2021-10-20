@@ -10,7 +10,6 @@ FailedPageWidget::FailedPageWidget(QWidget *parent) :
 {
     setupGui();
     initConnect();
-
 }
 
 void FailedPageWidget::setupGui()
@@ -42,8 +41,6 @@ void FailedPageWidget::setupGui()
 void FailedPageWidget::initConnect()
 {
     connect(m_failedPageButton, &QPushButton::clicked, this, [=](){
-        //m_scanThread.start();
-
         emit scanButtonClicked();
     });
 }

@@ -70,7 +70,7 @@ static QString getCurrentUserName()
     process->start(cmd, arglists);
     process->waitForFinished();
     QString userNow = QString::fromLocal8Bit(process->readAllStandardOutput().trimmed());
-    //QString userNow = QString::fromStdString(process->readAllStandardOutput().toStdString());
+
     qDebug() << "Exist user: " << userNow;
 
     return userNow;
@@ -164,7 +164,6 @@ int main(int argc, char *argv[])
     parser.addVersionOption();
     parser.process(app);
 
-    // Translation
     QTranslator app_trans;
     QTranslator qt_trans;
     QString locale = QLocale::system().name();
@@ -199,12 +198,11 @@ int main(int argc, char *argv[])
     if (! app.isRunning()) {
         QString userNow = getCurrentUserName();
         int pidNow = app.applicationPid();
-        KyInfo() << "Exist user= " << userNow << ", pid= " << pidNow;
 
         doWrite(userNow, pidNow);
 
         MainWidget w;
-        app.w = &w; // Need by SingleApplication class
+        app.w = &w;
         w.show();
         return app.exec();
     }

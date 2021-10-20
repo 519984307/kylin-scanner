@@ -55,6 +55,7 @@ using namespace std;
 typedef struct  _ScanDeviceInfo {
     bool status;            // Whether exist scan device
     bool have_handle;       // Whether current `handle` could exec `sane_close` function
+    bool haveOpenSaneDevice;
     QStringList name;
     QStringList type;
     QStringList color;
@@ -94,6 +95,7 @@ public:
     static SaneObject *getInstance();
 
     bool getSaneStatus();
+    bool getSaneHaveOpenDevice();
     bool getSaneHaveHandle();
     QStringList getSaneNames();
     QStringList getSaneTypes();
@@ -102,6 +104,7 @@ public:
     QStringList getSaneSizes();
     QStringList getSaneColors();
 
+    void setSaneHaveOpenSaneDevice(bool haveOpenSaneDevice);
     void setSaneHaveHandle(bool have_handle);
     void setSaneStatus(bool status);
     void setSaneNames(QStringList name);
@@ -110,6 +113,7 @@ public:
     void setSaneSizes(QStringList size);
     void setSaneColors(QStringList color);
     void saneExit();
+    void saneClose();
 
     void setSaneAllParametersByUser();
     void setSaneNameByUser();

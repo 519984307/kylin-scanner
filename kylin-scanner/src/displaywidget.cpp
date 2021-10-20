@@ -40,14 +40,9 @@ void DisplayWidget::setupGui()
 
 void DisplayWidget::initConnect()
 {
-    // show detect page
     connect(m_defaultConnectFailedPageWidget, &FailedPageWidget::scanButtonClicked, this, &DisplayWidget::showDetectPageSlot);
 }
 
-/**
- * @brief DisplayWidget::showDetectPageSlot
- * show detect page and begin to detect scan devices
- */
 void DisplayWidget::showDetectPageSlot()
 {
     m_displayStackedLayout->setCurrentWidget(m_defaultConnectDetectPageWidget);
