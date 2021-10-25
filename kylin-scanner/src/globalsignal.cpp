@@ -96,6 +96,11 @@ void GlobalUserSignal::scanThreadFinished()
     emit scanThreadFinishedSignal();
 }
 
+void GlobalUserSignal::scanThreadFinishedImageLoad()
+{
+    emit scanThreadFinishedImageLoadSignal();
+}
+
 
 
 

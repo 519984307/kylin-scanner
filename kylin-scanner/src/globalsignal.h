@@ -57,6 +57,7 @@ public:
     void stopScanOperation();
 
     void scanThreadFinished();
+    void scanThreadFinishedImageLoad();
 
 
 
@@ -81,6 +82,8 @@ signals:
     void stopScanOperationSignal();
 
     void scanThreadFinishedSignal();
+
+    void scanThreadFinishedImageLoadSignal();
 
 private:
     static GlobalUserSignal* instance;

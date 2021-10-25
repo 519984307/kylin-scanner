@@ -105,8 +105,8 @@ private:
     double m_transparency = 0.60;
     QStringList m_styleList;
 
-    TitleBar *m_titleBar; // titlebar page
-    DisplayWidget *m_displayWidget; // display page
+    TitleBar *m_titleBar;
+    DisplayWidget *m_displayWidget;
     QVBoxLayout *m_mainWidgetVLayout;
 
     DetectScanDevicesThread m_detectScanDevicesThread;

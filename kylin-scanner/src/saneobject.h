@@ -53,8 +53,8 @@ using namespace std;
  * Parameters getted from specific scanner device, which could set in scansetting page
  */
 typedef struct  _ScanDeviceInfo {
-    bool status;            // Whether exist scan device
-    bool have_handle;       // Whether current `handle` could exec `sane_close` function
+    bool status;
+    bool have_handle;
     bool haveOpenSaneDevice;
     QStringList name;
     QStringList type;
@@ -138,7 +138,7 @@ public:
     QMap<QString, QString> colorModesMap;
     QMap<QString, QString> sourceModesMap;
 
-    int haveSourceFlag = 0; // Whether could get source parameters
+    int haveSourceFlag = 0;
 
 
 private:

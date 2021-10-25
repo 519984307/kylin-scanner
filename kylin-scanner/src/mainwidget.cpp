@@ -374,7 +374,10 @@ void MainWidget::scanThreadFinishedSlot(int saneStatus)
         } else {
             warnMsg(tr("Scan failed, please check your scanner or switch other scanners."));
         }
+    } else {
+        g_user_signal->scanThreadFinishedImageLoad();
     }
+
 }
 
 
@@ -390,8 +393,6 @@ void DetectScanDevicesThread::run()
     } else {
         emit detectScanDevicesFinishedSignal(true);
     }
-
-    quit();
 }
 
 
@@ -409,27 +410,34 @@ void ScanThread::run()
     }
 
     do {
+        KyInfo() << "start_scanning start";
         ret = g_sane_object->startScanning(g_sane_object->userInfo);
         KyInfo() << "start_scanning end, status = " << ret;
 
         emit scanThreadFinishedSignal(ret);
 
+        KyInfo() << "sleep time: " << sleepTime;
         sleep(sleepTime);
-        KyInfo() << "sleep time end, do other operation.";
+        KyInfo() << "sleep end.";
     } while ((sleepTime != 0) && (! isExited));
 }
 
 int ScanThread::getSleepTime(QString &time)
 {
-    if (QString::compare(time, tr("3s"), Qt::CaseInsensitive) == 0) {
+    if (QString::compare(time, "3s", Qt::CaseInsensitive) == 0
+            || QString::compare(time, tr("3s"), Qt::CaseInsensitive) == 0) {
         return 3;
-    } else if (QString::compare(time, tr("5s"), Qt::CaseInsensitive) == 0) {
+    } else if (QString::compare(time, "5s", Qt::CaseInsensitive) == 0
+               || QString::compare(time, tr("5s"), Qt::CaseInsensitive) == 0) {
         return 5;
-    } else if (QString::compare(time, tr("7s"), Qt::CaseInsensitive) == 0) {
+    } else if (QString::compare(time, "7s", Qt::CaseInsensitive) == 0
+               || QString::compare(time, tr("7s"), Qt::CaseInsensitive) == 0) {
         return 7;
-    } else if (QString::compare(time, tr("10s"), Qt::CaseInsensitive) == 0) {
+    } else if (QString::compare(time, "10s", Qt::CaseInsensitive) == 0
+               || QString::compare(time, tr("10s"), Qt::CaseInsensitive) == 0) {
         return 10;
-    } else if (QString::compare(time, tr("15s"), Qt::CaseInsensitive) == 0) {
+    } else if (QString::compare(time, "15s", Qt::CaseInsensitive) == 0
+               || QString::compare(time, tr("15s"), Qt::CaseInsensitive) == 0) {
         return 15;
     }
 }
