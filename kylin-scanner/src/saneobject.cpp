@@ -353,7 +353,6 @@ SANE_Status getSaneParameters(SANE_Handle device)
 
 SANE_Status doScan(const char *fileName)
 {
-
     SANE_Status status = SANE_STATUS_GOOD;
     FILE *ofp = nullptr;
     char path[PATH_MAX] = {0};
@@ -361,11 +360,8 @@ SANE_Status doScan(const char *fileName)
     g_BufSize = (32 * 1024);
     g_buf = static_cast<SANE_Byte *>(malloc(g_BufSize));
 
-
-    string dir = g_config_signal->scannerImagePath.toStdString();
-
     do {
-        sprintf (path, "%s/%s.pnm", dir.c_str(), fileName);
+        sprintf (path, "%s", fileName);
         strncpy (part_path, path, sizeof(part_path) - 1);
         strcat (part_path, ".part");
         KyInfo() << "part_path = " << part_path;
@@ -1598,7 +1594,6 @@ void SaneObject::setSaneAllParametersByUser()
     setSaneResolutionByUser();
     setSaneSizeByUser();
     setSaneFormatByUser();
-
 }
 
 void SaneObject::setSaneNameByUser()
@@ -1623,17 +1618,11 @@ void SaneObject::setSaneTypeByUser()
     SANE_String s_type;
     QMap<QString, QString>::iterator it;
 
-    QString userType = g_sane_object->userInfo.type;
-    if (userType == "") {
+    QString type = getSaneTypeByUser(g_sane_object->userInfo.type);
+    if (type == "") {
         // avoid crashed unexpected
         return ;
     }
-
-    if (QString::compare(userType, tr("Default Type"), Qt::CaseInsensitive) == 0) {
-        status = SANE_STATUS_GOOD;
-        return;
-    }
-    QString type = getSaneTypeByUser(userType);
 
     it = g_sane_object->sourceModesMap.find(type);
     if (it != g_sane_object->sourceModesMap.end()) {
@@ -1662,7 +1651,9 @@ QString SaneObject::getSaneTypeByUser(QString type)
     } else if (QString::compare(type, tr("ADF Back"), Qt::CaseInsensitive) == 0) {
         return QString("ADF Back");
     } else if (QString::compare(type, tr("Default Type"), Qt::CaseInsensitive) == 0) {
-        return QString("Default Type");
+        return QString("");
+    } else {
+        return QString("");
     }
 }
 
@@ -1780,6 +1771,27 @@ void SaneObject::setSaneFormatByUser()
 
 }
 
+QString SaneObject::getSaneFormatByUser()
+{
+    QString format = g_sane_object->userInfo.format;
+
+    return format;
+}
+
+QString SaneObject::getSaneSaveNameByUser()
+{
+    QString saveName = g_sane_object->userInfo.saveName;
+
+    return saveName;
+}
+
+QString SaneObject::getSaneSaveDirectoryByUser()
+{
+    QString saveDirectory = g_sane_object->userInfo.saveDirectory;
+
+    return saveDirectory;
+}
+
 void SaneObject::detectSaneDeviceForPage()
 {
     detectSaneDevices();
@@ -1788,6 +1800,18 @@ void SaneObject::detectSaneDeviceForPage()
 void SaneObject::openSaneDeviceForPage(int index)
 {
     openSaneDevice(index);
+}
+
+QString SaneObject::getFullScanFileNameExceptFormat()
+{
+    QString saveFormat = getSaneFormatByUser();
+    QString saveName = getSaneSaveNameByUser();
+    QString saveDirectory = getSaneSaveDirectoryByUser();
+
+    QString saveFullName = saveDirectory + "/" + saveName;
+    KyInfo() << "saveFullName = " << saveFullName;
+
+    return saveFullName;
 }
 
 /**
@@ -1803,36 +1827,21 @@ int SaneObject::startScanning(UserSelectedInfo info)
 {
     KyInfo() << "startScanning";
 
-    int ret = 0;
     SANE_Status status = SANE_STATUS_GOOD;
-
-//    int index = g_sane_object->userInfo.deviceNameIndex;
-    //openSaneDeviceForPage(index);
-#if 0
-
-    bool retStatus = getSaneStatus();
-    if (retStatus) {
-        KyInfo() << "open_device false";
-    } else {
-        status = SANE_STATUS_COVER_OPEN;
-        KyInfo() << "open_device true";
-
-        saneClose();
-
-        return status;
-    }
-#endif
 
     setSaneAllParametersByUser();
 
+    QString saveFullName = getFullScanFileNameExceptFormat();
+    loadFullScanFileName = saveFullName + QString(".pnm");
+
     KyInfo() << "Start scanning, please waiting ...";
-    ret = startSaneScan(g_sane_object->handle, "scan");
+    status = startSaneScan(g_sane_object->handle, loadFullScanFileName.toStdString().c_str());
 
     if (g_sane_object->getSaneHaveHandle()) {
         sane_cancel(g_sane_object->handle);
     }
 
-    return ret;
+    return status;
 }
 
 bool SaneObject::testScannerIsAlive(QString deviceName)

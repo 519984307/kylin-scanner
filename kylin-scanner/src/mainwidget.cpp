@@ -362,8 +362,6 @@ void MainWidget::showScanDialogSlot()
 
 void MainWidget::scanThreadFinishedSlot(int saneStatus)
 {
-    m_displayWidget->showSuccessImageHandlePageSlot();
-
     if (saneStatus != SANE_STATUS_GOOD) {
         if (saneStatus == SANE_STATUS_INVAL) {
             warnMsg(tr("Invalid argument, please change arguments or switch other scanners."));
@@ -375,8 +373,10 @@ void MainWidget::scanThreadFinishedSlot(int saneStatus)
             warnMsg(tr("Scan failed, please check your scanner or switch other scanners."));
         }
     } else {
+        m_displayWidget->showSuccessImageHandlePageSlot();
         g_user_signal->scanThreadFinishedImageLoad();
     }
+
 
 }
 

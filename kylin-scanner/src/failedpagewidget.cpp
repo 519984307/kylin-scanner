@@ -22,7 +22,7 @@ void FailedPageWidget::setupGui()
 
     m_failedPageButton->setText(tr("Connect"));
     m_failedPageButton->setFixedSize(FailedPageButtonSize);
-    m_failedPageButton->setCursor(Qt::PointingHandCursor);
+//    m_failedPageButton->setCursor(Qt::PointingHandCursor);
 
     m_failedPageVLayout->setSpacing(0);
     m_failedPageVLayout->addStretch();

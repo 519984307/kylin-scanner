@@ -67,6 +67,5 @@ void DisplayWidget::showSuccessImageHandlePageSlot()
     m_displayStackedLayout->setCurrentWidget(m_defaultConnectSuccessPageWidget);
 
     m_defaultConnectSuccessPageWidget->showLeftImageHandleSuccessPage();
-
 }
 

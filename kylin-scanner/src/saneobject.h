@@ -77,6 +77,8 @@ typedef struct _UserSelectedInfo {
     QString resolution;
     QString size;
     QString format;
+    QString saveName;
+    QString saveDirectory;
 }UserSelectedInfo ;
 
 
@@ -127,9 +129,14 @@ public:
     int getSaneResolutionByUser(QString resolution);
     void setSaneSizeByUser();
     void setSaneFormatByUser();
+    QString getSaneFormatByUser();
+    QString getSaneSaveNameByUser();
+    QString getSaneSaveDirectoryByUser();
+
 
     void detectSaneDeviceForPage();
     void openSaneDeviceForPage(int index);
+    QString getFullScanFileNameExceptFormat();
     int startScanning(UserSelectedInfo info);
     bool testScannerIsAlive(QString deviceName);
 
@@ -139,6 +146,8 @@ public:
     QMap<QString, QString> sourceModesMap;
 
     int haveSourceFlag = 0;
+
+    QString loadFullScanFileName;
 
 
 private:

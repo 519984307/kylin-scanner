@@ -3,6 +3,7 @@
 
 #include "thumbnaildelegate.h"
 #include "globalsignal.h"
+#include "saneobject.h"
 
 #include <QWidget>
 #include <QListView>

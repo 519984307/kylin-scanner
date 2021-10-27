@@ -88,9 +88,9 @@ void ThumbnailWidget::themeChangedBlack()
 
 void ThumbnailWidget::showNormalImageAfterScan()
 {
-    QString scannerPicturePath = g_config_signal->scannerImagePath;
-    QString scanPictureName = QString("scan.pnm");
-    QString scanFullName = scannerPicturePath + "/" + scanPictureName;
+    QString scanFullName = g_sane_object->loadFullScanFileName;
+
+    QString tooltipName = g_sane_object->userInfo.saveName + QString(".pnm");
 
     int rowcount = m_thumbnailItemModel->rowCount();
     KyInfo() << "rowcount = " << rowcount;
@@ -98,6 +98,7 @@ void ThumbnailWidget::showNormalImageAfterScan()
 
     ScanStandardItem *item = new ScanStandardItem();
     item->setIcon(QIcon(scanFullName));
+    item->setToolTip(tooltipName);
     item->setPath(scanFullName);
     item->setRowCountLocation(rowcount);
     m_thumbnailItemModel->insertRow(rowcount, item);
@@ -113,8 +114,11 @@ void ThumbnailWidget::clickedItemSlot(const QModelIndex &index)
      ScanStandardItem *item = dynamic_cast<ScanStandardItem *>(m_thumbnailItemModel->itemFromIndex(index));
      if (item) {
          int scanIconNumber = item->getRowCountLocation();
+         QString loadPath = item->getPath();
 
-         KyInfo() << "scanIconPath = " << scanIconNumber << item->getPath();
+         KyInfo() << "scanIconPath = " << scanIconNumber << loadPath;
+
+         g_user_signal->showImageAfterClickedThumbnail(loadPath);
 
      }
 }

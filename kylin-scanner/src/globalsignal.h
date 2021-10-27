@@ -59,31 +59,31 @@ public:
     void scanThreadFinished();
     void scanThreadFinishedImageLoad();
 
-
-
+    void showImageAfterClickedThumbnail(QString loadPath);
 
 signals:
-    void exitApplicationSignal(); // exit application
-    void minimumWindowSignal(); // miminum window
-    void maximumWindowSignal(); // maximum window
-    void showAboutDialogSignal(); // show about dialog
-    void showHelpDialogSignal(); // show help dialog
 
-    void themeChangedWhiteSignal(); // white theme
-    void themeChangedBlackSignal(); // black theme
-    void fontSizeChangedSignal(int fontSize);   // system font size change
-
-    void detectPageWaitTimerStartSignal(); // start detect page wait timer
-    void detectPageWaitTimerStopSignal(); // stop detect page wait timer
-
-    void openDeviceStatusSignal(bool openSucceed); // open device status
-
-    void startScanOperationSignal();
-    void stopScanOperationSignal();
-
-    void scanThreadFinishedSignal();
+    void showImageAfterClickedThumbnailSignal(QString loadPath);
 
     void scanThreadFinishedImageLoadSignal();
+    void scanThreadFinishedSignal();
+
+    void stopScanOperationSignal();
+    void startScanOperationSignal();
+
+    void openDeviceStatusSignal(bool openSucceed);
+    void detectPageWaitTimerStopSignal();
+    void detectPageWaitTimerStartSignal();
+
+    void fontSizeChangedSignal(int fontSize);
+    void themeChangedBlackSignal();
+    void themeChangedWhiteSignal();
+
+    void showHelpDialogSignal();
+    void showAboutDialogSignal();
+    void maximumWindowSignal();
+    void minimumWindowSignal();
+    void exitApplicationSignal();
 
 private:
     static GlobalUserSignal* instance;

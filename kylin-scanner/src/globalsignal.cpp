@@ -101,6 +101,11 @@ void GlobalUserSignal::scanThreadFinishedImageLoad()
     emit scanThreadFinishedImageLoadSignal();
 }
 
+void GlobalUserSignal::showImageAfterClickedThumbnail(QString loadPath)
+{
+    showImageAfterClickedThumbnailSignal(loadPath);
+}
+
 
 
 

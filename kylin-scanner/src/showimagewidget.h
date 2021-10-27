@@ -8,6 +8,7 @@
 #include <QAction>
 
 #include "globalsignal.h"
+#include "saneobject.h"
 
 #define ShowImageWidgetMinimumSize QSize(387, 536)
 
@@ -25,11 +26,16 @@ public:
 public slots:
     void showNormalImageAfterScan();
 
+    void showImageAfterClickedThumbnail(QString loadPath);
+
 signals:
 
 private:
+#if 0
     QMenu *m_imageMenu;
     QAction *m_imageSaveAction;
+#endif
+
     QImage *m_normalImage;
 
 

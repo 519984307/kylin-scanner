@@ -83,7 +83,8 @@ void ScanSettingsWidget::paintEvent(QPaintEvent *event)
 void ScanSettingsWidget::selectSaveDirectorySlot()
 {
     if (currentSaveDirectory.isEmpty()) {
-        currentSaveDirectory = QDir::homePath() ;
+        QString scannerPicturePath = g_config_signal->scannerImagePath;
+        currentSaveDirectory = scannerPicturePath ;
     }
 
     QString midPath = currentSaveDirectory;
@@ -113,6 +114,9 @@ void ScanSettingsWidget::selectSaveDirectorySlot()
             warnMsg(msg);
         }
     }
+    g_sane_object->userInfo.saveDirectory = currentSaveDirectory;
+
+    KyInfo() << "saveDirectory = " << currentSaveAsDirectory;
 }
 
 void ScanSettingsWidget::deviceCurrentTextChangedSlot(QString text)
@@ -240,6 +244,9 @@ void ScanSettingsWidget::nameCurrentTextChangedSlot(QString text)
         m_nameEdit->del();
     }
 
+    g_sane_object->userInfo.saveName = m_nameEdit->text();
+    KyInfo() << "saveName = " << g_sane_object->userInfo.saveName;
+
     setNameEditTooltip();
 }
 
@@ -326,8 +333,12 @@ void ScanSettingsWidget::setupGui()
 
     m_saveButton->setFixedSize(ScanSettingsWidgetComboboxSize);
     if (currentSaveDirectory.isEmpty()) {
-        currentSaveDirectory = QDir::homePath();
-        KyInfo() << currentSaveDirectory;
+        QString scannerPicturePath = g_config_signal->scannerImagePath;
+        currentSaveDirectory = scannerPicturePath ;
+
+        g_sane_object->userInfo.saveDirectory = currentSaveDirectory;
+
+        KyInfo() << "saveDirectory = " << currentSaveDirectory;
     }
 
     m_settingsFormLayout->setSpacing(7);
@@ -374,6 +385,8 @@ void ScanSettingsWidget::setupGui()
 
 void ScanSettingsWidget::initConnect()
 {
+    connect(m_scanButton, &QPushButton::clicked, this, &ScanSettingsWidget::scanButtonClickedSlot);
+
     connect(m_deviceComboBox, &QComboBox::currentTextChanged, this, &ScanSettingsWidget::deviceCurrentTextChangedSlot);
     connect(m_pageNumberComboBox, &QComboBox::currentTextChanged, this, &ScanSettingsWidget::pageNumberCurrentTextChangedSlot);
     connect(m_timeComboBox, &QComboBox::currentTextChanged, this, &ScanSettingsWidget::timeCurrentTextChangedSlot);
@@ -383,8 +396,8 @@ void ScanSettingsWidget::initConnect()
     connect(m_sizeComboBox, &QComboBox::currentTextChanged, this, &ScanSettingsWidget::sizeCurrentTextChangedSlot);
     connect(m_formatComboBox, &QComboBox::currentTextChanged, this, &ScanSettingsWidget::formatCurrentTextChangedSlot);
     connect(m_nameEdit, &QLineEdit::textChanged, this, &ScanSettingsWidget::nameCurrentTextChangedSlot);
+    connect(m_saveButton, &QPushButton::clicked, this, &ScanSettingsWidget::selectSaveDirectorySlot);
 
-    connect(m_scanButton, &QPushButton::clicked, this, &ScanSettingsWidget::scanButtonClickedSlot);
 
     connect(g_user_signal, &GlobalUserSignal::fontSizeChangedSignal, this, [=](){
         fontSizeChanged();
@@ -396,8 +409,6 @@ void ScanSettingsWidget::initConnect()
     connect(g_user_signal, &GlobalUserSignal::themeChangedWhiteSignal, this, [=](){
         themeChangedWhiteSlot();
     });
-
-    connect(m_saveButton, &QPushButton::clicked, this, &ScanSettingsWidget::selectSaveDirectorySlot);
 
 }
 
