@@ -42,7 +42,7 @@ public:
     void setupGui();
     void initConnect();
 
-signals:
+Q_SIGNALS:
     void detectScanDevicesSignal();
 
 public slots:

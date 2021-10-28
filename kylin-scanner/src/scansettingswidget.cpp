@@ -50,12 +50,12 @@ ScanSettingsWidget::ScanSettingsWidget(QWidget *parent) :
     m_sizeComboBox(new QComboBox()),
     m_formatLabel(new QLabel()),
     m_formatComboBox(new QComboBox()),
-    m_nameLabel(new QLabel()),
-    m_nameEdit(new QLineEdit()),
-    m_saveLabel(new QLabel()),
-    m_saveButton(new QPushButton()),
+    m_saveNameLabel(new QLabel()),
+    m_saveNameEdit(new QLineEdit()),
+    m_saveDirectoryLabel(new QLabel()),
+    m_saveDirectoryButton(new QPushButton()),
     m_settingsFormLayout(new QFormLayout()),
-    m_emailButton(new QPushButton()),
+    m_sendMailButton(new QPushButton()),
     m_SaveAsButton(new QPushButton()),
     m_buttonsHLayout(new QHBoxLayout()),
     m_mainVLayout(new QVBoxLayout(this))
@@ -98,13 +98,13 @@ void ScanSettingsWidget::selectSaveDirectorySlot()
             KyInfo() << "The user could read and write " << selectedDir;
 
             currentSaveDirectory = selectedDir;
-            setSaveButtonAttributes(m_saveButton, currentSaveDirectory, ScanSettingsButtonElideWidth);
+            setSaveButtonAttributes(m_saveDirectoryButton, currentSaveDirectory, ScanSettingsButtonElideWidth);
         } else {
             if (file.isWritable()) {
                 KyInfo() << "The user can read and write " << selectedDir;
 
                 currentSaveDirectory = selectedDir;
-                setSaveButtonAttributes(m_saveButton, currentSaveDirectory, ScanSettingsButtonElideWidth);
+                setSaveButtonAttributes(m_saveDirectoryButton, currentSaveDirectory, ScanSettingsButtonElideWidth);
 
                 return;
             }
@@ -231,23 +231,52 @@ void ScanSettingsWidget::formatCurrentTextChangedSlot(QString text)
 void ScanSettingsWidget::nameCurrentTextChangedSlot(QString text)
 {
     QString msg;
-    if (m_nameEdit->text().contains(QChar('/'), Qt::CaseInsensitive)) {
+    if (m_saveNameEdit->text().contains(QChar('/'), Qt::CaseInsensitive)) {
         msg = tr("cannot contain '/' character.");
         warnMsg(msg);
-        m_nameEdit->cursorBackward(true, 1); // move left a character
-        m_nameEdit->del(); // delete right or selected text
+        m_saveNameEdit->cursorBackward(true, 1); // move left a character
+        m_saveNameEdit->del(); // delete right or selected text
     }
-    if (m_nameEdit->text().startsWith(QChar('.'), Qt::CaseInsensitive)) {
+    if (m_saveNameEdit->text().startsWith(QChar('.'), Qt::CaseInsensitive)) {
         msg = tr("cannot save as hidden file.");
         warnMsg(msg);
-        m_nameEdit->cursorBackward(true, 1);
-        m_nameEdit->del();
+        m_saveNameEdit->cursorBackward(true, 1);
+        m_saveNameEdit->del();
     }
 
-    g_sane_object->userInfo.saveName = m_nameEdit->text();
+    g_sane_object->userInfo.saveName = m_saveNameEdit->text();
     KyInfo() << "saveName = " << g_sane_object->userInfo.saveName;
 
     setNameEditTooltip();
+}
+
+void ScanSettingsWidget::sendMailButtonClickedSlot()
+{
+    int retDialog;
+
+    AppList *maillist = getAppIdList(MailType);
+    qDebug() << "Get mail client list success.";
+
+    if (!maillist) {
+        qDebug() << "Mail list is null.";
+        NoMailDialog *dialog = new NoMailDialog(this);
+
+        retDialog = dialog->exec();
+        if (retDialog == QDialog::Accepted) {
+            QProcess *process = new QProcess();
+            process->start("/usr/bin/kylin-software-center");
+        }
+        delete dialog;
+    } else {
+        qDebug() << "maillist is not null";
+        SendMailDialog *dialog = new SendMailDialog(this);
+        qDebug() << "begin";
+        dialog->setMailButtonList();
+        qDebug() << "after";
+        dialog->exec();
+    }
+
+    g_user_signal->sendMailButtonClicked();
 }
 
 void ScanSettingsWidget::scanButtonClickedSlot()
@@ -267,11 +296,11 @@ void ScanSettingsWidget::fontSizeChanged()
     setLabelAttributes(m_resolutionLabel, tr("Resolution"));
     setLabelAttributes(m_sizeLabel, tr("Size"));
     setLabelAttributes(m_formatLabel, tr("Format"));
-    setLabelAttributes(m_nameLabel, tr("Name"));
-    setLabelAttributes(m_saveLabel, tr("Save"));
+    setLabelAttributes(m_saveNameLabel, tr("Name"));
+    setLabelAttributes(m_saveDirectoryLabel, tr("Save"));
 
-    setSaveButtonAttributes(m_saveButton, currentSaveDirectory, ScanSettingsButtonElideWidth);
-    setSaveButtonAttributes(m_emailButton, tr("Mail to"), ScanSettingsMailAndButtonElideWidth);
+    setSaveButtonAttributes(m_saveDirectoryButton, currentSaveDirectory, ScanSettingsButtonElideWidth);
+    setSaveButtonAttributes(m_sendMailButton, tr("Mail to"), ScanSettingsMailAndButtonElideWidth);
     setSaveButtonAttributes(m_SaveAsButton, currentSaveAsDirectory, ScanSettingsMailAndButtonElideWidth);
 }
 
@@ -329,10 +358,10 @@ void ScanSettingsWidget::setupGui()
 
     m_formatComboBox->setFixedSize(ScanSettingsWidgetComboboxSize);
 
-    m_nameEdit->setText(tr("scanner01"));
-    m_nameEdit->setFixedSize(ScanSettingsWidgetComboboxSize);
+    m_saveNameEdit->setText(tr("scanner01"));
+    m_saveNameEdit->setFixedSize(ScanSettingsWidgetComboboxSize);
 
-    m_saveButton->setFixedSize(ScanSettingsWidgetComboboxSize);
+    m_saveDirectoryButton->setFixedSize(ScanSettingsWidgetComboboxSize);
     if (currentSaveDirectory.isEmpty()) {
         QString scannerPicturePath = g_config_signal->scannerImagePath;
         currentSaveDirectory = scannerPicturePath ;
@@ -355,14 +384,14 @@ void ScanSettingsWidget::setupGui()
     m_settingsFormLayout->addRow(m_fileSettingsLabel);
     m_settingsFormLayout->addRow(m_sizeLabel, m_sizeComboBox);
     m_settingsFormLayout->addRow(m_formatLabel, m_formatComboBox);
-    m_settingsFormLayout->addRow(m_nameLabel, m_nameEdit);
-    m_settingsFormLayout->addRow(m_saveLabel, m_saveButton);
+    m_settingsFormLayout->addRow(m_saveNameLabel, m_saveNameEdit);
+    m_settingsFormLayout->addRow(m_saveDirectoryLabel, m_saveDirectoryButton);
     m_settingsFormLayout->setLabelAlignment(Qt::AlignRight);
     m_settingsFormLayout->setFormAlignment(Qt::AlignLeft);
     m_settingsFormLayout->setContentsMargins(0, 0, 0, 0);
 
-    m_emailButton->setFixedSize(ScanSettingsWidgetButtonSize);
-    m_emailButton->setCursor(Qt::PointingHandCursor);
+    m_sendMailButton->setFixedSize(ScanSettingsWidgetButtonSize);
+    m_sendMailButton->setCursor(Qt::PointingHandCursor);
 
     m_SaveAsButton->setFixedSize(ScanSettingsWidgetButtonSize);
     currentSaveAsDirectory = tr("Save as");
@@ -371,7 +400,7 @@ void ScanSettingsWidget::setupGui()
     fontSizeChanged();
 
     m_buttonsHLayout->setSpacing(0);
-    m_buttonsHLayout->addWidget(m_emailButton);
+    m_buttonsHLayout->addWidget(m_sendMailButton);
     m_buttonsHLayout->addSpacing(12);
     m_buttonsHLayout->addWidget(m_SaveAsButton);
     m_buttonsHLayout->setContentsMargins(0, 0, 0, 0);
@@ -396,8 +425,10 @@ void ScanSettingsWidget::initConnect()
     connect(m_resolutionComboBox, &QComboBox::currentTextChanged, this, &ScanSettingsWidget::resolutionCurrentTextChangedSlot);
     connect(m_sizeComboBox, &QComboBox::currentTextChanged, this, &ScanSettingsWidget::sizeCurrentTextChangedSlot);
     connect(m_formatComboBox, &QComboBox::currentTextChanged, this, &ScanSettingsWidget::formatCurrentTextChangedSlot);
-    connect(m_nameEdit, &QLineEdit::textChanged, this, &ScanSettingsWidget::nameCurrentTextChangedSlot);
-    connect(m_saveButton, &QPushButton::clicked, this, &ScanSettingsWidget::selectSaveDirectorySlot);
+    connect(m_saveNameEdit, &QLineEdit::textChanged, this, &ScanSettingsWidget::nameCurrentTextChangedSlot);
+    connect(m_saveDirectoryButton, &QPushButton::clicked, this, &ScanSettingsWidget::selectSaveDirectorySlot);
+
+    connect(m_sendMailButton, &QPushButton::clicked, this, &ScanSettingsWidget::sendMailButtonClickedSlot);
 
 
     connect(g_user_signal, &GlobalUserSignal::fontSizeChangedSignal, this, &ScanSettingsWidget::fontSizeChanged);
@@ -622,22 +653,22 @@ void ScanSettingsWidget::updateSaveNameTextSettings()
     QString currentTimeString = currentTime.toString("yyyy_MM_dd-hh_mm_ss_zzz");
     KyInfo() << currentTimeString;
 
-    m_nameEdit->setText(currentTimeString);
-    m_nameEdit->setAlignment(Qt::AlignLeft);
+    m_saveNameEdit->setText(currentTimeString);
+    m_saveNameEdit->setAlignment(Qt::AlignLeft);
 
-    m_nameEdit->setEnabled(saneStatus);
+    m_saveNameEdit->setEnabled(saneStatus);
 }
 
 void ScanSettingsWidget::updateSaveDirectorySettings()
 {
     bool saneStatus = g_sane_object->getSaneStatus();
-    m_saveButton->setEnabled(saneStatus);
+    m_saveDirectoryButton->setEnabled(saneStatus);
 }
 
 void ScanSettingsWidget::updateSendMailSettings()
 {
     bool saneStatus = g_sane_object->getSaneStatus();
-    m_emailButton->setEnabled(saneStatus);
+    m_sendMailButton->setEnabled(saneStatus);
 }
 
 void ScanSettingsWidget::updateSaveAsSettings()
@@ -664,8 +695,9 @@ void ScanSettingsWidget::updateSettingsForDetectDevices()
     updateFormatSettings();
     updateSaveNameTextSettings();
     updateSaveDirectorySettings();
-    updateSendMailSettings();
-    updateSaveAsSettings();
+
+    m_sendMailButton->setEnabled(false);
+    m_SaveAsButton->setEnabled(false);
 }
 
 void ScanSettingsWidget::updateSettingsForSwitchDevices()
@@ -679,8 +711,12 @@ void ScanSettingsWidget::updateSettingsForSwitchDevices()
     updateFormatSettings();
     updateSaveNameTextSettings();
     updateSaveDirectorySettings();
-    updateSendMailSettings();
-    updateSaveAsSettings();
+
+//    updateSendMailSettings();
+//    updateSaveAsSettings();
+
+    m_sendMailButton->setEnabled(false);
+    m_SaveAsButton->setEnabled(false);
 }
 
 void ScanSettingsWidget::updateSettingsStatusForStartScan()
@@ -694,9 +730,9 @@ void ScanSettingsWidget::updateSettingsStatusForStartScan()
     m_resolutionComboBox->setEnabled(false);
     m_sizeComboBox->setEnabled(false);
     m_formatComboBox->setEnabled(false);
-    m_nameEdit->setEnabled(false);
-    m_saveButton->setEnabled(false);
-    m_emailButton->setEnabled(false);
+    m_saveNameEdit->setEnabled(false);
+    m_saveDirectoryButton->setEnabled(false);
+    m_sendMailButton->setEnabled(false);
     m_SaveAsButton->setEnabled(false);
 }
 
@@ -717,9 +753,9 @@ void ScanSettingsWidget::updateSettingsStatusForEndScan()
         m_resolutionComboBox->setEnabled(true);
         m_sizeComboBox->setEnabled(true);
         m_formatComboBox->setEnabled(true);
-        m_nameEdit->setEnabled(true);
-        m_saveButton->setEnabled(true);
-        m_emailButton->setEnabled(true);
+        m_saveNameEdit->setEnabled(true);
+        m_saveDirectoryButton->setEnabled(true);
+        m_sendMailButton->setEnabled(true);
         m_SaveAsButton->setEnabled(true);
 
     } else if (saneStatus == SANE_STATUS_INVAL) {
@@ -731,8 +767,11 @@ void ScanSettingsWidget::updateSettingsStatusForEndScan()
         m_resolutionComboBox->setEnabled(true);
         m_sizeComboBox->setEnabled(true);
         m_formatComboBox->setEnabled(true);
-        m_nameEdit->setEnabled(true);
-        m_saveButton->setEnabled(true);
+        m_saveNameEdit->setEnabled(true);
+        m_saveDirectoryButton->setEnabled(true);
+
+        m_sendMailButton->setEnabled(false);
+        m_SaveAsButton->setEnabled(false);
     } else {
         updateScanButtonSettings();
         updatePageNumberSettings();
@@ -811,14 +850,14 @@ void ScanSettingsWidget::setComboboxAttributes(QComboBox *combobox, QStringList 
 
 void ScanSettingsWidget::setNameEditTooltip()
 {
-    int lenTextName = m_nameEdit->text ().length ();
+    int lenTextName = m_saveNameEdit->text ().length ();
     int lenImageFormat = 4;
     const int MaxLengthTextName = 256;
 
     if (lenTextName >= MaxLengthTextName - lenImageFormat) {
-        m_nameEdit->setToolTip (tr("Scanning images's length cannot be large than 252"));
+        m_saveNameEdit->setToolTip (tr("Scanning images's length cannot be large than 252"));
     } else {
-        m_nameEdit->setToolTip ("");
+        m_saveNameEdit->setToolTip ("");
     }
 }
 

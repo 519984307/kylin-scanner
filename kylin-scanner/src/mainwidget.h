@@ -59,7 +59,7 @@ protected:
 
     int getSleepTime(QString &time);
 
-signals:
+Q_SIGNALS:
     void scanThreadFinishedSignal(int);
 };
 

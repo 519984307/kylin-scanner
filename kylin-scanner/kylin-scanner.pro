@@ -6,6 +6,7 @@ QT       += \
         dbus \
         x11extras \
         network \
+        printsupport \
         concurrent \
         svg
 
@@ -65,6 +66,7 @@ SOURCES += \
     src/saneobject.cpp \
     src/scandialog.cpp \
     src/scansettingswidget.cpp \
+    src/sendmail.cpp \
     src/showimagewidget.cpp \
     src/singleapplication.cpp \
     src/successpagewidget.cpp \
@@ -90,6 +92,7 @@ HEADERS += \
     src/saneobject.h \
     src/scandialog.h \
     src/scansettingswidget.h \
+    src/sendmail.h \
     src/showimagewidget.h \
     src/singleapplication.h \
     src/successpagewidget.h \

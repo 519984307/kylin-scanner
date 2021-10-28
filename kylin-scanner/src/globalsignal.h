@@ -62,7 +62,10 @@ public:
     void showImageAfterClickedThumbnail(QString loadPath);
     void updateSaveNameTextAfterScanSuccess();
 
+    void sendMailButtonClicked();
+
 signals:
+    void sendMailButtonClickedSignal();
 
     void updateSaveNameTextAfterScanSuccessSignal();
     void showImageAfterClickedThumbnailSignal(QString loadPath);

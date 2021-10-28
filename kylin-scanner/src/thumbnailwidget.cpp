@@ -40,16 +40,10 @@ void ThumbnailWidget::setupGui()
 
 void ThumbnailWidget::initConnect()
 {
-    connect(g_user_signal, &GlobalUserSignal::themeChangedBlackSignal, this, [=](){
-        themeChangedBlack();
-    });
-    connect(g_user_signal, &GlobalUserSignal::themeChangedWhiteSignal, this, [=](){
-        themeChangedWhite();
-    });
+    connect(g_user_signal, &GlobalUserSignal::themeChangedBlackSignal, this, &ThumbnailWidget::themeChangedBlack);
+    connect(g_user_signal, &GlobalUserSignal::themeChangedWhiteSignal, this, &ThumbnailWidget::themeChangedWhite);
 
-    connect(g_user_signal, &GlobalUserSignal::scanThreadFinishedImageLoadSignal, [this](){
-        showNormalImageAfterScan();
-    });
+    connect(g_user_signal, &GlobalUserSignal::scanThreadFinishedImageLoadSignal, this, &ThumbnailWidget::showNormalImageAfterScan);
 
     connect(this, &ThumbnailWidget::clicked, this, &ThumbnailWidget::clickedItemSlot);
 

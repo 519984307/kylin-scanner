@@ -111,6 +111,11 @@ void GlobalUserSignal::updateSaveNameTextAfterScanSuccess()
     updateSaveNameTextAfterScanSuccessSignal();
 }
 
+void GlobalUserSignal::sendMailButtonClicked()
+{
+    sendMailButtonClickedSignal();
+}
+
 
 
 

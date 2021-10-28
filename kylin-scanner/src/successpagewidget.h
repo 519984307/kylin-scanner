@@ -38,7 +38,7 @@ public:
     void setupGui();
     void initConnect();
 
-signals:
+Q_SIGNALS:
     void showImageHandlePageSignal();
 
 public slots:

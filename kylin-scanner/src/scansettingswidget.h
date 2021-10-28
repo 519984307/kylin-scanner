@@ -21,6 +21,7 @@
 #include "include/common.h"
 #include "saneobject.h"
 #include "globalsignal.h"
+#include "sendmail.h"
 
 #include <QWidget>
 #include <QPaintEvent>
@@ -95,7 +96,7 @@ protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
 
-signals:
+Q_SIGNALS:
     //void scanButtonClickedSignal();
 
 public slots:
@@ -111,6 +112,7 @@ public slots:
     void formatCurrentTextChangedSlot(QString text);
     void nameCurrentTextChangedSlot(QString text);
 
+    void sendMailButtonClickedSlot();
 
     void scanButtonClickedSlot();
 
@@ -141,13 +143,13 @@ private:
     QComboBox *m_sizeComboBox;
     QLabel *m_formatLabel;
     QComboBox *m_formatComboBox;
-    QLabel *m_nameLabel;
-    QLineEdit *m_nameEdit;
-    QLabel *m_saveLabel;
-    QPushButton *m_saveButton;
+    QLabel *m_saveNameLabel;
+    QLineEdit *m_saveNameEdit;
+    QLabel *m_saveDirectoryLabel;
+    QPushButton *m_saveDirectoryButton;
     QFormLayout *m_settingsFormLayout;
 
-    QPushButton *m_emailButton;
+    QPushButton *m_sendMailButton;
     QPushButton *m_SaveAsButton;
     QHBoxLayout *m_buttonsHLayout;
 

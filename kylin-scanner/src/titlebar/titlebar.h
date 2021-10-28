@@ -58,7 +58,7 @@ public:
     void updateMaxButtonStatus(bool isMax);
 
 
-signals:
+Q_SIGNALS:
 
 public slots:
     void on_m_minBtn_clicked();
