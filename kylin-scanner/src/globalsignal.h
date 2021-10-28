@@ -56,17 +56,19 @@ public:
     void startScanOperation();
     void stopScanOperation();
 
-    void scanThreadFinished();
+    void scanThreadFinished(int saneStatus);
     void scanThreadFinishedImageLoad();
 
     void showImageAfterClickedThumbnail(QString loadPath);
+    void updateSaveNameTextAfterScanSuccess();
 
 signals:
 
+    void updateSaveNameTextAfterScanSuccessSignal();
     void showImageAfterClickedThumbnailSignal(QString loadPath);
 
     void scanThreadFinishedImageLoadSignal();
-    void scanThreadFinishedSignal();
+    void scanThreadFinishedSignal(int saneStatus);
 
     void stopScanOperationSignal();
     void startScanOperationSignal();

@@ -91,9 +91,9 @@ void GlobalUserSignal::stopScanOperation()
     emit stopScanOperationSignal();
 }
 
-void GlobalUserSignal::scanThreadFinished()
+void GlobalUserSignal::scanThreadFinished(int saneStatus)
 {
-    emit scanThreadFinishedSignal();
+    emit scanThreadFinished(saneStatus);
 }
 
 void GlobalUserSignal::scanThreadFinishedImageLoad()
@@ -104,6 +104,11 @@ void GlobalUserSignal::scanThreadFinishedImageLoad()
 void GlobalUserSignal::showImageAfterClickedThumbnail(QString loadPath)
 {
     showImageAfterClickedThumbnailSignal(loadPath);
+}
+
+void GlobalUserSignal::updateSaveNameTextAfterScanSuccess()
+{
+    updateSaveNameTextAfterScanSuccessSignal();
 }
 
 

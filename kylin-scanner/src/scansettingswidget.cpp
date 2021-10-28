@@ -252,7 +252,8 @@ void ScanSettingsWidget::nameCurrentTextChangedSlot(QString text)
 
 void ScanSettingsWidget::scanButtonClickedSlot()
 {
-    //emit scanButtonClickedSignal();
+    updateSettingsStatusForStartScan();
+
     g_user_signal->startScanOperation();
 }
 
@@ -399,16 +400,11 @@ void ScanSettingsWidget::initConnect()
     connect(m_saveButton, &QPushButton::clicked, this, &ScanSettingsWidget::selectSaveDirectorySlot);
 
 
-    connect(g_user_signal, &GlobalUserSignal::fontSizeChangedSignal, this, [=](){
-        fontSizeChanged();
-    });
+    connect(g_user_signal, &GlobalUserSignal::fontSizeChangedSignal, this, &ScanSettingsWidget::fontSizeChanged);
+    connect(g_user_signal, &GlobalUserSignal::themeChangedBlackSignal, this, &ScanSettingsWidget::themeChangedBlackSlot);
+    connect(g_user_signal, &GlobalUserSignal::themeChangedWhiteSignal, this, &ScanSettingsWidget::themeChangedWhiteSlot);
 
-    connect(g_user_signal, &GlobalUserSignal::themeChangedBlackSignal, this, [=](){
-        themeChangedBlackSlot();
-    });
-    connect(g_user_signal, &GlobalUserSignal::themeChangedWhiteSignal, this, [=](){
-        themeChangedWhiteSlot();
-    });
+    connect(g_user_signal, &GlobalUserSignal::scanThreadFinishedSignal, this, &ScanSettingsWidget::updateSettingsStatusForEndScan);
 
 }
 
@@ -468,6 +464,8 @@ void ScanSettingsWidget::updateDeviceSettings()
     } else {
         deviceStringList = g_sane_object->getSaneNames();
     }
+
+    m_deviceComboBox->setEnabled(true);
 
     KyInfo() << "Devices :  " << deviceStringList;
     setComboboxAttributes(m_deviceComboBox, deviceStringList);
@@ -611,10 +609,10 @@ void ScanSettingsWidget::updateFormatSettings()
 }
 
 /**
- * @brief ScanSettingsWidget::updateNameTextSettings
+ * @brief ScanSettingsWidget::updateSaveNameTextSettings
  * Consider multiple scan, so we set nameEdit timestamp.
  */
-void ScanSettingsWidget::updateNameTextSettings()
+void ScanSettingsWidget::updateSaveNameTextSettings()
 {
     bool saneStatus = g_sane_object->getSaneStatus();
 
@@ -664,7 +662,7 @@ void ScanSettingsWidget::updateSettingsForDetectDevices()
     updateResolutionSettings();
     updateSizeSettings();
     updateFormatSettings();
-    updateNameTextSettings();
+    updateSaveNameTextSettings();
     updateSaveDirectorySettings();
     updateSendMailSettings();
     updateSaveAsSettings();
@@ -679,11 +677,78 @@ void ScanSettingsWidget::updateSettingsForSwitchDevices()
     updateResolutionSettings();
     updateSizeSettings();
     updateFormatSettings();
-    updateNameTextSettings();
+    updateSaveNameTextSettings();
     updateSaveDirectorySettings();
     updateSendMailSettings();
     updateSaveAsSettings();
 }
+
+void ScanSettingsWidget::updateSettingsStatusForStartScan()
+{
+    m_scanButton->setEnabled(false);
+    m_deviceComboBox->setEnabled(false);
+    m_pageNumberComboBox->setEnabled(false);
+    m_timeComboBox->setEnabled(false);
+    m_typeComboBox->setEnabled(false);
+    m_colorComboBox->setEnabled(false);
+    m_resolutionComboBox->setEnabled(false);
+    m_sizeComboBox->setEnabled(false);
+    m_formatComboBox->setEnabled(false);
+    m_nameEdit->setEnabled(false);
+    m_saveButton->setEnabled(false);
+    m_emailButton->setEnabled(false);
+    m_SaveAsButton->setEnabled(false);
+}
+
+void ScanSettingsWidget::updateSettingsStatusForEndScan()
+{
+    bool saneStatus = g_sane_object->getSaneStatus();
+    m_deviceComboBox->setEnabled(true);
+
+    if (saneStatus == SANE_STATUS_NO_DOCS
+            || saneStatus == SANE_STATUS_DEVICE_BUSY
+            || saneStatus == SANE_STATUS_GOOD) {
+
+        m_scanButton->setEnabled(true);
+        m_pageNumberComboBox->setEnabled(true);
+        m_timeComboBox->setEnabled(true);
+        m_typeComboBox->setEnabled(true);
+        m_colorComboBox->setEnabled(true);
+        m_resolutionComboBox->setEnabled(true);
+        m_sizeComboBox->setEnabled(true);
+        m_formatComboBox->setEnabled(true);
+        m_nameEdit->setEnabled(true);
+        m_saveButton->setEnabled(true);
+        m_emailButton->setEnabled(true);
+        m_SaveAsButton->setEnabled(true);
+
+    } else if (saneStatus == SANE_STATUS_INVAL) {
+        m_scanButton->setEnabled(true);
+        m_pageNumberComboBox->setEnabled(true);
+        m_timeComboBox->setEnabled(true);
+        m_typeComboBox->setEnabled(true);
+        m_colorComboBox->setEnabled(true);
+        m_resolutionComboBox->setEnabled(true);
+        m_sizeComboBox->setEnabled(true);
+        m_formatComboBox->setEnabled(true);
+        m_nameEdit->setEnabled(true);
+        m_saveButton->setEnabled(true);
+    } else {
+        updateScanButtonSettings();
+        updatePageNumberSettings();
+        updateTimeSettings();
+        updateTypeSettings();
+        updateColorSettings();
+        updateResolutionSettings();
+        updateSizeSettings();
+        updateFormatSettings();
+        updateSaveNameTextSettings();
+        updateSaveDirectorySettings();
+        updateSendMailSettings();
+        updateSaveAsSettings();
+    }
+}
+
 
 void ScanSettingsWidget::setLabelAttributes(QLabel *label, const QString &text)
 {

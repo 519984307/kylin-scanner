@@ -72,12 +72,14 @@ public:
     void updateResolutionSettings();
     void updateSizeSettings();
     void updateFormatSettings();
-    void updateNameTextSettings();
+    void updateSaveNameTextSettings();
     void updateSaveDirectorySettings();
     void updateSendMailSettings();
     void updateSaveAsSettings();
     void updateSettingsForDetectDevices();
     void updateSettingsForSwitchDevices();
+    void updateSettingsStatusForStartScan();
+    void updateSettingsStatusForEndScan();
 
 
     void setLabelAttributes(QLabel *label, const QString &text);

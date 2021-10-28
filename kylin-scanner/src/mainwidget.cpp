@@ -44,6 +44,12 @@ MainWidget::~MainWidget()
         m_detectScanDevicesThread.wait();
         m_detectScanDevicesThread.quit();
     }
+
+    if (m_scanThread.isRunning()) {
+        KyInfo() << "Quit window, so quit scan thread ...";
+        m_scanThread.wait();
+        m_scanThread.quit();
+    }
 }
 
 void MainWidget::setupGui()
@@ -98,8 +104,7 @@ void MainWidget::initConnect()
     connect(g_user_signal, &GlobalUserSignal::startScanOperationSignal, this, &MainWidget::startScanOperationSlot);
     connect(g_user_signal, &GlobalUserSignal::stopScanOperationSignal, this, &MainWidget::stopScanOperationSlot);
 
-    connect(&m_scanThread, &ScanThread::scanThreadFinishedSignal, this, &MainWidget::scanThreadFinishedSlot);
-
+    connect(g_user_signal, &GlobalUserSignal::scanThreadFinishedSignal, this, &MainWidget::scanThreadFinishedSlot);
 }
 
 void MainWidget::initGsettings()
@@ -276,6 +281,7 @@ void MainWidget::maximizeWindowSlot()
 void MainWidget::closeWindowSlot()
 {
     this->close();
+    stopScanOperationSlot();
 }
 
 void MainWidget::showAboutWindowSlot()
@@ -342,6 +348,7 @@ void MainWidget::stopScanOperationSlot()
 {
     KyInfo() << "pageNumber = " << m_scanDialog->pageNumber();
     if (m_scanThread.isRunning()) {
+        KyInfo() << "stop scan operation.";
         isExited = true;
         m_scanThread.quit();
         m_scanThread.wait();
@@ -376,8 +383,6 @@ void MainWidget::scanThreadFinishedSlot(int saneStatus)
         m_displayWidget->showSuccessImageHandlePageSlot();
         g_user_signal->scanThreadFinishedImageLoad();
     }
-
-
 }
 
 
@@ -414,7 +419,7 @@ void ScanThread::run()
         ret = g_sane_object->startScanning(g_sane_object->userInfo);
         KyInfo() << "start_scanning end, status = " << ret;
 
-        emit scanThreadFinishedSignal(ret);
+        emit g_user_signal->scanThreadFinishedSignal(ret);
 
         KyInfo() << "sleep time: " << sleepTime;
         sleep(sleepTime);
