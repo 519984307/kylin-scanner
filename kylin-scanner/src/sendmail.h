@@ -20,6 +20,10 @@
 #define SENDMAIL_H
 
 
+#include <QPainter>
+#include <QPainterPath>
+#include <QStyleOption>
+#include <QColor>
 #include <QLabel>
 #include <QPushButton>
 #include <QComboBox>
@@ -88,6 +92,9 @@ public:
     void initLayout();
     void initConnect();
 
+protected:
+    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+
 private:
     QLabel *m_noMailTitleTextLabel;
     QPushButton *m_noMailCloseButton;
@@ -130,6 +137,9 @@ public:
     void initConnect();
 
     void setMailSelectComboboxItems();
+
+protected:
+    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
 private:
     QLabel *m_titleTextLabel;

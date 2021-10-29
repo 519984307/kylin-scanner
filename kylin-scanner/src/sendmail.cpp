@@ -144,15 +144,31 @@ void NoMailDialog::initConnect()
     connect(m_cancelButton, &QPushButton::clicked, this, &NoMailDialog::closeNoMailWindow);
     connect(m_noMailCloseButton, &QPushButton::clicked, this, &NoMailDialog::closeNoMailWindow);
 
-    connect(g_user_signal, &GlobalUserSignal::themeChangedBlackSignal, this, &NoMailDialog::themeChangedBlack);
-    connect(g_user_signal, &GlobalUserSignal::themeChangedWhiteSignal, this, &NoMailDialog::themeChangedWhite);
+//    connect(g_user_signal, &GlobalUserSignal::themeChangedBlackSignal, this, &NoMailDialog::themeChangedBlack);
+//    connect(g_user_signal, &GlobalUserSignal::themeChangedWhiteSignal, this, &NoMailDialog::themeChangedWhite);
+}
+
+void NoMailDialog::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
+    QPainterPath rectPath;
+    rectPath.addRoundedRect(this->rect(), 0, 0);
+    QStyleOption opt;
+    opt.init(this);
+
+    QColor mainColor;
+    mainColor = opt.palette.color(QPalette::Window);
+
+    p.fillPath(rectPath,QBrush(mainColor));
 }
 
 
 void NoMailDialog::themeChangedWhite()
 {
     QPalette pal(palette());
-    pal.setColor(QPalette::Background, QColor(47, 44, 43));
+    pal.setColor(QPalette::Background, QColor(255, 255, 255));
     setAutoFillBackground(true);
     setPalette(pal);
 
@@ -162,7 +178,7 @@ void NoMailDialog::themeChangedWhite()
 void NoMailDialog::themeChangedBlack()
 {
     QPalette pal(palette());
-    pal.setColor(QPalette::Background, QColor(255, 255, 255));
+    pal.setColor(QPalette::Background, QColor(47, 44, 43));
     setAutoFillBackground(true);
     setPalette(pal);
 
@@ -287,8 +303,8 @@ void SendMailDialog::initConnect()
         this->accept();
     });
 
-    connect(g_user_signal, &GlobalUserSignal::themeChangedBlackSignal, this, &SendMailDialog::themeChangedBlack);
-    connect(g_user_signal, &GlobalUserSignal::themeChangedWhiteSignal, this, &SendMailDialog::themeChangedWhite);
+//    connect(g_user_signal, &GlobalUserSignal::themeChangedBlackSignal, this, &SendMailDialog::themeChangedBlack);
+//    connect(g_user_signal, &GlobalUserSignal::themeChangedWhiteSignal, this, &SendMailDialog::themeChangedWhite);
 }
 
 Appinfo *_getAppList(const char *contentType)
@@ -381,6 +397,22 @@ void SendMailDialog::setMailSelectComboboxItems()
     }
 }
 
+void SendMailDialog::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
+    QPainterPath rectPath;
+    rectPath.addRoundedRect(this->rect(), 0, 0);
+    QStyleOption opt;
+    opt.init(this);
+
+    QColor mainColor;
+    mainColor = opt.palette.color(QPalette::Window);
+
+    p.fillPath(rectPath,QBrush(mainColor));
+}
+
 
 void SendMailDialog::closeSendMailWindowSlot()
 {
@@ -444,21 +476,17 @@ void SendMailDialog::openSelectMailClientSlot(QString name)
 void SendMailDialog::themeChangedWhite()
 {
     QPalette pal(palette());
-    pal.setColor(QPalette::Background, QColor(47, 44, 43));
+    pal.setColor(QPalette::Background, QColor(255, 255, 255));
     setAutoFillBackground(true);
     setPalette(pal);
-
-    m_mailSelectLabel->setStyleSheet("color:#D9FFFFFF"); // 85% => D9, 255,255,255 => FFFFFF
 
 }
 
 void SendMailDialog::themeChangedBlack()
 {
     QPalette pal(palette());
-    pal.setColor(QPalette::Background, QColor(255, 255, 255));
+    pal.setColor(QPalette::Background, QColor(47, 44, 43));
     setAutoFillBackground(true);
     setPalette(pal);
-
-    m_mailSelectLabel->setStyleSheet("color:#D9000000"); // 85% => D9, 255,255,255 => FFFFFF
 }
 
