@@ -148,6 +148,7 @@ public:
     int haveSourceFlag = 0;
 
     QString loadFullScanFileName;
+    bool haveScanSuccessImage = false;
 
 
 private:

@@ -380,8 +380,11 @@ void MainWidget::scanThreadFinishedSlot(int saneStatus)
             warnMsg(tr("Scan failed, please check your scanner or switch other scanners."));
         }
     } else {
+        g_sane_object->haveScanSuccessImage = true;
+
         m_displayWidget->showSuccessImageHandlePageSlot();
         g_user_signal->scanThreadFinishedImageLoad();
+
     }
 }
 
@@ -419,7 +422,7 @@ void ScanThread::run()
         ret = g_sane_object->startScanning(g_sane_object->userInfo);
         KyInfo() << "start_scanning end, status = " << ret;
 
-        emit g_user_signal->scanThreadFinishedSignal(ret);
+        g_user_signal->scanThreadFinished(ret);
 
         KyInfo() << "sleep time: " << sleepTime;
         sleep(sleepTime);

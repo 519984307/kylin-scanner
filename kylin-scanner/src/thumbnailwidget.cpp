@@ -83,8 +83,9 @@ void ThumbnailWidget::themeChangedBlack()
 void ThumbnailWidget::showNormalImageAfterScan()
 {
     QString scanFullName = g_sane_object->loadFullScanFileName;
+    QFileInfo scanFullNameFileInfo(scanFullName);
 
-    QString tooltipName = g_sane_object->userInfo.saveName + QString(".pnm");
+    QString tooltipName = scanFullNameFileInfo.fileName();
 
     int rowcount = m_thumbnailItemModel->rowCount();
     KyInfo() << "rowcount = " << rowcount;

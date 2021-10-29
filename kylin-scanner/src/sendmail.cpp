@@ -18,17 +18,19 @@
 
 #include "sendmail.h"
 
-NoMailDialog::NoMailDialog(QWidget *parent) :
-    QDialog(parent)
-    , m_closeButton (new QPushButton())
-    , m_titleLabel (new QLabel())
-    , m_textEdit (new QTextEdit())
-    , m_lineFrame (new QFrame())
-    , m_confirmButton (new QPushButton())
-    , m_cancelButton (new QPushButton())
-    , m_buttonsHBoxLayout (new QHBoxLayout())
-    , m_closeHBoxLayout (new QHBoxLayout())
-    , m_mainVBoxLayout (new QVBoxLayout())
+NoMailDialog::NoMailDialog(QWidget *parent) : QDialog(parent)
+  , m_noMailTitleTextLabel (new QLabel())
+  , m_noMailCloseButton (new QPushButton())
+  , m_noMailTitleHBoxLayout (new QHBoxLayout())
+  , m_noMaillogoLabel (new QLabel())
+  , m_noMailtitleLabel (new QLabel())
+  , m_noMailLogoTitleHBoxLayout (new QHBoxLayout())
+  , m_noMailInfoLabel (new QLabel())
+  , m_noMailInfoHBoxLayout (new QHBoxLayout())
+  , m_cancelButton (new QPushButton())
+  , m_installButton (new QPushButton())
+  , m_noMailButtonsHBoxLayout (new QHBoxLayout())
+  , m_mainVBoxLayout (new QVBoxLayout())
 {
     initWindow();
 
@@ -51,76 +53,96 @@ void NoMailDialog::initWindow()
     XAtomHelper::getInstance()->setWindowMotifHint(winId(), hints);
 
     setWindowTitle (tr("No email client"));
-    setFixedSize(MailWindowWidth, MainWindowHeight);
+    setFixedSize(NoMailWindowWidth, NoMainWindowHeight);
 }
 
 void NoMailDialog::initLayout()
 {
-    m_closeButton->setIcon (QIcon::fromTheme (ICON_THEME_CLOSE));
-    m_closeButton->setToolTip(tr("Close"));
-    m_closeButton->setFixedSize(30, 30);
-    m_closeButton->setIconSize (QSize(16, 16));
-    m_closeButton->setProperty("isWindowButton", 0x2);
-    m_closeButton->setProperty("useIconHighlightEffect", 0x8);
-    m_closeButton->setFlat(true);
+    m_noMailTitleTextLabel->setText(tr("Scanner"));
 
-    m_closeHBoxLayout->setSpacing(0);
-    m_closeHBoxLayout->addStretch();
-    m_closeHBoxLayout->addWidget(m_closeButton);
-    m_closeHBoxLayout->setAlignment(Qt::AlignCenter);
-    m_closeHBoxLayout->setContentsMargins(0, 4, 4, 4);
+    m_noMailCloseButton->setIcon (QIcon::fromTheme (ICON_THEME_CLOSE));
+    m_noMailCloseButton->setToolTip(tr("Close"));
+    m_noMailCloseButton->setFixedSize(30, 30);
+    m_noMailCloseButton->setIconSize (QSize(16, 16));
+    m_noMailCloseButton->setProperty("isWindowButton", 0x2);
+    m_noMailCloseButton->setProperty("useIconHighlightEffect", 0x8);
+    m_noMailCloseButton->setFlat(true);
 
-    m_titleLabel->setText(tr("No email client"));
-    m_titleLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    m_titleLabel->setFixedSize(260, 32);
+    m_noMailTitleHBoxLayout->setSpacing(0);
+    m_noMailTitleHBoxLayout->addSpacing(12);
+    m_noMailTitleHBoxLayout->addWidget(m_noMailTitleTextLabel);
+    m_noMailTitleHBoxLayout->addStretch();
+    m_noMailTitleHBoxLayout->addWidget(m_noMailCloseButton);
+    m_noMailTitleHBoxLayout->setAlignment(Qt::AlignCenter);
+    m_noMailTitleHBoxLayout->setContentsMargins(0, 5, 4, 4);
+
+    QPixmap pix(":/warning.svg");
+    m_noMaillogoLabel->setFixedSize(QSize(24, 24));
+    m_noMaillogoLabel->setPixmap(pix);
+
     QFont ft;
-    ft.setPixelSize(24);
-    m_titleLabel->setFont(ft);
+    ft.setPixelSize(14);
+    ft.setBold(true);
+    m_noMailtitleLabel->setFont(ft);
+    m_noMailtitleLabel->setText(tr("No email client"));
+    m_noMailtitleLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
+    m_noMailLogoTitleHBoxLayout->setSpacing(0);
+    m_noMailLogoTitleHBoxLayout->addSpacing(24);
+    m_noMailLogoTitleHBoxLayout->addWidget(m_noMaillogoLabel);
+    m_noMailLogoTitleHBoxLayout->addSpacing(8);
+    m_noMailLogoTitleHBoxLayout->addWidget(m_noMailtitleLabel);
+    m_noMailLogoTitleHBoxLayout->addStretch();
+    m_noMailLogoTitleHBoxLayout->setContentsMargins(0, 0, 0, 0);
 
     QFont ft1;
     ft1.setPixelSize(14);
-    m_textEdit->setFont(ft1);
-    m_textEdit->setText(
-        tr("Not find email client in the system, please download and install email client firstly."));
+    m_noMailInfoLabel->setFont(ft1);
+    m_noMailInfoLabel->setText(tr("Not find email client in the system, please install email client firstly."));
+    m_noMailInfoLabel->setFixedSize(QSize(296, 44));
+    m_noMailInfoLabel->setWordWrap(true);
 
-    int textEditSizeX = MailWindowWidth - 32 - 32;
-    m_textEdit->setFixedSize(textEditSizeX, 50);
-    m_textEdit->setReadOnly(true);
+    m_noMailInfoHBoxLayout->setSpacing(0);
+    m_noMailInfoHBoxLayout->addSpacing(56);
+    m_noMailInfoHBoxLayout->addWidget(m_noMailInfoLabel);
+    m_noMailInfoHBoxLayout->addSpacing(28);
+    m_noMailInfoHBoxLayout->setContentsMargins(0, 0, 0, 0);
 
-    m_lineFrame->setObjectName(QString::fromUtf8("line"));
-    m_lineFrame->setMaximumHeight(1);
-    m_lineFrame->setMaximumWidth(260);
-    m_lineFrame->setMinimumWidth(260);
-    m_lineFrame->setFrameShape(QFrame::HLine);
 
-    m_confirmButton->setText(tr("Go to install"));
-    m_confirmButton->setFixedSize(120, 36);
+
     m_cancelButton->setText(tr("Cancel"));
-    m_cancelButton->setFixedSize(120, 36);
+    m_cancelButton->setFixedSize(96, 36);
 
-    m_buttonsHBoxLayout->setSpacing(0);
-    m_buttonsHBoxLayout->addWidget(m_confirmButton);
-    m_buttonsHBoxLayout->addSpacing(16);
-    m_buttonsHBoxLayout->addWidget(m_cancelButton);
-    m_buttonsHBoxLayout->setContentsMargins(0, 0, 32, 0);
+    m_installButton->setText(tr("Install"));
+    m_installButton->setFixedSize(96, 36);
+
+    m_installButton->setFocus();
+    m_installButton->setDefault(true);
+
+    m_noMailButtonsHBoxLayout->setSpacing(0);
+    m_noMailButtonsHBoxLayout->addSpacing(152);
+    m_noMailButtonsHBoxLayout->addWidget(m_cancelButton);
+    m_noMailButtonsHBoxLayout->addSpacing(12);
+    m_noMailButtonsHBoxLayout->addWidget(m_installButton);
+    m_noMailButtonsHBoxLayout->setContentsMargins(0, 0, 24, 24);
 
     m_mainVBoxLayout->setSpacing(0);
-    m_mainVBoxLayout->addLayout(m_closeHBoxLayout);
-    m_mainVBoxLayout->addSpacing(18);
-    m_mainVBoxLayout->addWidget(m_titleLabel);
+    m_mainVBoxLayout->addLayout(m_noMailTitleHBoxLayout);
+    m_mainVBoxLayout->addSpacing(16);
+    m_mainVBoxLayout->addLayout(m_noMailLogoTitleHBoxLayout);
+    m_mainVBoxLayout->addSpacing(8);
+    m_mainVBoxLayout->addLayout(m_noMailInfoHBoxLayout);
     m_mainVBoxLayout->addSpacing(24);
-    m_mainVBoxLayout->addWidget(m_textEdit);
-    m_mainVBoxLayout->addSpacing(40);
-    m_mainVBoxLayout->addLayout(m_buttonsHBoxLayout);
-    m_mainVBoxLayout->setContentsMargins(32, 0, 0, 48);
+    m_mainVBoxLayout->addLayout(m_noMailButtonsHBoxLayout);
+    m_mainVBoxLayout->setContentsMargins(0, 0, 0, 0);
     setLayout(m_mainVBoxLayout);
 }
 
 void NoMailDialog::initConnect()
 {
-    connect(m_confirmButton, &QPushButton::clicked, this, &NoMailDialog::accept);
+    connect(m_installButton, &QPushButton::clicked, this, &NoMailDialog::accept);
     connect(m_cancelButton, &QPushButton::clicked, this, &NoMailDialog::closeNoMailWindow);
-    connect(m_closeButton, &QPushButton::clicked, this, &NoMailDialog::closeNoMailWindow);
+    connect(m_noMailCloseButton, &QPushButton::clicked, this, &NoMailDialog::closeNoMailWindow);
 
     connect(g_user_signal, &GlobalUserSignal::themeChangedBlackSignal, this, &NoMailDialog::themeChangedBlack);
     connect(g_user_signal, &GlobalUserSignal::themeChangedWhiteSignal, this, &NoMailDialog::themeChangedWhite);
@@ -134,9 +156,7 @@ void NoMailDialog::themeChangedWhite()
     setAutoFillBackground(true);
     setPalette(pal);
 
-    m_titleLabel->setStyleSheet("color:#D9FFFFFF"); // 85% => D9, 255,255,255 => FFFFFF
-    m_textEdit->setStyleSheet("QTextEdit{background-color:rgb(47,44,43);color:#D9FFFFFF;border:0px}");
-    m_lineFrame->setStyleSheet("QFrame{color:rgb(32,30,29)}");
+    m_noMailtitleLabel->setStyleSheet("color:#D9FFFFFF"); // 85% => D9, 255,255,255 => FFFFFF
 }
 
 void NoMailDialog::themeChangedBlack()
@@ -146,9 +166,7 @@ void NoMailDialog::themeChangedBlack()
     setAutoFillBackground(true);
     setPalette(pal);
 
-    m_titleLabel->setStyleSheet("color:#D9000000"); // 85% => D9, 255,255,255 => FFFFFF
-    m_textEdit->setStyleSheet("QTextEdit{background-color:rgb(255,255,255);color:#D9000000;border:0px}");
-    m_lineFrame->setStyleSheet("QFrame{color:rgb(32,30,29}");
+    m_noMailtitleLabel->setStyleSheet("color:#D9000000"); // 85% => D9, 255,255,255 => FFFFFF
 }
 
 void NoMailDialog::closeNoMailWindow()
@@ -157,16 +175,17 @@ void NoMailDialog::closeNoMailWindow()
 //    emit noMailWindowClose();
 }
 
-SendMailDialog::SendMailDialog(QWidget *parent) :
-    QDialog(parent)
-    , m_titleLabel (new QLabel())
-    , m_closeButton (new QPushButton())
-    , m_closeHBoxLayout (new QHBoxLayout())
-    , m_titleHBoxLayout (new QHBoxLayout())
-    , m_mainVBoxLayout (new QVBoxLayout())
-    , m_addMailVBoxLayout (new QVBoxLayout())
-    , m_scrollArea (new QScrollArea())
-    , widget (new QWidget())
+SendMailDialog::SendMailDialog(QWidget *parent) : QDialog(parent)
+  , m_titleTextLabel(new QLabel())
+  , m_closeButton (new QPushButton())
+  , m_titleHBoxLayout (new QHBoxLayout())
+  , m_mailSelectLabel (new QLabel())
+  , m_mailSelectCombobox (new QComboBox())
+  , m_mailSelectHBoxLayout (new QHBoxLayout())
+  , m_cancelButton (new QPushButton())
+  , m_confirmButton (new QPushButton())
+  , m_buttonsHBoxLayout (new QHBoxLayout)
+  , m_mainVBoxLayout (new QVBoxLayout())
 {
     initWindow();
 
@@ -189,14 +208,13 @@ void SendMailDialog::initWindow()
     XAtomHelper::getInstance()->setWindowMotifHint(winId(), hints);
 
     setWindowTitle (tr("Select email client"));
-    setFixedSize(MailWindowWidth, MainWindowHeight);
-
-    widget->setFixedSize(MailWindowWidth, MainWindowHeight);
-    widget->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool | Qt::WindowStaysOnTopHint);
+    setFixedSize(SendMailWindowWidth, SendMainWindowHeight);
 }
 
 void SendMailDialog::initLayout()
 {
+    m_titleTextLabel->setText(tr("Scanner"));
+
     m_closeButton->setIcon (QIcon::fromTheme (ICON_THEME_CLOSE));
     m_closeButton->setToolTip(tr("Close"));
     m_closeButton->setFixedSize(30, 30);
@@ -205,34 +223,68 @@ void SendMailDialog::initLayout()
     m_closeButton->setProperty("useIconHighlightEffect", 0x8);
     m_closeButton->setFlat(true);
 
-    m_closeHBoxLayout->setSpacing(0);
-    m_closeHBoxLayout->addStretch();
-    m_closeHBoxLayout->addWidget(m_closeButton);
-    m_closeHBoxLayout->setAlignment(Qt::AlignCenter);
-    m_closeHBoxLayout->setContentsMargins(0, 4, 4, 4);
+    m_titleHBoxLayout->setSpacing(0);
+    m_titleHBoxLayout->addSpacing(12);
+    m_titleHBoxLayout->addWidget(m_titleTextLabel);
+    m_titleHBoxLayout->addStretch();
+    m_titleHBoxLayout->addWidget(m_closeButton);
+    m_titleHBoxLayout->setAlignment(Qt::AlignCenter);
+    m_titleHBoxLayout->setContentsMargins(0, 5, 4, 5);
 
-    m_titleLabel->setText(tr("Select email client"));
-    m_titleLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    m_titleLabel->setFixedSize(260, 32);
+    m_mailSelectLabel->setText(tr("Select email client"));
+    m_mailSelectLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    m_mailSelectLabel->setFixedSize(98, 22);
     QFont ft;
-    ft.setPixelSize(24);
-    m_titleLabel->setFont(ft);
+    ft.setPixelSize(14);
+    m_mailSelectLabel->setFont(ft);
 
-    m_titleHBoxLayout->addStretch();
-    m_titleHBoxLayout->addWidget(m_titleLabel);
-    m_titleHBoxLayout->addStretch();
-    m_titleHBoxLayout->setContentsMargins(0, 0, 0, 0);
+    m_mailSelectHBoxLayout->setSpacing(0);
+    m_mailSelectHBoxLayout->addWidget(m_mailSelectLabel);
+    m_mailSelectHBoxLayout->addSpacing(8);
+    m_mailSelectHBoxLayout->addWidget(m_mailSelectCombobox);
+    m_mailSelectHBoxLayout->setContentsMargins(24, 0, 24, 0);
+
+    m_cancelButton->setFixedSize(QSize(96, 32));
+    m_cancelButton->setText(tr("Cancel"));
+
+    m_confirmButton->setFixedSize(QSize(96, 32));
+    m_confirmButton->setText(tr("Confirm"));
+    m_confirmButton->setFocus();
+    m_confirmButton->setShortcut( QKeySequence::InsertParagraphSeparator);
+    m_confirmButton->setShortcut(Qt::Key_Enter);
+    m_confirmButton->setShortcut(Qt::Key_Return);
+
+    m_buttonsHBoxLayout->setSpacing(0);
+    m_buttonsHBoxLayout->addSpacing(152);
+    m_buttonsHBoxLayout->addWidget(m_cancelButton);
+    m_buttonsHBoxLayout->addSpacing(12);
+    m_buttonsHBoxLayout->addWidget(m_confirmButton);
+    m_buttonsHBoxLayout->setContentsMargins(0, 0, 24, 24);
 
     m_mainVBoxLayout->setSpacing(0);
-    m_mainVBoxLayout->addLayout(m_closeHBoxLayout);
     m_mainVBoxLayout->addLayout(m_titleHBoxLayout);
+    m_mainVBoxLayout->addSpacing(16);
+    m_mainVBoxLayout->addLayout(m_mailSelectHBoxLayout);
+    m_mainVBoxLayout->addSpacing(24);
+    m_mainVBoxLayout->addLayout(m_buttonsHBoxLayout);
     m_mainVBoxLayout->setContentsMargins(0, 0, 0, 0);
-    setLayout(m_mainVBoxLayout);
+
+    this->setLayout(m_mainVBoxLayout);
 }
 
 void SendMailDialog::initConnect()
 {
-    connect(m_closeButton, &QPushButton::clicked, this, &SendMailDialog::closeSendMailWindowSlot);
+    connect(m_closeButton, &QPushButton::clicked, this, &SendMailDialog::close);
+
+    connect(m_cancelButton, &QPushButton::clicked, this, &SendMailDialog::closeSendMailWindowSlot);
+
+    connect(m_confirmButton, &QPushButton::clicked, [this](){
+
+        int currentIndex = m_mailSelectCombobox->currentIndex();
+        KyInfo() << "current index = " << currentIndex;
+
+        openSelectMailClientSlot(m_desktopName[currentIndex]);
+    });
 
     connect(g_user_signal, &GlobalUserSignal::themeChangedBlackSignal, this, &SendMailDialog::themeChangedBlack);
     connect(g_user_signal, &GlobalUserSignal::themeChangedWhiteSignal, this, &SendMailDialog::themeChangedWhite);
@@ -293,74 +345,49 @@ AppList *getAppIdList(const char *contentType)
         return NULL;
     }
 }
-void SendMailDialog::setMailButtonList()
+void SendMailDialog::setMailSelectComboboxItems()
 {
     int i = 0;
 
     AppList *maillist = getAppIdList(MailType);
     if (maillist) {
-        qDebug() << maillist;
-        m_addMailVBoxLayout->setSpacing(0);
-        m_addMailVBoxLayout->setContentsMargins(0, 0, 0, 0);
+        KyInfo() << "mail list = " << maillist;
 
         for (i = 0; maillist[i].appid != NULL; ++i) {
             QString single(maillist[i].appid);
+            KyInfo() << "maillist desktopName = " << single;
+
             m_desktopName.append(single);
             QByteArray ba = QString(DesktopFilePath + single).toUtf8();
             GDesktopAppInfo *mailinfo = g_desktop_app_info_new_from_filename(ba.constData());
             QString appname = g_app_info_get_name(G_APP_INFO(mailinfo));
             const char *iconname = g_icon_to_string(g_app_info_get_icon(G_APP_INFO(mailinfo)));
+
             QIcon appicon;
-            if (QIcon::hasThemeIcon(QString(iconname)))
+
+            if (QIcon::hasThemeIcon(QString(iconname))) {
                 appicon = QIcon::fromTheme(QString(iconname));
-            QPushButton *btn = new QPushButton();
-            QFont ft;
-            ft.setPixelSize(14);
-            btn->setFont(ft);
-            btn->setText(appname);
-            btn->setFixedSize(256, 56);
-            btn->setIcon(appicon);
-            btn->setIconSize(QSize(40, 40));
-            btn->setCheckable(true);
-            btn->setStyleSheet("text-align:left");
-
-            m_mailButtonList.append(btn);
-
-            QHBoxLayout *m_addMailHBoxLayout = new QHBoxLayout();
-            m_addMailHBoxLayout->addStretch();
-            m_addMailHBoxLayout->addWidget(m_mailButtonList[i]);
-            m_addMailHBoxLayout->addStretch();
-
-            if (i == 0) {
-                m_addMailHBoxLayout->setContentsMargins(0, 16, 0, 0);
-            } else {
-                m_addMailHBoxLayout->setContentsMargins(0, 0, 0, 0);
             }
-            m_addMailVBoxLayout->addSpacing(4);
-            m_addMailVBoxLayout->addLayout(m_addMailHBoxLayout);
 
-            connect(m_mailButtonList[i], &QPushButton::toggled, this, &SendMailDialog::mailButtonClickedSlot);
+            m_mailSelectCombobox->addItem(appicon, appname);
+            m_mailSelectCombobox->setIconSize(QSize(20, 20));
+            m_mailSelectCombobox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
 
             free(maillist[i].appid);
         }
-        m_addMailVBoxLayout->addStretch();
-        widget->setLayout(m_addMailVBoxLayout);
 
-        m_scrollArea->setWidget(widget);
-        m_scrollArea->setFrameShape(QFrame::NoFrame);
-
-        if (i < 2) {
-            // Only 2 btnMail, so hide scrollbar
-            m_scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-            m_scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        }
         free(maillist);
     }
-    m_mainVBoxLayout->addWidget(m_scrollArea);
-    setLayout(m_mainVBoxLayout);
 }
 
-void SendMailDialog::openMail(QString name)
+
+void SendMailDialog::closeSendMailWindowSlot()
+{
+    reject();
+    //    emit sendMailWindowClose();
+}
+
+void SendMailDialog::openSelectMailClientSlot(QString name)
 {
     QFile aFile(DesktopFilePath + name);
     QString cmd(BashType);
@@ -368,10 +395,12 @@ void SendMailDialog::openMail(QString name)
     QStringList  arglists;
     QString mailPicture(MailPicturePath);
 
-    if (!aFile.exists())
-        qDebug() << DesktopFilePath << name << " no exists!";
-    if (!aFile.open(QIODevice::ReadOnly | QIODevice::Text))
-        qDebug() << DesktopFilePath << name << " open false!";
+    if (!aFile.exists()) {
+        KyInfo() << DesktopFilePath << name << " no exists!";
+    }
+    if (!aFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        KyInfo() << DesktopFilePath << name << " open false!";
+    }
 
     QTextStream aStream(&aFile);
     aStream.setAutoDetectUnicode(true);
@@ -382,12 +411,12 @@ void SendMailDialog::openMail(QString name)
     }
     str = str.section("Exec=", 1, 1);
     str = str.section(" ", 0, 0);
-    qDebug() << "exec str = " << str;
+    KyInfo() << "exec str = " << str;
     QProcess *process = new QProcess();
 
     arglists << "-c";
     arglists << str;
-    qDebug() << "str = " << str;
+    KyInfo() << "str = " << str;
     if (str == "thunderbird") {
         arglists << "-compose" << "attachment='/tmp/scanner/present_image.jpg'";
     } else if (str == "claws-mail") {
@@ -400,30 +429,15 @@ void SendMailDialog::openMail(QString name)
     } else {
         arglists << " ";
     }
-    qDebug() << "cmd = " << cmd << arglists;
+    KyInfo() << "cmd = " << cmd << arglists;
 
     if (str == "evolution") {
         process->start("evolution", arglists);
         return;
     }
     process->start(cmd, arglists);
-}
 
-void SendMailDialog::mailButtonClickedSlot()
-{
-    for (int i = 0; i < m_mailButtonList.size(); ++i) {
-        if (m_mailButtonList[i]->isChecked()) {
-            openMail(m_desktopName[i]);
-            reject();
-            break;
-        }
-    }
-}
-
-void SendMailDialog::closeSendMailWindowSlot()
-{
-    reject();
-//    emit sendMailWindowClose();
+    this->reject();
 }
 
 void SendMailDialog::themeChangedWhite()
@@ -433,7 +447,7 @@ void SendMailDialog::themeChangedWhite()
     setAutoFillBackground(true);
     setPalette(pal);
 
-    m_titleLabel->setStyleSheet("color:#D9FFFFFF"); // 85% => D9, 255,255,255 => FFFFFF
+    m_mailSelectLabel->setStyleSheet("color:#D9FFFFFF"); // 85% => D9, 255,255,255 => FFFFFF
 
 }
 
@@ -444,6 +458,6 @@ void SendMailDialog::themeChangedBlack()
     setAutoFillBackground(true);
     setPalette(pal);
 
-    m_titleLabel->setStyleSheet("color:#D9000000"); // 85% => D9, 255,255,255 => FFFFFF
+    m_mailSelectLabel->setStyleSheet("color:#D9000000"); // 85% => D9, 255,255,255 => FFFFFF
 }
 

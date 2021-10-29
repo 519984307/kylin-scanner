@@ -80,7 +80,7 @@ public:
     void updateSettingsForDetectDevices();
     void updateSettingsForSwitchDevices();
     void updateSettingsStatusForStartScan();
-    void updateSettingsStatusForEndScan();
+    void updateSettingsStatusForEndScan(int saneStatus);
 
 
     void setLabelAttributes(QLabel *label, const QString &text);

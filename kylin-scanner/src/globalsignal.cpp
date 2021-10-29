@@ -93,7 +93,7 @@ void GlobalUserSignal::stopScanOperation()
 
 void GlobalUserSignal::scanThreadFinished(int saneStatus)
 {
-    emit scanThreadFinished(saneStatus);
+    emit scanThreadFinishedSignal(saneStatus);
 }
 
 void GlobalUserSignal::scanThreadFinishedImageLoad()

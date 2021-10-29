@@ -28,5 +28,6 @@
         <file>waiting/loading6.svg</file>
         <file>waiting/loading7.svg</file>
         <file>scanIcon.svg</file>
+        <file>warning.svg</file>
     </qresource>
 </RCC>

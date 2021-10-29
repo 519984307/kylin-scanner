@@ -22,6 +22,7 @@
 
 #include <QLabel>
 #include <QPushButton>
+#include <QComboBox>
 #include <QTextEdit>
 #include <QFrame>
 #include <QDialog>
@@ -34,6 +35,7 @@
 #include <QPainter>
 #include <QDebug>
 #include <QBitmap>
+#include <QPixmap>
 #include <QFileInfo>
 #include <QFileIconProvider>
 #include <qmath.h>
@@ -58,8 +60,11 @@ extern "C" {
 #define DesktopFilePath "/usr/share/applications/"
 #define MailPicturePath					"~/.config/kylin-scanner/images/mail.jpg"
 
-#define MailWindowWidth 320
-#define MainWindowHeight 260
+#define NoMailWindowWidth 380
+#define NoMainWindowHeight 216
+
+#define SendMailWindowWidth 380
+#define SendMainWindowHeight 176
 
 
 typedef struct _Applist {
@@ -84,14 +89,21 @@ public:
     void initConnect();
 
 private:
-    QPushButton *m_closeButton;
-    QLabel *m_titleLabel;
-    QTextEdit *m_textEdit;
-    QFrame *m_lineFrame;
-    QPushButton *m_confirmButton;
+    QLabel *m_noMailTitleTextLabel;
+    QPushButton *m_noMailCloseButton;
+    QHBoxLayout *m_noMailTitleHBoxLayout;
+
+    QLabel *m_noMaillogoLabel;
+    QLabel *m_noMailtitleLabel;
+    QHBoxLayout *m_noMailLogoTitleHBoxLayout;
+
+    QLabel *m_noMailInfoLabel;
+    QHBoxLayout *m_noMailInfoHBoxLayout;
+
     QPushButton *m_cancelButton;
-    QHBoxLayout *m_buttonsHBoxLayout;
-    QHBoxLayout *m_closeHBoxLayout;
+    QPushButton *m_installButton;
+    QHBoxLayout *m_noMailButtonsHBoxLayout;
+
     QVBoxLayout *m_mainVBoxLayout;
 
 Q_SIGNALS:
@@ -117,27 +129,31 @@ public:
     void initLayout();
     void initConnect();
 
-    void setMailButtonList();
-    void openMail(QString name);
+    void setMailSelectComboboxItems();
 
 private:
-    QLabel *m_titleLabel;
+    QLabel *m_titleTextLabel;
     QPushButton *m_closeButton;
-    QHBoxLayout *m_closeHBoxLayout;
     QHBoxLayout *m_titleHBoxLayout;
+
+    QLabel *m_mailSelectLabel;
+    QComboBox *m_mailSelectCombobox;
+    QHBoxLayout *m_mailSelectHBoxLayout;
+
+    QPushButton *m_cancelButton;
+    QPushButton *m_confirmButton;
+    QHBoxLayout *m_buttonsHBoxLayout;
+
     QVBoxLayout *m_mainVBoxLayout;
-    QVBoxLayout *m_addMailVBoxLayout;
-    QScrollArea *m_scrollArea;
-    QWidget *widget;
-    QList<QPushButton *> m_mailButtonList;
+
     QList<QString> m_desktopName;
 
 Q_SIGNALS:
     void sendMailWindowClose();
 
 public slots:
-    void mailButtonClickedSlot();
     void closeSendMailWindowSlot();
+    void openSelectMailClientSlot(QString name);
 
     void themeChangedWhite();
     void themeChangedBlack();

@@ -164,8 +164,8 @@ void ScanSettingsWidget::deviceCurrentTextChangedSlot(QString text)
  */
 void ScanSettingsWidget::pageNumberCurrentTextChangedSlot(QString text)
 {
-    int retCompare = QString::compare(text, tr("Multiple"), Qt::CaseInsensitive);
-    if (retCompare == 0) {
+    if (text.compare("Multiple", Qt::CaseInsensitive) == 0
+            || text.compare("多页扫描", Qt::CaseInsensitive) == 0) {
         g_sane_object->userInfo.pageNumber = tr("Multiple");
         showTimeRow();
     } else {
@@ -255,10 +255,8 @@ void ScanSettingsWidget::sendMailButtonClickedSlot()
     int retDialog;
 
     AppList *maillist = getAppIdList(MailType);
-    qDebug() << "Get mail client list success.";
 
-    if (!maillist) {
-        qDebug() << "Mail list is null.";
+    if (maillist) {
         NoMailDialog *dialog = new NoMailDialog(this);
 
         retDialog = dialog->exec();
@@ -268,11 +266,12 @@ void ScanSettingsWidget::sendMailButtonClickedSlot()
         }
         delete dialog;
     } else {
-        qDebug() << "maillist is not null";
+        KyInfo() << "Get mail client list success.";
+
         SendMailDialog *dialog = new SendMailDialog(this);
-        qDebug() << "begin";
-        dialog->setMailButtonList();
-        qDebug() << "after";
+
+        dialog->setMailSelectComboboxItems();
+
         dialog->exec();
     }
 
@@ -736,14 +735,13 @@ void ScanSettingsWidget::updateSettingsStatusForStartScan()
     m_SaveAsButton->setEnabled(false);
 }
 
-void ScanSettingsWidget::updateSettingsStatusForEndScan()
+void ScanSettingsWidget::updateSettingsStatusForEndScan(int saneStatus)
 {
-    bool saneStatus = g_sane_object->getSaneStatus();
+    KyInfo() << "status: " << saneStatus;
     m_deviceComboBox->setEnabled(true);
 
     if (saneStatus == SANE_STATUS_NO_DOCS
-            || saneStatus == SANE_STATUS_DEVICE_BUSY
-            || saneStatus == SANE_STATUS_GOOD) {
+            || saneStatus == SANE_STATUS_DEVICE_BUSY) {
 
         m_scanButton->setEnabled(true);
         m_pageNumberComboBox->setEnabled(true);

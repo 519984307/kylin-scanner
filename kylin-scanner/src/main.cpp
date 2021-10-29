@@ -22,6 +22,7 @@
 #include "singleapplication.h"
 #include <ukui-log4qt.h>
 
+
 #include <QApplication>
 #include <QByteArray>
 #include <QDir>

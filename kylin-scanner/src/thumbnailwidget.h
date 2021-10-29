@@ -18,6 +18,7 @@
 #include <QGraphicsDropShadowEffect>
 #include <QScrollBar>
 #include <QFile>
+#include <QFileInfo>
 #include <QPaintEvent>
 #include <QPainter>
 #include <QStyleOption>
