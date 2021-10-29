@@ -256,7 +256,7 @@ void ScanSettingsWidget::sendMailButtonClickedSlot()
 
     AppList *maillist = getAppIdList(MailType);
 
-    if (maillist) {
+    if (! maillist) {
         NoMailDialog *dialog = new NoMailDialog(this);
 
         retDialog = dialog->exec();

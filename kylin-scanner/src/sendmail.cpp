@@ -284,6 +284,7 @@ void SendMailDialog::initConnect()
         KyInfo() << "current index = " << currentIndex;
 
         openSelectMailClientSlot(m_desktopName[currentIndex]);
+        this->accept();
     });
 
     connect(g_user_signal, &GlobalUserSignal::themeChangedBlackSignal, this, &SendMailDialog::themeChangedBlack);
