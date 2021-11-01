@@ -90,9 +90,7 @@ void MainWidget::setupGui()
 
 void MainWidget::initConnect()
 {
-    connect(g_user_signal, &GlobalUserSignal::minimumWindowSignal, this, [=](){
-        this->showMinimized();
-    });
+    connect(g_user_signal, &GlobalUserSignal::minimumWindowSignal, this, &MainWidget::showMinimized);
     connect(g_user_signal, &GlobalUserSignal::maximumWindowSignal, this, &MainWidget::maximizeWindowSlot);
     connect(g_user_signal, &GlobalUserSignal::exitApplicationSignal, this, &MainWidget::closeWindowSlot);
     connect(g_user_signal, &GlobalUserSignal::showAboutDialogSignal, this, &MainWidget::showAboutWindowSlot);
@@ -105,6 +103,8 @@ void MainWidget::initConnect()
     connect(g_user_signal, &GlobalUserSignal::stopScanOperationSignal, this, &MainWidget::stopScanOperationSlot);
 
     connect(g_user_signal, &GlobalUserSignal::scanThreadFinishedSignal, this, &MainWidget::scanThreadFinishedSlot);
+
+    connect(g_user_signal, &GlobalUserSignal::showWatermarkDialogSignal, this, &MainWidget::showWatermarkDialogSlot);
 }
 
 void MainWidget::initGsettings()
@@ -386,6 +386,18 @@ void MainWidget::scanThreadFinishedSlot(int saneStatus)
         g_user_signal->scanThreadFinishedImageLoad();
 
     }
+}
+
+void MainWidget::showWatermarkDialogSlot()
+{
+    m_watermarkDialog = new WatermarkDialog(this);
+
+    QPoint globalPos = this->mapToGlobal(QPoint(0, 0));
+    m_watermarkDialog->move(globalPos.x() + (this->width() - m_watermarkDialog->width())/2,
+                        globalPos.y() + (this->height() - m_watermarkDialog->height())/2);
+
+    m_watermarkDialog->exec();
+
 }
 
 

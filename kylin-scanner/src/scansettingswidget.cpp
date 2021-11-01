@@ -390,11 +390,9 @@ void ScanSettingsWidget::setupGui()
     m_settingsFormLayout->setContentsMargins(0, 0, 0, 0);
 
     m_sendMailButton->setFixedSize(ScanSettingsWidgetButtonSize);
-    m_sendMailButton->setCursor(Qt::PointingHandCursor);
 
     m_SaveAsButton->setFixedSize(ScanSettingsWidgetButtonSize);
     currentSaveAsDirectory = tr("Save as");
-    m_SaveAsButton->setCursor(Qt::PointingHandCursor);
 
     fontSizeChanged();
 

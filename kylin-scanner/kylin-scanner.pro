@@ -77,6 +77,7 @@ SOURCES += \
     src/toolbarwidget.cpp \
     src/utils/daemondbus.cpp \
     src/utils/xatom-helper.cpp \
+    src/watermarkdialog.cpp
 
 HEADERS += \
     src/about/about.h \
@@ -103,6 +104,7 @@ HEADERS += \
     src/toolbarwidget.h \
     src/utils/daemondbus.h \
     src/utils/xatom-helper.h \
+    src/watermarkdialog.h
 
 # Manual
 DISTFILES += \

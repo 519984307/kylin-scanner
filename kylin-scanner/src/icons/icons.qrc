@@ -18,6 +18,20 @@
         <file>watermark.svg</file>
         <file>zoomin.svg</file>
         <file>zoomout.svg</file>
+        <file>crop-blue.svg</file>
+        <file>crop-white.svg</file>
+        <file>beauty-blue.svg</file>
+        <file>beauty-white.svg</file>
+        <file>mirror-blue.svg</file>
+        <file>mirror-white.svg</file>
+        <file>ocr-blue.svg</file>
+        <file>ocr-white.svg</file>
+        <file>rectify-blue.svg</file>
+        <file>rectify-white.svg</file>
+        <file>rotate-blue.svg</file>
+        <file>rotate-white.svg</file>
+        <file>watermark-blue.svg</file>
+        <file>watermark-white.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>waiting/loading1.svg</file>

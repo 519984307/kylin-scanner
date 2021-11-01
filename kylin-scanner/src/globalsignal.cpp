@@ -103,17 +103,22 @@ void GlobalUserSignal::scanThreadFinishedImageLoad()
 
 void GlobalUserSignal::showImageAfterClickedThumbnail(QString loadPath)
 {
-    showImageAfterClickedThumbnailSignal(loadPath);
+    emit showImageAfterClickedThumbnailSignal(loadPath);
 }
 
 void GlobalUserSignal::updateSaveNameTextAfterScanSuccess()
 {
-    updateSaveNameTextAfterScanSuccessSignal();
+    emit updateSaveNameTextAfterScanSuccessSignal();
 }
 
 void GlobalUserSignal::sendMailButtonClicked()
 {
-    sendMailButtonClickedSignal();
+    emit sendMailButtonClickedSignal();
+}
+
+void GlobalUserSignal::showWatermarkDialog()
+{
+    emit showWatermarkDialogSignal();
 }
 
 

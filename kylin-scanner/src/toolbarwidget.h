@@ -50,17 +50,29 @@ public slots:
     void themeChangedWhiteSlot();
     void themeChangedBlackSlot();
 
+    void beautyButtonClickedSlot();
+    void rectifyButtonClickedSlot();
+    void ocrButtonClickedSlot();
+    void cropButtonClickedSlot();
+    void rotateButtonClickedSlot();
+    void mirrorButtonClickedSlot();
+    void watermarkButtonClickedSlot();
+
 private:
 
     QPushButton *m_beautyButton;
     QPushButton *m_rectifyButton;
     QPushButton *m_ocrButton;
+
     QFrame *m_leftFrame;
+
     QPushButton *m_cropButton;
     QPushButton *m_rotateButton;
-    QPushButton *m_mirrorHButton;
+    QPushButton *m_mirrorButton;
     QPushButton *m_watermarkButton;
+
     QFrame *m_rightFrame;
+
     QPushButton *m_zoomOutButton;
     QLabel *m_percentageLabel;
     QPushButton *m_zoomInButton;

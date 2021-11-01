@@ -36,9 +36,8 @@ void ShowImageWidget::setupGui()
 
 void ShowImageWidget::initConnect()
 {
-    connect(g_user_signal, &GlobalUserSignal::scanThreadFinishedImageLoadSignal, [this](){
-        showNormalImageAfterScan();
-    });
+    connect(g_user_signal, &GlobalUserSignal::scanThreadFinishedImageLoadSignal, this, &ShowImageWidget::showNormalImageAfterScan);
+
 #if 0
     connect(this, &ShowImageWidget::customContextMenuRequested, [=](const QPoint &pos){
         Q_UNUSED(pos);

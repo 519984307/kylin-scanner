@@ -50,6 +50,8 @@
 #include "titlebar/titlebar.h"
 #include "globalsignal.h"
 
+#include "watermarkdialog.h"
+
 class ScanThread : public QThread
 {
     Q_OBJECT
@@ -113,6 +115,7 @@ private:
     ScanThread m_scanThread;
     KYCAboutDialog *m_aboutDialog;
     ScanDialog *m_scanDialog;
+    WatermarkDialog *m_watermarkDialog;
 
 public slots:
     void maximizeWindowSlot();
@@ -127,6 +130,8 @@ public slots:
     void stopScanOperationSlot();
     void showScanDialogSlot();
     void scanThreadFinishedSlot(int saneStatus);
+
+    void showWatermarkDialogSlot();
 
 };
 #endif // MainWidget_H

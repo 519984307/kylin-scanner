@@ -36,8 +36,6 @@
 #include <QScrollArea>
 #include <QProcess>
 #include <QPaintEvent>
-#include <QPainter>
-#include <QDebug>
 #include <QBitmap>
 #include <QPixmap>
 #include <QFileInfo>

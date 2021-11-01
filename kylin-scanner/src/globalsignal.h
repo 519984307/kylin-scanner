@@ -64,7 +64,11 @@ public:
 
     void sendMailButtonClicked();
 
+    void showWatermarkDialog();
+
 signals:
+    void showWatermarkDialogSignal();
+
     void sendMailButtonClickedSignal();
 
     void updateSaveNameTextAfterScanSuccessSignal();

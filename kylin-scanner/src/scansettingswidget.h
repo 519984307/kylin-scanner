@@ -125,28 +125,41 @@ private:
     QString currentSaveAsDirectory;
 
     QPushButton *m_scanButton;
+
     QLabel *m_deviceSettingsLabel;
+
     QLabel *m_deviceLabel;
     QComboBox *m_deviceComboBox;
+
     QLabel *m_pageNumberLabel;
     QComboBox *m_pageNumberComboBox;
+
     QLabel *m_timeLabel;
     QComboBox *m_timeComboBox;
+
     QLabel *m_typeLabel;
     QComboBox *m_typeComboBox;
+
     QLabel *m_colorLabel;
     QComboBox *m_colorComboBox;
+
     QLabel *m_resolutionLabel;
     QComboBox *m_resolutionComboBox;
+
     QLabel *m_fileSettingsLabel;
+
     QLabel *m_sizeLabel;
     QComboBox *m_sizeComboBox;
+
     QLabel *m_formatLabel;
     QComboBox *m_formatComboBox;
+
     QLabel *m_saveNameLabel;
     QLineEdit *m_saveNameEdit;
+
     QLabel *m_saveDirectoryLabel;
     QPushButton *m_saveDirectoryButton;
+
     QFormLayout *m_settingsFormLayout;
 
     QPushButton *m_sendMailButton;
