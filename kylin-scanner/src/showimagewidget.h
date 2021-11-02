@@ -6,13 +6,15 @@
 #include <QImage>
 #include <QMenu>
 #include <QAction>
+#include <QVBoxLayout>
 
 #include "globalsignal.h"
 #include "saneobject.h"
+#include "toolbarwidget.h"
 
 #define ShowImageWidgetMinimumSize QSize(387, 536)
 
-class ShowImageWidget : public QLabel
+class ShowImageWidget : public QWidget
 {
     Q_OBJECT
 public:
@@ -28,8 +30,6 @@ public slots:
 
     void showImageAfterClickedThumbnail(QString loadPath);
 
-signals:
-
 private:
 #if 0
     QMenu *m_imageMenu;
@@ -38,7 +38,9 @@ private:
 
     QImage *m_normalImage;
 
-
+    QLabel *m_showImage;
+    ToolBarWidget *m_toolbarWidget;
+    QVBoxLayout *m_mainVLayout;
 };
 
 #endif // SHOWIMAGEWIDGET_H

@@ -20,8 +20,8 @@
 LeftImageHandleSuccessPageWidget::LeftImageHandleSuccessPageWidget(QWidget *parent) : QWidget(parent),
     m_thumbnailWidget(new ThumbnailWidget()),
     m_showImageWidget(new ShowImageWidget()),
-    m_toolBarWidget(new ToolBarWidget()),
-    m_showImageAndToolBarVLayout(new QVBoxLayout()),
+    m_showOcrWidget (new showOcrWidget()),
+    m_showImageOrOcrStackWidget (new QStackedWidget),
     m_leftImageHandleSuccessPageHLayout(new QHBoxLayout)
 {
     setupGui();
@@ -33,25 +33,17 @@ void LeftImageHandleSuccessPageWidget::setupGui()
 {
     setMinimumSize(LeftImageHandleSuccessPageWidth, LeftImageHandleSuccessPageHeight);
 
-
-    m_showImageAndToolBarVLayout->setSpacing(0);
-    m_showImageAndToolBarVLayout->addSpacing(24);
-    m_showImageAndToolBarVLayout->addStretch();
-    m_showImageAndToolBarVLayout->addWidget(m_showImageWidget, 0, Qt::AlignCenter);
-    m_showImageAndToolBarVLayout->addSpacing(24);
-    m_showImageAndToolBarVLayout->addWidget(m_toolBarWidget, 0, Qt::AlignCenter);
-    m_showImageAndToolBarVLayout->addSpacing(16);
-    m_showImageAndToolBarVLayout->addStretch();
-    m_showImageAndToolBarVLayout->setContentsMargins(0, 0, 0, 0);
+    m_showImageOrOcrStackWidget->addWidget(m_showImageWidget);
+    m_showImageOrOcrStackWidget->addWidget(m_showOcrWidget);
+    m_showImageOrOcrStackWidget->setCurrentWidget(m_showImageWidget);
 
     m_leftImageHandleSuccessPageHLayout->setSpacing(0);
     m_leftImageHandleSuccessPageHLayout->addWidget(m_thumbnailWidget);
     m_leftImageHandleSuccessPageHLayout->addStretch();
-    m_leftImageHandleSuccessPageHLayout->addSpacing(111);
-    m_leftImageHandleSuccessPageHLayout->addLayout(m_showImageAndToolBarVLayout);
-    m_leftImageHandleSuccessPageHLayout->addSpacing(112);
+    m_leftImageHandleSuccessPageHLayout->addWidget(m_showImageOrOcrStackWidget);
     m_leftImageHandleSuccessPageHLayout->addStretch();
     m_leftImageHandleSuccessPageHLayout->setContentsMargins(0, 0, 0, 0);
+
 
     setLayout(m_leftImageHandleSuccessPageHLayout);
 

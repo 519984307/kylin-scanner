@@ -30,7 +30,6 @@
 #include <QObject>
 #include <QApplication>
 #include <QCoreApplication>
-#include <QDebug>
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusConnectionInterface>
 #include <QtDBus/QDBusMessage>
@@ -38,10 +37,11 @@
 #include <unistd.h>
 #include <sys/types.h>
 
+#include <ukui-log4qt.h>
+
 class KYCDaemonDbusObject : public QObject
 {
     Q_OBJECT
-    // 定义Interface名称为com.scorpio.test.value
     // Q_CLASSINFO("D-Bus Interface", "com.scorpio.test.value")
 public:
 

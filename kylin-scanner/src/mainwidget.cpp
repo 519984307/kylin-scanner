@@ -34,8 +34,6 @@ MainWidget::MainWidget(QWidget *parent)
     initGsettings();
 
     m_detectScanDevicesThread.start();
-
-
 }
 
 MainWidget::~MainWidget()

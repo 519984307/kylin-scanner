@@ -68,6 +68,7 @@ SOURCES += \
     src/scansettingswidget.cpp \
     src/sendmail.cpp \
     src/showimagewidget.cpp \
+    src/showocrwidget.cpp \
     src/singleapplication.cpp \
     src/successpagewidget.cpp \
     src/svghandler.cpp \
@@ -95,6 +96,7 @@ HEADERS += \
     src/scansettingswidget.h \
     src/sendmail.h \
     src/showimagewidget.h \
+    src/showocrwidget.h \
     src/singleapplication.h \
     src/successpagewidget.h \
     src/svghandler.h \

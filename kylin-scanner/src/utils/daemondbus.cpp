@@ -33,30 +33,25 @@ int KYCDaemonDbusObject::daemonIsNotRunning()
 
 void KYCDaemonDbusObject::showGuide(QString appName)
 {
-    qDebug() << Q_FUNC_INFO << appName;
+    KyInfo() << Q_FUNC_INFO << appName;
     bool bRet  = false;
 
     char service_name[SERVICE_NAME_SIZE];
     memset(service_name, 0, SERVICE_NAME_SIZE);
     snprintf(service_name, SERVICE_NAME_SIZE, "%s_%d", KYLIN_USER_GUIDE_SERVICE, getuid());
 
-    qDebug() << "service_name  " << service_name;
-    // 构造一个在D-Bus上传递的Message
+    KyInfo() << "service_name  " << service_name;
     QDBusMessage msg = QDBusMessage::createMethodCall(QString(service_name), KYLIN_USER_GUIDE_PATH,
                                                       KYLIN_USER_GUIDE_INTERFACE, "showGuide");
-    // 给QDBusMessage增加一个参数;
     msg << appName;
 
-    // 发送Message
     QDBusMessage response = QDBusConnection::sessionBus().call(msg);
-    // 判断Method是否被正确返回
     if (response.type() == QDBusMessage::ReplyMessage) {
-        // QDBusMessage的arguments不仅可以用来存储发送的参数，也用来存储返回值;
         //bRet = response.arguments().at(0).toBool();
-        qDebug() << "showGuide is success!\n";
+        KyInfo() << "showGuide is success!\n";
     } else {
-        qDebug() << "showGuide is fail!\n";
+        KyInfo() << "showGuide is fail!\n";
     }
 
-    qDebug() << "bRet:" << bRet;
+    KyInfo() << "bRet:" << bRet;
 }

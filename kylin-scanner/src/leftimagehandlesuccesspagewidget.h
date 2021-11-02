@@ -20,13 +20,15 @@
 
 #include "thumbnailwidget.h"
 #include "showimagewidget.h"
-#include "toolbarwidget.h"
+//#include "toolbarwidget.h"
+#include "showocrwidget.h"
 
 #include <QWidget>
-#include <QStackedLayout>
+#include <QStackedWidget>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QTextEdit>
 #include <QListView>
 #include <QListWidget>
 #include <QListWidgetItem>
@@ -44,14 +46,16 @@ public:
     void initConnect();
     void initSettings();
 
-
 private:
     ThumbnailWidget *m_thumbnailWidget;
-    ShowImageWidget *m_showImageWidget;
-    ToolBarWidget *m_toolBarWidget;
 
+    ShowImageWidget *m_showImageWidget;
+    showOcrWidget *m_showOcrWidget;
+    QStackedWidget *m_showImageOrOcrStackWidget;
     QVBoxLayout *m_showImageAndToolBarVLayout;
+
     QHBoxLayout *m_leftImageHandleSuccessPageHLayout;
+
 
 signals:
 
