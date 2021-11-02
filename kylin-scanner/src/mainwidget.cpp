@@ -19,6 +19,7 @@
 #include "mainwidget.h"
 #include <QMessageBox>
 #include <QWidgetList>
+#include <QPropertyAnimation>
 
 static bool isExited = false; //! exit scan thread
 
@@ -54,6 +55,12 @@ MainWidget::~MainWidget()
 
 void MainWidget::setupGui()
 {
+    QPropertyAnimation *animation = new QPropertyAnimation(this, "windowOpacity");
+    animation->setDuration(100);
+    animation->setStartValue(0);
+    animation->setEndValue(1);
+    animation->start();
+
     // Frosted glass effect, must before than XAtomHelper
     this->setProperty("useSystemStyleBlur", true);
     this->setAttribute(Qt::WA_TranslucentBackground, true);
@@ -104,7 +111,7 @@ void MainWidget::initConnect()
 
     connect(g_user_signal, &GlobalUserSignal::scanThreadFinishedSignal, this, &MainWidget::scanThreadFinishedSlot);
 
-    connect(g_user_signal, &GlobalUserSignal::showWatermarkDialogSignal, this, &MainWidget::showWatermarkDialogSlot);
+    connect(g_user_signal, &GlobalUserSignal::toolbarWatermarkOperationSignal, this, &MainWidget::showWatermarkDialogSlot);
 }
 
 void MainWidget::initGsettings()

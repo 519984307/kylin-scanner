@@ -116,12 +116,40 @@ void GlobalUserSignal::sendMailButtonClicked()
     emit sendMailButtonClickedSignal();
 }
 
-void GlobalUserSignal::showWatermarkDialog()
+void GlobalUserSignal::toolbarBeautyOperation()
 {
-    emit showWatermarkDialogSignal();
+    emit toolbarBeautyOperationSignal();
 }
 
+void GlobalUserSignal::toolbarRectifyOperation()
+{
+    emit toolbarRectifyOperationSignal();
+}
 
+void GlobalUserSignal::toolbarOcrOperation()
+{
+    emit toolbarOcrOperationSignal();
+}
+
+void GlobalUserSignal::toolbarCropOperation()
+{
+    emit toolbarCropOperationSignal();
+}
+
+void GlobalUserSignal::toolbarRotateOperation()
+{
+    emit toolbarRotateOperationSignal();
+}
+
+void GlobalUserSignal::toolbarMirrorOperation()
+{
+    emit toolbarMirrorOperationSignal();
+}
+
+void GlobalUserSignal::toolbarWatermarkOperation()
+{
+    emit toolbarWatermarkOperationSignal();
+}
 
 
 GlobalUserSignal::GlobalUserSignal(QObject *parent) : QObject(parent)

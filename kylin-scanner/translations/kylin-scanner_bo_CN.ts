@@ -71,42 +71,42 @@
 <context>
     <name>MainWidget</name>
     <message>
-        <location filename="../src/mainwidget.cpp" line="71"/>
+        <location filename="../src/mainwidget.cpp" line="78"/>
         <source>kylin-scanner</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="199"/>
+        <location filename="../src/mainwidget.cpp" line="206"/>
         <source>Scanner</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="202"/>
+        <location filename="../src/mainwidget.cpp" line="209"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="339"/>
+        <location filename="../src/mainwidget.cpp" line="346"/>
         <source>Single</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="374"/>
+        <location filename="../src/mainwidget.cpp" line="381"/>
         <source>Invalid argument, please change arguments or switch other scanners.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="376"/>
+        <location filename="../src/mainwidget.cpp" line="383"/>
         <source>Device busy, please wait or switch other scanners.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="378"/>
+        <location filename="../src/mainwidget.cpp" line="385"/>
         <source>Document feeder out of documents, please place papers and scan again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="380"/>
+        <location filename="../src/mainwidget.cpp" line="387"/>
         <source>Scan failed, please check your scanner or switch other scanners.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -380,7 +380,7 @@
     </message>
     <message>
         <location filename="../src/scansettingswidget.cpp" line="292"/>
-        <location filename="../src/scansettingswidget.cpp" line="449"/>
+        <location filename="../src/scansettingswidget.cpp" line="447"/>
         <source>Time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -406,7 +406,7 @@
     </message>
     <message>
         <location filename="../src/scansettingswidget.cpp" line="169"/>
-        <location filename="../src/scansettingswidget.cpp" line="520"/>
+        <location filename="../src/scansettingswidget.cpp" line="518"/>
         <source>Multiple</source>
         <translation type="unfinished"></translation>
     </message>
@@ -422,7 +422,7 @@
     </message>
     <message>
         <location filename="../src/scansettingswidget.cpp" line="193"/>
-        <location filename="../src/scansettingswidget.cpp" line="573"/>
+        <location filename="../src/scansettingswidget.cpp" line="571"/>
         <source>Color</source>
         <translation type="unfinished"></translation>
     </message>
@@ -462,18 +462,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="396"/>
+        <location filename="../src/scansettingswidget.cpp" line="395"/>
         <source>Save as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="492"/>
+        <location filename="../src/scansettingswidget.cpp" line="490"/>
         <source>No available scanners</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/scansettingswidget.cpp" line="172"/>
-        <location filename="../src/scansettingswidget.cpp" line="520"/>
+        <location filename="../src/scansettingswidget.cpp" line="518"/>
         <source>Single</source>
         <translation type="unfinished"></translation>
     </message>
@@ -513,88 +513,88 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="534"/>
+        <location filename="../src/scansettingswidget.cpp" line="532"/>
         <source>3s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="534"/>
+        <location filename="../src/scansettingswidget.cpp" line="532"/>
         <source>5s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="534"/>
+        <location filename="../src/scansettingswidget.cpp" line="532"/>
         <source>7s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="534"/>
+        <location filename="../src/scansettingswidget.cpp" line="532"/>
         <source>10s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="534"/>
+        <location filename="../src/scansettingswidget.cpp" line="532"/>
         <source>15s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="551"/>
+        <location filename="../src/scansettingswidget.cpp" line="549"/>
         <source>Flatbed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="551"/>
+        <location filename="../src/scansettingswidget.cpp" line="549"/>
         <source>ADF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="573"/>
+        <location filename="../src/scansettingswidget.cpp" line="571"/>
         <source>Gray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/scansettingswidget.cpp" line="195"/>
-        <location filename="../src/scansettingswidget.cpp" line="573"/>
+        <location filename="../src/scansettingswidget.cpp" line="571"/>
         <source>Lineart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="595"/>
+        <location filename="../src/scansettingswidget.cpp" line="593"/>
         <source>75 dpi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="595"/>
+        <location filename="../src/scansettingswidget.cpp" line="593"/>
         <source>100 dpi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="595"/>
+        <location filename="../src/scansettingswidget.cpp" line="593"/>
         <source>150 dpi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="615"/>
+        <location filename="../src/scansettingswidget.cpp" line="613"/>
         <source>A4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="615"/>
+        <location filename="../src/scansettingswidget.cpp" line="613"/>
         <source>A5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="856"/>
+        <location filename="../src/scansettingswidget.cpp" line="854"/>
         <source>Scanning images&apos;s length cannot be large than 252</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="869"/>
+        <location filename="../src/scansettingswidget.cpp" line="867"/>
         <source>Scanner</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="872"/>
+        <location filename="../src/scansettingswidget.cpp" line="870"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -602,32 +602,32 @@
 <context>
     <name>ScanThread</name>
     <message>
-        <location filename="../src/mainwidget.cpp" line="413"/>
+        <location filename="../src/mainwidget.cpp" line="432"/>
         <source>Multiple</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="436"/>
+        <location filename="../src/mainwidget.cpp" line="455"/>
         <source>3s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="439"/>
+        <location filename="../src/mainwidget.cpp" line="458"/>
         <source>5s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="442"/>
+        <location filename="../src/mainwidget.cpp" line="461"/>
         <source>7s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="445"/>
+        <location filename="../src/mainwidget.cpp" line="464"/>
         <source>10s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="448"/>
+        <location filename="../src/mainwidget.cpp" line="467"/>
         <source>15s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -635,28 +635,28 @@
 <context>
     <name>SendMailDialog</name>
     <message>
-        <location filename="../src/sendmail.cpp" line="210"/>
-        <location filename="../src/sendmail.cpp" line="234"/>
+        <location filename="../src/sendmail.cpp" line="226"/>
+        <location filename="../src/sendmail.cpp" line="250"/>
         <source>Select email client</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sendmail.cpp" line="216"/>
+        <location filename="../src/sendmail.cpp" line="232"/>
         <source>Scanner</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sendmail.cpp" line="219"/>
+        <location filename="../src/sendmail.cpp" line="235"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sendmail.cpp" line="248"/>
+        <location filename="../src/sendmail.cpp" line="264"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/sendmail.cpp" line="251"/>
+        <location filename="../src/sendmail.cpp" line="267"/>
         <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -722,6 +722,83 @@
     <message>
         <location filename="../src/titlebar/titlebar.cpp" line="89"/>
         <source>Restore</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ToolBarWidget</name>
+    <message>
+        <location filename="../src/toolbarwidget.cpp" line="32"/>
+        <source>Beauty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/toolbarwidget.cpp" line="36"/>
+        <source>Rectify</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/toolbarwidget.cpp" line="40"/>
+        <source>OCR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/toolbarwidget.cpp" line="46"/>
+        <source>Crop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/toolbarwidget.cpp" line="50"/>
+        <source>Rotate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/toolbarwidget.cpp" line="54"/>
+        <source>Mirror</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/toolbarwidget.cpp" line="58"/>
+        <source>Watermark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/toolbarwidget.cpp" line="73"/>
+        <source>ZoomIn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/toolbarwidget.cpp" line="69"/>
+        <source>ZoomOut</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WatermarkDialog</name>
+    <message>
+        <location filename="../src/watermarkdialog.cpp" line="30"/>
+        <location filename="../src/watermarkdialog.cpp" line="36"/>
+        <source>Scanner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/watermarkdialog.cpp" line="39"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/watermarkdialog.cpp" line="53"/>
+        <source>Add watermark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/watermarkdialog.cpp" line="69"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/watermarkdialog.cpp" line="72"/>
+        <source>Confirm</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

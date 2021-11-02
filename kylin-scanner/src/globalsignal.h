@@ -64,10 +64,22 @@ public:
 
     void sendMailButtonClicked();
 
-    void showWatermarkDialog();
+    void toolbarBeautyOperation();
+    void toolbarRectifyOperation();
+    void toolbarOcrOperation();
+    void toolbarCropOperation();
+    void toolbarRotateOperation();
+    void toolbarMirrorOperation();
+    void toolbarWatermarkOperation();
 
 signals:
-    void showWatermarkDialogSignal();
+    void toolbarBeautyOperationSignal();
+    void toolbarRectifyOperationSignal();
+    void toolbarOcrOperationSignal();
+    void toolbarCropOperationSignal();
+    void toolbarRotateOperationSignal();
+    void toolbarMirrorOperationSignal();
+    void toolbarWatermarkOperationSignal();
 
     void sendMailButtonClickedSignal();
 

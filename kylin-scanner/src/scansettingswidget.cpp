@@ -305,11 +305,19 @@ void ScanSettingsWidget::fontSizeChanged()
 
 void ScanSettingsWidget::themeChangedBlackSlot()
 {
+    m_scanButton->setStyleSheet("QPushButton{background: rgba(55, 144, 250, 1); border-radius: 6px;color:black;}"
+                                "QPushButton:hover{background: rgba(55, 144, 250, 0.8);border-radius: 6px; color:black;}"
+                                "QPushButton:pressed{background: rgba(36, 109, 212, 1);border-radius: 6px; color:black;}"
+                                );
 
 }
 
 void ScanSettingsWidget::themeChangedWhiteSlot()
 {
+    m_scanButton->setStyleSheet("QPushButton{background: rgba(55, 144, 250, 1); border-radius: 6px; color:white;}"
+                                "QPushButton:hover{background: rgba(55, 144, 250, 0.8);border-radius: 6px; color:white;}"
+                                "QPushButton:pressed{background: rgba(36, 109, 212, 1);border-radius: 6px; color:white;}"
+                                );
 }
 
 void ScanSettingsWidget::setupGui()
@@ -332,10 +340,6 @@ void ScanSettingsWidget::setupGui()
     m_scanButton->setLayout(scanButtonHLayout);
     m_scanButton->setFixedSize(ScanSettingsWidgetScanButtonSize);
     m_scanButton->setCursor(Qt::PointingHandCursor);
-    m_scanButton->setStyleSheet("QPushButton{background: rgba(55, 144, 250, 1); border-radius: 6px;}"
-                                "QPushButton:hover{background: rgba(55, 144, 250, 0.8);border-radius: 6px;}"
-                                "QPushButton:pressed{background: rgba(36, 109, 212, 1);border-radius: 6px;}"
-                                );
 
     m_deviceComboBox->setFixedSize(ScanSettingsWidgetComboboxSize);
 

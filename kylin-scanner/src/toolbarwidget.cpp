@@ -66,11 +66,11 @@ void ToolBarWidget::setupGui()
 
     m_zoomOutButton->setFixedSize(ToolBarWidgetZoomButtonSize);
     m_zoomOutButton->setIconSize(ToolBarWidgetZoomButtonSize);
-    m_zoomOutButton->setToolTip(tr("ZoomIn"));
+    m_zoomOutButton->setToolTip(tr("ZoomOut"));
 
     m_zoomInButton->setFixedSize(ToolBarWidgetZoomButtonSize);
     m_zoomInButton->setIconSize(ToolBarWidgetZoomButtonSize);
-    m_zoomInButton->setToolTip(tr("ZoomOut"));
+    m_zoomInButton->setToolTip(tr("ZoomIn"));
 
 
     m_mainHLayout->setSpacing(0);
@@ -245,30 +245,35 @@ void ToolBarWidget::themeChangedBlackSlot()
 
 void ToolBarWidget::beautyButtonClickedSlot()
 {
+    g_user_signal->toolbarBeautyOperation();
 }
 
 void ToolBarWidget::rectifyButtonClickedSlot()
 {
+    g_user_signal->toolbarRectifyOperation();
 }
 
 void ToolBarWidget::ocrButtonClickedSlot()
 {
+    g_user_signal->toolbarOcrOperation();
 }
 
 void ToolBarWidget::cropButtonClickedSlot()
 {
+    g_user_signal->toolbarCropOperation();
 }
 
 void ToolBarWidget::rotateButtonClickedSlot()
 {
+    g_user_signal->toolbarRotateOperation();
 }
 
 void ToolBarWidget::mirrorButtonClickedSlot()
 {
+    g_user_signal->toolbarMirrorOperation();
 }
 
 void ToolBarWidget::watermarkButtonClickedSlot()
 {
-
-    g_user_signal->showWatermarkDialog();
+    g_user_signal->toolbarWatermarkOperation();
 }
