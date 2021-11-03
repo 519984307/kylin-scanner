@@ -53,12 +53,6 @@ MainWidget::~MainWidget()
 
 void MainWidget::setupGui()
 {
-    QPropertyAnimation *animation = new QPropertyAnimation(this, "windowOpacity");
-    animation->setDuration(100);
-    animation->setStartValue(0);
-    animation->setEndValue(1);
-    animation->start();
-
     // Frosted glass effect, must before than XAtomHelper
     this->setProperty("useSystemStyleBlur", true);
     this->setAttribute(Qt::WA_TranslucentBackground, true);

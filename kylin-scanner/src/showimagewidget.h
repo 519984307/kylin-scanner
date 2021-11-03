@@ -6,6 +6,7 @@
 #include <QImage>
 #include <QMenu>
 #include <QAction>
+#include <QHBoxLayout>
 #include <QVBoxLayout>
 
 #include "globalsignal.h"
@@ -31,14 +32,12 @@ public slots:
     void showImageAfterClickedThumbnail(QString loadPath);
 
 private:
-#if 0
-    QMenu *m_imageMenu;
-    QAction *m_imageSaveAction;
-#endif
 
     QImage *m_normalImage;
 
     QLabel *m_showImage;
+    QHBoxLayout *m_showImageHLayout;
+
     ToolBarWidget *m_toolbarWidget;
     QVBoxLayout *m_mainVLayout;
 };

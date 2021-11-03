@@ -76,6 +76,8 @@ SOURCES += \
     src/thumbnailwidget.cpp \
     src/titlebar/titlebar.cpp \
     src/toolbarwidget.cpp \
+    src/usb.cpp \
+    src/usbhotplugthread.cpp \
     src/utils/daemondbus.cpp \
     src/utils/xatom-helper.cpp \
     src/watermarkdialog.cpp
@@ -104,6 +106,8 @@ HEADERS += \
     src/thumbnailwidget.h \
     src/titlebar/titlebar.h \
     src/toolbarwidget.h \
+    src/usb.h \
+    src/usbhotplugthread.h \
     src/utils/daemondbus.h \
     src/utils/xatom-helper.h \
     src/watermarkdialog.h
