@@ -20,8 +20,11 @@
 #include <QMessageBox>
 #include <QWidgetList>
 #include <QPropertyAnimation>
+#include <QTimer>
 
 static bool isExited = false; //! exit scan thread
+
+int const MainWidget::EXIT_CODE_REBOOT = -123456789;
 
 MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent),
@@ -220,6 +223,19 @@ void MainWidget::warnMsg(QString msg)
     }
 
     msgBox->exec();
+
+    QTimer* timer = new QTimer();
+    timer->start(1500);
+    timer->setSingleShot(true);
+
+    connect(timer, &QTimer::timeout, msgBox, &QMessageBox::hide);
+
+
+}
+
+void MainWidget::reboot()
+{
+    qApp->exit(EXIT_CODE_REBOOT);
 }
 
 void MainWidget::resizeEvent(QResizeEvent *event)
@@ -338,7 +354,14 @@ void MainWidget::detectScanDeviceThreadFinishedSlot(bool isDetected)
 void MainWidget::usbAddedOperationSlot(QString recvData)
 {
     KyInfo() << "device add";
+    QString msg = tr("There is a new scanner connect, please restart this application manually. ");
+    warnMsg(msg);
 
+    /// Think below:
+    /// whether we need judge this usb device is a scanner usb device,
+    /// or this method is perfect that we do not need to change ?
+    g_sane_object->saneExit();
+    m_detectScanDevicesThread.start();
 }
 
 void MainWidget::usbRemovedOperationSlot(QString recvData)
@@ -398,14 +421,19 @@ void MainWidget::usbRemovedOperationSlot(QString recvData)
 
                         if (!retStatus) {
                             warnMsg(msg);
-//                            resultDetail(retStatus);
+
+                            // Need this before detect devices again, because meet `Error during device I/O`,
+                            // which could crash this application.
+                            g_sane_object->saneExit();
+                            m_detectScanDevicesThread.start();
 
                             if (result.contains("No scanners were identified", Qt::CaseInsensitive)) {
                                 KyInfo() << "No scanners were identified.";
                                 // If not find any scan device
-                                m_displayWidget->showFailedPageSlot();
+//                                m_displayWidget->showFailedPageSlot();
                             }
                         }
+
                     }
                 }
             }

@@ -34,10 +34,11 @@ public:
 signals:
 
 public slots:
-    void updatePageNumber();
+    void updatePageNumberWhileScanning();
+    void updatePageNumberWhileStopScanning();
 
 private:
-    int m_pageNumber;
+    int m_pageNumber = 0;
     QString m_scanMsg;
 
     QLabel *m_titleLabel;

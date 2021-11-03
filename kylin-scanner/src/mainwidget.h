@@ -97,6 +97,10 @@ public:
     void transparencyChange();
     void warnMsg(QString msg);
 
+    void reboot();
+
+    static int const EXIT_CODE_REBOOT;
+
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;

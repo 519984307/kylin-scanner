@@ -140,6 +140,8 @@ static QString getAppVersion()
 
 int main(int argc, char *argv[])
 {
+    int exitCode = 0;
+
     initUkuiLog4qt("kylin-scanner");
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
@@ -205,7 +207,15 @@ int main(int argc, char *argv[])
         MainWidget w;
         app.w = &w;
         w.show();
-        return app.exec();
+
+        int exitCode = app.exec();
+#if 0
+        // For restart application
+        if (exitCode == MainWidget::EXIT_CODE_REBOOT) {
+            QProcess::startDetached(qApp->applicationFilePath(), QStringList());
+            return 0;
+        }
+#endif
+        return exitCode;
     }
-    return 0;
 }

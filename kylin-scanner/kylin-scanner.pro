@@ -64,6 +64,7 @@ SOURCES += \
     src/main.cpp \
     src/mainwidget.cpp \
     src/saneobject.cpp \
+    src/savefile.cpp \
     src/scandialog.cpp \
     src/scansettingswidget.cpp \
     src/sendmail.cpp \
@@ -94,6 +95,7 @@ HEADERS += \
     src/leftsuccesspagewidget.h \
     src/mainwidget.h \
     src/saneobject.h \
+    src/savefile.h \
     src/scandialog.h \
     src/scansettingswidget.h \
     src/sendmail.h \

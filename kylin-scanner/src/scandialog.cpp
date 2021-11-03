@@ -50,7 +50,7 @@ void ScanDialog::setupGui()
     m_iconLabel->setPixmap(QPixmap(":/scanIcon.svg"));
     m_iconLabel->setFixedSize(ScanDialogIconSize);
 
-    m_pageNumber = 1;
+    m_pageNumber = 0;
     m_scanMsg = tr("Number of pages being scanned: ") + QString::number(m_pageNumber);
     m_msgLabel->setText(m_scanMsg);
 
@@ -98,9 +98,8 @@ void ScanDialog::initConnect()
         g_user_signal->stopScanOperation();
     });
 
-    connect(g_user_signal, &GlobalUserSignal::scanThreadFinishedSignal, this, [=](){
-        updatePageNumber();
-    });
+    connect(g_user_signal, &GlobalUserSignal::scanThreadFinishedSignal, this, &ScanDialog::updatePageNumberWhileScanning);
+    connect(g_user_signal, &GlobalUserSignal::stopScanOperationSignal, this, &ScanDialog::updatePageNumberWhileStopScanning);
 
 
 }
@@ -125,8 +124,14 @@ void ScanDialog::setScanMsg(const QString &scanMsg)
     m_scanMsg = scanMsg;
 }
 
-void ScanDialog::updatePageNumber()
+void ScanDialog::updatePageNumberWhileScanning()
 {
+    m_pageNumber += 1;
     m_scanMsg = tr("Number of pages being scanned: ") + QString::number(m_pageNumber);
     m_msgLabel->setText(m_scanMsg);
+}
+
+void ScanDialog::updatePageNumberWhileStopScanning()
+{
+    m_pageNumber = 0;
 }

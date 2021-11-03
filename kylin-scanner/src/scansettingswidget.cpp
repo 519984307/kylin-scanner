@@ -773,18 +773,24 @@ void ScanSettingsWidget::updateSettingsStatusForEndScan(int saneStatus)
         m_sendMailButton->setEnabled(false);
         m_SaveAsButton->setEnabled(false);
     } else {
-        updateScanButtonSettings();
-        updatePageNumberSettings();
-        updateTimeSettings();
-        updateTypeSettings();
-        updateColorSettings();
-        updateResolutionSettings();
-        updateSizeSettings();
-        updateFormatSettings();
-        updateSaveNameTextSettings();
-        updateSaveDirectorySettings();
-        updateSendMailSettings();
-        updateSaveAsSettings();
+        bool saneStatusBool = true;
+        if (saneStatus == 0) {
+            saneStatusBool = true;
+        } else {
+            saneStatusBool = false;
+        }
+        m_scanButton->setEnabled(saneStatusBool);
+        m_pageNumberComboBox->setEnabled(saneStatusBool);
+        m_timeComboBox->setEnabled(saneStatusBool);
+        m_typeComboBox->setEnabled(saneStatusBool);
+        m_colorComboBox->setEnabled(saneStatusBool);
+        m_resolutionComboBox->setEnabled(saneStatusBool);
+        m_sizeComboBox->setEnabled(saneStatusBool);
+        m_formatComboBox->setEnabled(saneStatusBool);
+        m_saveNameEdit->setEnabled(saneStatusBool);
+        m_saveDirectoryButton->setEnabled(saneStatusBool);
+        m_sendMailButton->setEnabled(saneStatusBool);
+        m_SaveAsButton->setEnabled(saneStatusBool);
     }
 }
 
