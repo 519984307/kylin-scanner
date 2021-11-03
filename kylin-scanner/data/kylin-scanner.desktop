@@ -1,10 +1,13 @@
 [Desktop Entry]
 Name=Scanner
 Name[zh_CN]=扫描
+Name[bo_CN]=བཤར་འབེབས།
 GenericName=Scanner
 GenericName[zh_CN]=扫描
+GenericName[bo_CN]=བཤར་འབེབས།
 Comment=An interface-friendly scanner, which could be also used as one-click beautification, intelligent correction and text recognition tools.
 Comment[zh_CN]=一款可用于普通扫描、一键美化、智能纠偏和文字识别的界面友好扫描仪软件。
+Comment[bo_CN]=སྤྱིར་བཏང་གི་བཤར་འབེབས།མཐེབ་གཅིག་མཛེས་བཟོ།རིག་ནུས་ཡོ་འཁྱོག་དང་ཡི་གེ་དབྱེ་འབྱེད་་ལྡན་པའི་མཚམས་ངོས་མཛའ་མཐུན་གྱི་བཤར་འབེབས་མཉེན་ཆས་ཤིག
 Exec=kylin-scanner %U
 Icon=kylin-scanner
 Type=Application

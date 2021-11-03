@@ -34,6 +34,7 @@ MainWidget::MainWidget(QWidget *parent)
     initGsettings();
 
     m_detectScanDevicesThread.start();
+    m_usbHotplugThread.start();
 }
 
 MainWidget::~MainWidget()
@@ -97,6 +98,9 @@ void MainWidget::initConnect()
     connect(m_displayWidget, &DisplayWidget::detectScanDevicesSignal, this, &MainWidget::detectScanDevicesSlot, Qt::QueuedConnection);
 
     connect(&m_detectScanDevicesThread, &DetectScanDevicesThread::detectScanDevicesFinishedSignal, this, &MainWidget::detectScanDeviceThreadFinishedSlot);
+
+    connect(&m_usbHotplugThread, &UsbHotplugThread::usbAdd, this, &MainWidget::usbAddedOperationSlot);
+    connect(&m_usbHotplugThread, &UsbHotplugThread::usbRemove, this, &MainWidget::usbRemovedOperationSlot);
 
     connect(g_user_signal, &GlobalUserSignal::startScanOperationSignal, this, &MainWidget::startScanOperationSlot);
     connect(g_user_signal, &GlobalUserSignal::stopScanOperationSignal, this, &MainWidget::stopScanOperationSlot);
@@ -328,6 +332,86 @@ void MainWidget::detectScanDeviceThreadFinishedSlot(bool isDetected)
     } else {
         m_displayWidget->showFailedPageSlot();
     }
+
+}
+
+void MainWidget::usbAddedOperationSlot(QString recvData)
+{
+    KyInfo() << "device add";
+
+}
+
+void MainWidget::usbRemovedOperationSlot(QString recvData)
+{
+    KyInfo() << "USB Remove: " << recvData;
+    QProcess *scanList = new QProcess(this);
+    QStringList  argvList;
+    argvList.append("-L");
+    scanList->start("scanimage", argvList);
+    //connect(scanList, SIGNAL(finished(int), this,  SLOT(scanListResult(int));
+    connect(scanList, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+    [ = ](int exitCode, QProcess::ExitStatus exitStatus) {
+
+        KyInfo() << "USB Remove exitCode = " << exitCode
+                 << "exitStatus = " << exitStatus;
+
+        if (0 == exitCode) {
+            QString result = scanList->readAll();
+            KyInfo() << "result = " << result;
+
+            QStringList strListDevice;
+            strListDevice =g_sane_object->getSaneNames();
+            KyInfo() << "current sane names: " << strListDevice
+                     << "userInfo.name= " << g_sane_object->userInfo.name
+                     << "size = " << strListDevice.size();
+
+            for (int i = 0; i < strListDevice.size(); ++i) {
+                QString str = strListDevice.at(i).toLocal8Bit().constData();
+                KyInfo() << "i=" << i << "str = " << str;
+
+                if (str == tr("No available device")) {
+                    break;
+                }
+
+                /// There are two cases that we cannot find scanners throught `scanimage -L`:
+                /// case 1. no this scanner in system, which means this scanner has been disconnect
+                /// case 2. this scanner has been connect in kylin-scanner by sane_init
+                /// case 3. this scanner has been disconnet, but net or usb can be found CaseInsensitive, such as hp:Color LaserJet Pro MFP M281fdw
+                if (! result.contains(str, Qt::CaseSensitive)) {
+                    QString msg;
+                    bool retStatus;
+                    msg = tr("device ") + str + tr(" has been disconnect.");
+                    KyInfo() << "usbRemoved msg: " << msg
+                             << "userInfo.name = " << g_sane_object->userInfo.name
+                             << "str = " << str;
+
+                    if (g_sane_object->userInfo.name == str) {
+                        KyInfo() << "The user choose device: " << str << "has been disconnect!";
+                        // get argument again, because it cannot search using scanner while has opened it
+
+                        g_sane_object->openSaneDeviceForPage(i);
+                        QString currentOpenDeviceName = g_sane_object->openSaneName;
+                        msg = tr("device ") + currentOpenDeviceName + tr(" has been disconnect.");
+                        retStatus = g_sane_object->getSaneStatus();
+
+                        KyInfo() << "test scanning end, status = " << retStatus;
+
+                        if (!retStatus) {
+                            warnMsg(msg);
+//                            resultDetail(retStatus);
+
+                            if (result.contains("No scanners were identified", Qt::CaseInsensitive)) {
+                                KyInfo() << "No scanners were identified.";
+                                // If not find any scan device
+                                m_displayWidget->showFailedPageSlot();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
+
 }
 
 void MainWidget::startScanOperationSlot()

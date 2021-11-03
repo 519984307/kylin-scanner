@@ -147,6 +147,8 @@ public:
 
     int haveSourceFlag = 0;
 
+    QString openSaneName;
+
     QString loadFullScanFileName;
     bool haveScanSuccessImage = false;
 

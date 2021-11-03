@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
     }
     qt_trans_path = QLibraryInfo::location(QLibraryInfo::TranslationsPath); // /usr/share/qt5/translations
 
-    if (locale == "zh_CN") {
+    if (locale == "zh_CN" || locale == "bo_CN") {
         if(! app_trans.load("kylin-scanner_" + locale + ".qm", trans_path)){
             KyInfo() << "Load translation file："<< "kylin-scanner_" + locale + ".qm from" << trans_path << "failed!";
         } else {

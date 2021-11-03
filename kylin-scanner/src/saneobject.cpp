@@ -462,10 +462,27 @@ SANE_Status saneOpen(SANE_Device *device, SANE_Handle *sane_handle)
             << "vendor = " << device->vendor
             << "type = " << device->type;
 
+    // For usbRemoved
+    char name[512] = {0};
+    snprintf(name, 512, "%s %s", device->vendor, device->model);
+    g_sane_object->openSaneName = QString(name);
+
+    KyInfo() << "Open device name:  " <<g_sane_object->openSaneName;
+
+    /// Filter HP scanners: hpaio:/net/hp_laserjet_pro_mfp_m226dw?ip=192.168.195.5&queue=false
+    /// This scanner will `sane_open` not stop forever, so we reture error immediately
+    if (device->name) {
+        if (strstr(device->name, "hpaio:/net/hp_laserjet_pro_mfp_m226dw?ip=192")) {
+            KyInfo() << device->name << " cannot scan, so we just return SANE_STATUS_INVAL.";
+            return status;
+        }
+    }
 
     status = sane_open(device->name, sane_handle);
 
     if (status) {
+        /// status =  Error during device I/O: can be this scanner connected by usb is error,
+        /// so check usb connected.
         KyInfo() << "status = " << sane_strstatus(status);
     }
 

@@ -40,7 +40,6 @@ void ShowImageWidget::setupGui()
     m_mainVLayout->addSpacing(24);
     m_mainVLayout->addStretch();
     m_mainVLayout->addLayout(m_showImageHLayout);
-//    m_mainVLayout->addWidget(m_showImage, 0, Qt::AlignVCenter | Qt::AlignCenter);
     m_mainVLayout->addSpacing(24);
     m_mainVLayout->addWidget(m_toolbarWidget, 0, Qt::AlignVCenter | Qt::AlignCenter);
     m_mainVLayout->addSpacing(16);
@@ -48,8 +47,6 @@ void ShowImageWidget::setupGui()
     m_mainVLayout->setContentsMargins(0, 0, 0, 0);
 
     this->setLayout(m_mainVLayout);
-
-
 }
 
 void ShowImageWidget::initConnect()

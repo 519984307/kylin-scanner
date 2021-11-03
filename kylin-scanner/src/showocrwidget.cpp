@@ -36,7 +36,7 @@ void showOcrWidget::setupGui()
 
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &showOcrWidget::showScanLine);
-    timer->start(10);
+//    timer->start(10);
 }
 
 void showOcrWidget::initConnect()

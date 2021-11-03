@@ -19,6 +19,7 @@
 #define MainWidget_H
 
 #include <QScreen>
+#include <QStringList>
 #include <QApplication>
 #include <QBrush>
 #include <QColor>
@@ -51,6 +52,7 @@
 #include "globalsignal.h"
 
 #include "watermarkdialog.h"
+#include "usbhotplugthread.h"
 
 class ScanThread : public QThread
 {
@@ -112,6 +114,8 @@ private:
     QVBoxLayout *m_mainWidgetVLayout;
 
     DetectScanDevicesThread m_detectScanDevicesThread;
+    UsbHotplugThread m_usbHotplugThread;
+
     ScanThread m_scanThread;
     KYCAboutDialog *m_aboutDialog;
     ScanDialog *m_scanDialog;
@@ -125,6 +129,9 @@ public slots:
 
     void detectScanDevicesSlot();
     void detectScanDeviceThreadFinishedSlot(bool isDetected);
+
+    void usbAddedOperationSlot(QString recvData);
+    void usbRemovedOperationSlot(QString recvData);
 
     void startScanOperationSlot();
     void stopScanOperationSlot();
