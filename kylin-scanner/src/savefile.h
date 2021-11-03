@@ -24,6 +24,8 @@
 #include <QFileInfo>
 #include <QPoint>
 
+#include "saneobject.h"
+
 class SaveFileDialog : public QFileDialog
 {
     Q_OBJECT
@@ -37,8 +39,8 @@ public:
     QString getFileName();
     QString getFileType();
 
-    void kycSetDirectory(QString directory);
-    void kycSetFilename(QString filename);
+    void setSaveAsDirectory(QString directory);
+    void setFilename(QString filename);
 
 private:
     QString filetype;

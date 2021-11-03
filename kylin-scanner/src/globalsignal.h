@@ -62,6 +62,7 @@ public:
     void showImageAfterClickedThumbnail(QString loadPath);
     void updateSaveNameTextAfterScanSuccess();
 
+    void saveAsButtonClicked(QString filepath);
     void sendMailButtonClicked();
 
     void toolbarBeautyOperation();
@@ -72,7 +73,9 @@ public:
     void toolbarMirrorOperation();
     void toolbarWatermarkOperation();
 
+
 signals:
+
     void toolbarBeautyOperationSignal();
     void toolbarRectifyOperationSignal();
     void toolbarOcrOperationSignal();
@@ -82,6 +85,7 @@ signals:
     void toolbarWatermarkOperationSignal();
 
     void sendMailButtonClickedSignal();
+    void saveAsButtonClickedSignal(QString filepath);
 
     void updateSaveNameTextAfterScanSuccessSignal();
     void showImageAfterClickedThumbnailSignal(QString loadPath);

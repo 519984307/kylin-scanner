@@ -111,6 +111,11 @@ void GlobalUserSignal::updateSaveNameTextAfterScanSuccess()
     emit updateSaveNameTextAfterScanSuccessSignal();
 }
 
+void GlobalUserSignal::saveAsButtonClicked(QString filepath)
+{
+    emit saveAsButtonClickedSignal(filepath);
+}
+
 void GlobalUserSignal::sendMailButtonClicked()
 {
     emit sendMailButtonClickedSignal();

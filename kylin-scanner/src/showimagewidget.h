@@ -8,6 +8,9 @@
 #include <QAction>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QImage>
+#include <QFile>
+#include <QPdfWriter>
 
 #include "globalsignal.h"
 #include "saneobject.h"
@@ -26,13 +29,23 @@ public:
     void setupGui();
     void initConnect();
 
+//    int U(const char *str);
+    int toUnicode(QString str);
+    void setPdfSize(QPdfWriter *pdfWriter, QString size);
+    void saveToPdf(QImage img, QString pathname);
+
+    QImage *imageSave(QString filename);
+
 public slots:
     void showNormalImageAfterScan();
 
     void showImageAfterClickedThumbnail(QString loadPath);
 
+    void saveImage(QString filename);
+
 private:
 
+    QImage *m_editImage;
     QImage *m_normalImage;
 
     QLabel *m_showImage;

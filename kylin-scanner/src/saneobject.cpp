@@ -1723,7 +1723,8 @@ void SaneObject::setSaneResolutionByUser()
 
     KyInfo() << "resolution = " << resolution;
 
-    i_resolution = static_cast<SANE_Int>(getSaneResolutionByUser(resolution));
+    resolutionValue = getSaneResolutionByUser(resolution);
+    i_resolution = static_cast<SANE_Int>(resolutionValue);
 
     status = setOptionResolutions(g_sane_object->handle, i_resolution);
     if (status != SANE_STATUS_GOOD) {
@@ -1734,7 +1735,9 @@ void SaneObject::setSaneResolutionByUser()
 
 int SaneObject::getSaneResolutionByUser(QString resolution)
 {
-    if (QString::compare(resolution, tr("Auto"), Qt::CaseInsensitive) == 0) {
+    if (QString::compare(resolution, tr("Auto"), Qt::CaseInsensitive) == 0
+            || QString::compare(resolution, "自动", Qt::CaseInsensitive) == 0
+            || QString::compare(resolution, "Auto", Qt::CaseInsensitive) == 0) {
         return 300;
     } else if (QString::compare(resolution, tr("75 dpi"), Qt::CaseInsensitive) == 0) {
         return 75;
@@ -1849,7 +1852,18 @@ int SaneObject::startScanning(UserSelectedInfo info)
     setSaneAllParametersByUser();
 
     QString saveFullName = getFullScanFileNameExceptFormat();
-    loadFullScanFileName = saveFullName + QString(".pnm");
+    if (g_sane_object->scanPageNumber == 0) {
+        loadFullScanFileName = saveFullName + QString(".pnm");
+        saveFullScanFileName = saveFullName + QString(".") + g_sane_object->userInfo.format;
+    } else {
+        QString suffix = QString::number(g_sane_object->scanPageNumber);
+
+        loadFullScanFileName = saveFullName + QString("-") + suffix + QString(".pnm");
+        saveFullScanFileName = saveFullName + QString("-") + suffix + QString(".") + g_sane_object->userInfo.format;
+    }
+
+    KyInfo() << "loadFullScanFileName = " << loadFullScanFileName
+             << "saveFullScanFileName = " << saveFullScanFileName;
 
     KyInfo() << "Start scanning, please waiting ...";
     status = startSaneScan(g_sane_object->handle, loadFullScanFileName.toStdString().c_str());

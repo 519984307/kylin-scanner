@@ -22,6 +22,7 @@
 #include "saneobject.h"
 #include "globalsignal.h"
 #include "sendmail.h"
+#include "savefile.h"
 
 #include <QWidget>
 #include <QPaintEvent>
@@ -40,6 +41,9 @@
 #include <QFontMetrics>
 #include <QDir>
 #include <QStandardPaths>
+#include <QFile>
+#include <QPdfWriter>
+#include <QImage>
 
 #define ScanSettingsWidgetWidth  248
 #define ScanSettingsWidgetHeight 636
@@ -77,10 +81,16 @@ public:
     void updateSaveDirectorySettings();
     void updateSendMailSettings();
     void updateSaveAsSettings();
+    void updateSaveAsText();
     void updateSettingsForDetectDevices();
     void updateSettingsForSwitchDevices();
     void updateSettingsStatusForStartScan();
     void updateSettingsStatusForEndScan(int saneStatus);
+
+    int U(const char *str);
+    int toUnicode(QString str);
+    void setPdfSize(QPdfWriter *pdfWriter, QString size);
+    void saveToPdf(QImage img, QString pathname);
 
 
     void setLabelAttributes(QLabel *label, const QString &text);
@@ -113,6 +123,7 @@ public slots:
     void nameCurrentTextChangedSlot(QString text);
 
     void sendMailButtonClickedSlot();
+    void saveAsButtonClickedSlot();
 
     void scanButtonClickedSlot();
 

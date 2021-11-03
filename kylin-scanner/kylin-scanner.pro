@@ -55,6 +55,8 @@ DEFINES += QT_DEPRECATED_WARNINGS \
 
 SOURCES += \
     src/about/about.cpp \
+    src/beauty.cpp \
+    src/deskew.cpp \
     src/detectpagewidget.cpp \
     src/displaywidget.cpp \
     src/failedpagewidget.cpp \
@@ -85,6 +87,8 @@ SOURCES += \
 
 HEADERS += \
     src/about/about.h \
+    src/beauty.h \
+    src/deskew.h \
     src/detectpagewidget.h \
     src/displaywidget.h \
     src/failedpagewidget.h \

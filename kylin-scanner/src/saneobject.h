@@ -148,9 +148,15 @@ public:
     int haveSourceFlag = 0;
 
     QString openSaneName;
+    int scanPageNumber = 0;
+    int ocrFlag = 0;
 
+    int resolutionValue;
+    QString saveFullScanFileName;
     QString loadFullScanFileName;
     bool haveScanSuccessImage = false;
+
+    QString outText;
 
 
 private:

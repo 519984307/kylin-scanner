@@ -281,6 +281,109 @@ void ScanSettingsWidget::sendMailButtonClickedSlot()
     g_user_signal->sendMailButtonClicked();
 }
 
+void ScanSettingsWidget::saveAsButtonClickedSlot()
+{
+    QString filename;
+    QString filepath;
+    QString filetype;
+    QString msg;
+    QString titlename;
+    bool flagSave = false;
+
+    while (! flagSave) {
+        if (g_sane_object->ocrFlag == 1) {
+            if (m_saveNameEdit->text().endsWith(".txt")) {
+                filename = m_saveNameEdit->text();
+            } else {
+                filename = m_saveNameEdit->text() + ".txt";
+            }
+            titlename = tr("Store text");
+        } else {
+            if (m_saveNameEdit->text().endsWith(".jpg")
+                    || m_saveNameEdit->text().endsWith(".png")
+                    || m_saveNameEdit->text().endsWith(".bmp")
+                    || m_saveNameEdit->text().endsWith(".pdf")) {
+                filename = m_saveNameEdit->text();
+            } else {
+                filename = m_saveNameEdit->text() + "." + m_formatComboBox->currentText();
+            }
+            titlename = tr("Save as dialog");
+        }
+        filepath = currentSaveDirectory;
+
+        KyInfo() << "filepath = " << filepath;
+
+
+        QWidget *widget = nullptr;
+        QWidgetList widgetList = QApplication::allWidgets();
+        for (int i=0; i<widgetList.length(); ++i) {
+            if (widgetList.at(i)->objectName() == "MainWindow") {
+                widget = widgetList.at(i);
+            }
+        }
+
+        SaveFileDialog *saveDialog = new SaveFileDialog(widget, g_sane_object->ocrFlag, filename, titlename);
+
+        if (widget) {
+            QRect rect = widget->geometry();
+            int x = rect.x() + rect.width()/2 - saveDialog->width()/2;
+            int y = rect.y() + rect.height()/2 - saveDialog->height()/2;
+            saveDialog->move(x,y);
+        }
+
+        saveDialog->setSaveAsDirectory(filepath);
+
+        if (saveDialog->exec() == QFileDialog::Accepted) {
+            filepath = saveDialog->selectedFiles().at(0);
+            filename = saveDialog->getFileName();
+            KyInfo() << "filepath = " << filepath
+                     << "filename = " << filename;
+
+            if (filepath.isNull())
+                break;
+
+            if (filename.contains(QChar('/'), Qt::CaseInsensitive)) {
+                msg = tr("cannot contain '/' character.");
+                warnMsg(msg);
+                continue;
+            }
+            if (filename.startsWith(QChar('.'), Qt::CaseInsensitive)) {
+                msg = tr("cannot save as hidden file.");
+                warnMsg(msg);
+                continue;
+            }
+
+            // While not endsWith (".jpg" | ".png" | "pdf" | "bmp"),
+            // we neet add suffix behind.
+            if (g_sane_object->ocrFlag == 1) {
+                if (!filename.endsWith(".txt", Qt::CaseInsensitive)) {
+                    filetype = saveDialog->getFileType();
+                    filepath = filepath.append(filetype);
+                }
+            } else {
+                if (!filename.endsWith(".jpg", Qt::CaseInsensitive)
+                        && !filename.endsWith(".png", Qt::CaseInsensitive)
+                        && !filename.endsWith(".pdf", Qt::CaseInsensitive)
+                        && !filename.endsWith(".bmp", Qt::CaseInsensitive)) {
+
+                    filetype = saveDialog->getFileType();
+                    filepath = filepath.append(filetype);
+                }
+            }
+            flagSave = true;
+        } else {
+            flagSave = false;
+            return;
+        }
+    }
+
+    KyInfo() << "filepath = " << filepath;
+
+    if (flagSave) {
+        g_user_signal->saveAsButtonClicked(filepath);
+    }
+}
+
 void ScanSettingsWidget::scanButtonClickedSlot()
 {
     updateSettingsStatusForStartScan();
@@ -433,6 +536,7 @@ void ScanSettingsWidget::initConnect()
     connect(m_saveDirectoryButton, &QPushButton::clicked, this, &ScanSettingsWidget::selectSaveDirectorySlot);
 
     connect(m_sendMailButton, &QPushButton::clicked, this, &ScanSettingsWidget::sendMailButtonClickedSlot);
+    connect(m_SaveAsButton, &QPushButton::clicked, this, &ScanSettingsWidget::saveAsButtonClickedSlot);
 
 
     connect(g_user_signal, &GlobalUserSignal::fontSizeChangedSignal, this, &ScanSettingsWidget::fontSizeChanged);
@@ -679,6 +783,11 @@ void ScanSettingsWidget::updateSaveAsSettings()
 {
     bool saneStatus = g_sane_object->getSaneStatus();
     m_SaveAsButton->setEnabled(saneStatus);
+}
+
+void ScanSettingsWidget::updateSaveAsText()
+{
+
 }
 
 

@@ -447,6 +447,7 @@ void MainWidget::usbRemovedOperationSlot(QString recvData)
 
 void MainWidget::startScanOperationSlot()
 {
+    g_sane_object->ocrFlag = 0;
     m_scanThread.start();
 
     QString pageNumber = g_sane_object->userInfo.pageNumber;
@@ -535,6 +536,8 @@ void ScanThread::run()
     int sleepTime = 0;
     int ret = 0;
 
+    g_sane_object->scanPageNumber = 0;
+
     QString pageNumber = g_sane_object->userInfo.pageNumber;
     int retCompare = QString::compare(pageNumber, tr("Multiple"), Qt::CaseInsensitive);
 
@@ -557,9 +560,14 @@ void ScanThread::run()
             break;
         }
 
-        KyInfo() << "sleep time: " << sleepTime;
+        KyInfo() << "start sleep time: " << sleepTime;
         sleep(sleepTime);
-        KyInfo() << "sleep end.";
+
+        g_sane_object->scanPageNumber += 1;
+
+        KyInfo() << "sleep end."
+                 << "scanPageNumber = " << g_sane_object->scanPageNumber;
+
     } while ((sleepTime != 0) && (! isExited));
 }
 

@@ -89,18 +89,19 @@ void ScanDialog::initConnect()
     });
 
     connect(m_closeButton, &QPushButton::clicked, this, [=](){
-        this->reject();
+        this->hide();
         g_user_signal->stopScanOperation();
+        this->reject();
     });
 
     connect(m_cancelButton, &QPushButton::clicked, this, [=]{
-        this->reject();
+        this->hide();
         g_user_signal->stopScanOperation();
+        this->reject();
     });
 
     connect(g_user_signal, &GlobalUserSignal::scanThreadFinishedSignal, this, &ScanDialog::updatePageNumberWhileScanning);
     connect(g_user_signal, &GlobalUserSignal::stopScanOperationSignal, this, &ScanDialog::updatePageNumberWhileStopScanning);
-
 
 }
 

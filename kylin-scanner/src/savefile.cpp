@@ -123,12 +123,12 @@ QString SaveFileDialog::getFileType()
     return filetype;
 }
 
-void SaveFileDialog::kycSetDirectory(QString directory)
+void SaveFileDialog::setSaveAsDirectory(QString directory)
 {
-    setDirectory(directory);
+    this->setDirectory(directory);
 }
 
-void SaveFileDialog::kycSetFilename(QString filename)
+void SaveFileDialog::setFilename(QString filename)
 {
     this->initFilename = filename;
 }
