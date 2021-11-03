@@ -545,7 +545,14 @@ void ScanThread::run()
         ret = g_sane_object->startScanning(g_sane_object->userInfo);
         KyInfo() << "start_scanning end, status = " << ret;
 
+        int saneStatus = ret;
+
         g_user_signal->scanThreadFinished(ret);
+
+        if (saneStatus != SANE_STATUS_GOOD) {
+            // Avoid duplicate scan in multiple scanning while meet error
+            break;
+        }
 
         KyInfo() << "sleep time: " << sleepTime;
         sleep(sleepTime);

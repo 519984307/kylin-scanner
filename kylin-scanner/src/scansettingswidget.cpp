@@ -167,6 +167,9 @@ void ScanSettingsWidget::pageNumberCurrentTextChangedSlot(QString text)
     if (text.compare("Multiple", Qt::CaseInsensitive) == 0
             || text.compare("多页扫描", Qt::CaseInsensitive) == 0) {
         g_sane_object->userInfo.pageNumber = tr("Multiple");
+
+        // Avoid SANE_STATUS_NO_DOC Error to set time not enable.
+        g_sane_object->setSaneStatus(true);
         showTimeRow();
     } else {
         g_sane_object->userInfo.pageNumber = tr("Single");
