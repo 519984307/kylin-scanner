@@ -152,64 +152,68 @@
 <context>
     <name>MainWidget</name>
     <message>
-        <location filename="../src/mainwidget.cpp" line="72"/>
+        <location filename="../src/mainwidget.cpp" line="74"/>
         <source>kylin-scanner</source>
         <translation>麒麟扫描</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="203"/>
+        <location filename="../src/mainwidget.cpp" line="205"/>
         <source>Scanner</source>
         <translation>扫描</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="206"/>
+        <location filename="../src/mainwidget.cpp" line="208"/>
         <source>Yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="350"/>
         <source>There is a new scanner connect, please restart this application manually. </source>
-        <translation>存在新设备连接，请手动重启应用使用该新设备。</translation>
+        <translation type="vanished">存在新设备连接，请手动重启应用使用该新设备。</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="383"/>
+        <location filename="../src/mainwidget.cpp" line="357"/>
+        <source>There is a new scanner connect, redetect all scanners, please wait a moment. </source>
+        <translation>存在新设备连接，正在重新检测所有扫描设备，请稍等。</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwidget.cpp" line="395"/>
         <source>No available device</source>
         <translation>无可用设备</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="394"/>
-        <location filename="../src/mainwidget.cpp" line="405"/>
+        <location filename="../src/mainwidget.cpp" line="406"/>
+        <location filename="../src/mainwidget.cpp" line="417"/>
         <source>device </source>
         <translation>设备 </translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="394"/>
-        <location filename="../src/mainwidget.cpp" line="405"/>
+        <location filename="../src/mainwidget.cpp" line="406"/>
+        <location filename="../src/mainwidget.cpp" line="417"/>
         <source> has been disconnect.</source>
         <translation> 已经断开连接！</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="433"/>
+        <location filename="../src/mainwidget.cpp" line="450"/>
         <source>Single</source>
         <translation>单页扫描</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="468"/>
+        <location filename="../src/mainwidget.cpp" line="485"/>
         <source>Invalid argument, please change arguments or switch other scanners.</source>
         <translation>非法参数，请更改扫描参数或切换到其他扫描仪。</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="470"/>
+        <location filename="../src/mainwidget.cpp" line="487"/>
         <source>Device busy, please wait or switch other scanners.</source>
         <translation>设备正忙，请耐心等待或切换到其他扫描仪。</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="472"/>
+        <location filename="../src/mainwidget.cpp" line="489"/>
         <source>Document feeder out of documents, please place papers and scan again.</source>
         <translation>扫描件为空，请放置扫描件重新扫描。</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="474"/>
+        <location filename="../src/mainwidget.cpp" line="491"/>
         <source>Scan failed, please check your scanner or switch other scanners.</source>
         <translation>扫描失败，请检查当前扫描仪连接或切换到其他扫描仪。</translation>
     </message>
@@ -477,7 +481,7 @@
         <location filename="../src/scandialog.cpp" line="54"/>
         <location filename="../src/scandialog.cpp" line="130"/>
         <source>Number of pages being scanned: </source>
-        <translation>已经扫描页数：</translation>
+        <translation>正在扫描页数：</translation>
     </message>
     <message>
         <location filename="../src/scandialog.cpp" line="63"/>
@@ -488,28 +492,28 @@
 <context>
     <name>ScanSettingsWidget</name>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="332"/>
+        <location filename="../src/scansettingswidget.cpp" line="335"/>
         <source>Begin Scan</source>
         <translation>开始扫描</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="346"/>
+        <location filename="../src/scansettingswidget.cpp" line="349"/>
         <source>Scanner device</source>
         <translation>扫描仪设备</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="292"/>
-        <location filename="../src/scansettingswidget.cpp" line="451"/>
+        <location filename="../src/scansettingswidget.cpp" line="295"/>
+        <location filename="../src/scansettingswidget.cpp" line="454"/>
         <source>Time</source>
         <translation>延时</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="358"/>
+        <location filename="../src/scansettingswidget.cpp" line="361"/>
         <source>File settings</source>
         <translation>文件预设</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="290"/>
+        <location filename="../src/scansettingswidget.cpp" line="293"/>
         <source>Device</source>
         <translation>设备</translation>
     </message>
@@ -525,58 +529,58 @@
     </message>
     <message>
         <location filename="../src/scansettingswidget.cpp" line="169"/>
-        <location filename="../src/scansettingswidget.cpp" line="522"/>
+        <location filename="../src/scansettingswidget.cpp" line="525"/>
         <source>Multiple</source>
         <translation>多页扫描</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="291"/>
+        <location filename="../src/scansettingswidget.cpp" line="294"/>
         <source>Pages</source>
         <translation>页数</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="293"/>
+        <location filename="../src/scansettingswidget.cpp" line="296"/>
         <source>Type</source>
         <translation>类型</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="193"/>
-        <location filename="../src/scansettingswidget.cpp" line="575"/>
+        <location filename="../src/scansettingswidget.cpp" line="196"/>
+        <location filename="../src/scansettingswidget.cpp" line="578"/>
         <source>Color</source>
         <translation>彩色</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="295"/>
+        <location filename="../src/scansettingswidget.cpp" line="298"/>
         <source>Resolution</source>
         <translation>分辨率</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="296"/>
+        <location filename="../src/scansettingswidget.cpp" line="299"/>
         <source>Size</source>
         <translation>尺寸</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="297"/>
+        <location filename="../src/scansettingswidget.cpp" line="300"/>
         <source>Format</source>
         <translation>格式</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="298"/>
+        <location filename="../src/scansettingswidget.cpp" line="301"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="364"/>
+        <location filename="../src/scansettingswidget.cpp" line="367"/>
         <source>scanner01</source>
         <translation>scanner01</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="299"/>
+        <location filename="../src/scansettingswidget.cpp" line="302"/>
         <source>Save</source>
         <translation>扫描至</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="302"/>
+        <location filename="../src/scansettingswidget.cpp" line="305"/>
         <source>Mail to</source>
         <translation>发送邮件</translation>
     </message>
@@ -585,139 +589,139 @@
         <translation type="vanished">发送至邮箱</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="399"/>
+        <location filename="../src/scansettingswidget.cpp" line="402"/>
         <source>Save as</source>
         <translation>另存为</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="494"/>
+        <location filename="../src/scansettingswidget.cpp" line="497"/>
         <source>No available scanners</source>
         <translation>无可用设备</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="172"/>
-        <location filename="../src/scansettingswidget.cpp" line="522"/>
+        <location filename="../src/scansettingswidget.cpp" line="175"/>
+        <location filename="../src/scansettingswidget.cpp" line="525"/>
         <source>Single</source>
         <translation>单页扫描</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="206"/>
+        <location filename="../src/scansettingswidget.cpp" line="209"/>
         <source>4800 dpi</source>
         <translation>4800 dpi</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="207"/>
+        <location filename="../src/scansettingswidget.cpp" line="210"/>
         <source>2400 dpi</source>
         <translation>2400 dpi</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="208"/>
+        <location filename="../src/scansettingswidget.cpp" line="211"/>
         <source>1200 dpi</source>
         <translation>1200 dpi</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="210"/>
+        <location filename="../src/scansettingswidget.cpp" line="213"/>
         <source>This resolution will take a loog time to scan, please choose carelly.</source>
         <translation>该分辨率将会花费很长时间扫描，请谨慎选择！</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="235"/>
+        <location filename="../src/scansettingswidget.cpp" line="238"/>
         <source>cannot contain &apos;/&apos; character.</source>
         <translation>不能包含字符 / 。</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="241"/>
+        <location filename="../src/scansettingswidget.cpp" line="244"/>
         <source>cannot save as hidden file.</source>
         <translation>不能存为隐藏文件。</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="294"/>
+        <location filename="../src/scansettingswidget.cpp" line="297"/>
         <source>Colour</source>
         <translation>颜色</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="536"/>
+        <location filename="../src/scansettingswidget.cpp" line="539"/>
         <source>3s</source>
         <translation>3 秒</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="536"/>
+        <location filename="../src/scansettingswidget.cpp" line="539"/>
         <source>5s</source>
         <translation>5 秒</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="536"/>
+        <location filename="../src/scansettingswidget.cpp" line="539"/>
         <source>7s</source>
         <translation>7 秒</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="536"/>
+        <location filename="../src/scansettingswidget.cpp" line="539"/>
         <source>10s</source>
         <translation>10 秒</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="536"/>
+        <location filename="../src/scansettingswidget.cpp" line="539"/>
         <source>15s</source>
         <translation>15 秒</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="553"/>
+        <location filename="../src/scansettingswidget.cpp" line="556"/>
         <source>Flatbed</source>
         <translation>平板式</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="553"/>
+        <location filename="../src/scansettingswidget.cpp" line="556"/>
         <source>ADF</source>
         <translation>馈纸式</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="575"/>
+        <location filename="../src/scansettingswidget.cpp" line="578"/>
         <source>Gray</source>
         <translation>灰度</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="195"/>
-        <location filename="../src/scansettingswidget.cpp" line="575"/>
+        <location filename="../src/scansettingswidget.cpp" line="198"/>
+        <location filename="../src/scansettingswidget.cpp" line="578"/>
         <source>Lineart</source>
         <translation>黑白</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="597"/>
+        <location filename="../src/scansettingswidget.cpp" line="600"/>
         <source>75 dpi</source>
         <translation>75 dpi</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="597"/>
+        <location filename="../src/scansettingswidget.cpp" line="600"/>
         <source>100 dpi</source>
         <translation>100 dpi</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="597"/>
+        <location filename="../src/scansettingswidget.cpp" line="600"/>
         <source>150 dpi</source>
         <translation>150 dpi</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="617"/>
+        <location filename="../src/scansettingswidget.cpp" line="620"/>
         <source>A4</source>
         <translation>A4</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="617"/>
+        <location filename="../src/scansettingswidget.cpp" line="620"/>
         <source>A5</source>
         <translation>A5</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="858"/>
+        <location filename="../src/scansettingswidget.cpp" line="867"/>
         <source>Scanning images&apos;s length cannot be large than 252</source>
         <translation>扫描文档名称的长度不能超过252。</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="871"/>
+        <location filename="../src/scansettingswidget.cpp" line="880"/>
         <source>Scanner</source>
         <translation>扫描</translation>
     </message>
     <message>
-        <location filename="../src/scansettingswidget.cpp" line="874"/>
+        <location filename="../src/scansettingswidget.cpp" line="883"/>
         <source>Yes</source>
         <translation>是</translation>
     </message>
@@ -725,32 +729,32 @@
 <context>
     <name>ScanThread</name>
     <message>
-        <location filename="../src/mainwidget.cpp" line="519"/>
+        <location filename="../src/mainwidget.cpp" line="536"/>
         <source>Multiple</source>
         <translation>多页扫描</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="542"/>
+        <location filename="../src/mainwidget.cpp" line="566"/>
         <source>3s</source>
         <translation>3 秒</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="545"/>
+        <location filename="../src/mainwidget.cpp" line="569"/>
         <source>5s</source>
         <translation>5 秒</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="548"/>
+        <location filename="../src/mainwidget.cpp" line="572"/>
         <source>7s</source>
         <translation>7 秒</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="551"/>
+        <location filename="../src/mainwidget.cpp" line="575"/>
         <source>10s</source>
         <translation>10 秒</translation>
     </message>
     <message>
-        <location filename="../src/mainwidget.cpp" line="554"/>
+        <location filename="../src/mainwidget.cpp" line="578"/>
         <source>15s</source>
         <translation>15 秒</translation>
     </message>

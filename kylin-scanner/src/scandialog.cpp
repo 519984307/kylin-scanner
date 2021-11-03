@@ -50,7 +50,7 @@ void ScanDialog::setupGui()
     m_iconLabel->setPixmap(QPixmap(":/scanIcon.svg"));
     m_iconLabel->setFixedSize(ScanDialogIconSize);
 
-    m_pageNumber = 0;
+    m_pageNumber = 1;
     m_scanMsg = tr("Number of pages being scanned: ") + QString::number(m_pageNumber);
     m_msgLabel->setText(m_scanMsg);
 
@@ -133,5 +133,5 @@ void ScanDialog::updatePageNumberWhileScanning()
 
 void ScanDialog::updatePageNumberWhileStopScanning()
 {
-    m_pageNumber = 0;
+    m_pageNumber = 1;
 }

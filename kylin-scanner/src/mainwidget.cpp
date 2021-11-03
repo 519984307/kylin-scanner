@@ -353,25 +353,28 @@ void MainWidget::detectScanDeviceThreadFinishedSlot(bool isDetected)
 
 void MainWidget::usbAddedOperationSlot(QString recvData)
 {
-    KyInfo() << "device add";
-    QString msg = tr("There is a new scanner connect, please restart this application manually. ");
-    warnMsg(msg);
+    KyInfo() << "USB Add: " << recvData;
 
     /// Think below:
     /// whether we need judge this usb device is a scanner usb device,
     /// or this method is perfect that we do not need to change ?
     g_sane_object->saneExit();
     m_detectScanDevicesThread.start();
+
+    KyInfo() << "device add";
+    QString msg = tr("There is a new scanner connect, redetect all scanners, please wait a moment. ");
+    warnMsg(msg);
 }
 
 void MainWidget::usbRemovedOperationSlot(QString recvData)
 {
     KyInfo() << "USB Remove: " << recvData;
+
     QProcess *scanList = new QProcess(this);
     QStringList  argvList;
     argvList.append("-L");
     scanList->start("scanimage", argvList);
-    //connect(scanList, SIGNAL(finished(int), this,  SLOT(scanListResult(int));
+
     connect(scanList, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
     [ = ](int exitCode, QProcess::ExitStatus exitStatus) {
 

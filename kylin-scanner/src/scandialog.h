@@ -38,7 +38,7 @@ public slots:
     void updatePageNumberWhileStopScanning();
 
 private:
-    int m_pageNumber = 0;
+    int m_pageNumber = 1;
     QString m_scanMsg;
 
     QLabel *m_titleLabel;
