@@ -53,6 +53,11 @@ MainWidget::~MainWidget()
         m_scanThread.wait();
         m_scanThread.quit();
     }
+
+    if (m_usbHotplugThread.isRunning()) {
+        m_usbHotplugThread.wait();
+        m_usbHotplugThread.quit();
+    }
 }
 
 void MainWidget::setupGui()
@@ -110,7 +115,6 @@ void MainWidget::initConnect()
 
     connect(g_user_signal, &GlobalUserSignal::scanThreadFinishedSignal, this, &MainWidget::scanThreadFinishedSlot);
 
-    connect(g_user_signal, &GlobalUserSignal::toolbarWatermarkOperationSignal, this, &MainWidget::showWatermarkDialogSlot);
 }
 
 void MainWidget::initGsettings()
@@ -501,18 +505,6 @@ void MainWidget::scanThreadFinishedSlot(int saneStatus)
         g_user_signal->scanThreadFinishedImageLoad();
 
     }
-}
-
-void MainWidget::showWatermarkDialogSlot()
-{
-    m_watermarkDialog = new WatermarkDialog(this);
-
-    QPoint globalPos = this->mapToGlobal(QPoint(0, 0));
-    m_watermarkDialog->move(globalPos.x() + (this->width() - m_watermarkDialog->width())/2,
-                        globalPos.y() + (this->height() - m_watermarkDialog->height())/2);
-
-    m_watermarkDialog->exec();
-
 }
 
 

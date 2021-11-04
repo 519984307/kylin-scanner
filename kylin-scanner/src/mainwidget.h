@@ -51,7 +51,6 @@
 #include "titlebar/titlebar.h"
 #include "globalsignal.h"
 
-#include "watermarkdialog.h"
 #include "usbhotplugthread.h"
 
 class ScanThread : public QThread
@@ -141,8 +140,6 @@ public slots:
     void stopScanOperationSlot();
     void showScanDialogSlot();
     void scanThreadFinishedSlot(int saneStatus);
-
-    void showWatermarkDialogSlot();
 
 };
 #endif // MainWidget_H

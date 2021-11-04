@@ -3,6 +3,8 @@
 
 #include "globalsignal.h"
 #include "svghandler.h"
+#include "saneobject.h"
+
 #include <ukui-log4qt.h>
 
 #include <QWidget>
@@ -52,6 +54,8 @@ protected:
 public slots:
     void themeChangedWhiteSlot();
     void themeChangedBlackSlot();
+
+    void percentageChangedSlot();
 
     void beautyButtonClickedSlot();
     void rectifyButtonClickedSlot();

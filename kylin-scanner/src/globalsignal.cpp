@@ -170,6 +170,11 @@ void GlobalUserSignal::toolbarZoominOperation()
     emit toolbarZoominOperationSignal();
 }
 
+void GlobalUserSignal::toolbarPercentageChanged()
+{
+    emit toolbarPercentageChangedSignel();
+}
+
 void GlobalUserSignal::stopOcrTimer()
 {
     emit stopOcrTimerSignal();

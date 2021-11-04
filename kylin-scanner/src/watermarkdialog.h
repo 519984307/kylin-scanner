@@ -37,6 +37,8 @@ public:
     void initLayout();
     void initConnect();
 
+    QString getLineEditText();
+
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 

@@ -150,6 +150,7 @@ public:
     QString openSaneName;
     int scanPageNumber = 0;
     int ocrFlag = 0;
+    int cropFlag = 0;
 
     int resolutionValue;
 
@@ -159,6 +160,8 @@ public:
     bool haveScanSuccessImage = false;
 
     QString ocrOutputText;
+
+    QString percentage = "100%";
 
 
 private:

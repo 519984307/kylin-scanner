@@ -75,6 +75,7 @@ public:
     void toolbarWatermarkOperation();
     void toolbarZoomoutOperation();
     void toolbarZoominOperation();
+    void toolbarPercentageChanged();
 
     void stopOcrTimer();
 
@@ -83,6 +84,7 @@ signals:
 
     void stopOcrTimerSignal();
 
+    void toolbarPercentageChangedSignel();
     void toolbarZoominOperationSignal();
     void toolbarZoomoutOperationSignal();
     void toolbarBeautyOperationSignal();

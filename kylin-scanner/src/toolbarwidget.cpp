@@ -125,6 +125,8 @@ void ToolBarWidget::initConnect()
     connect(g_user_signal, &GlobalUserSignal::themeChangedBlackSignal, this, &ToolBarWidget::themeChangedBlackSlot);
     connect(g_user_signal, &GlobalUserSignal::themeChangedWhiteSignal, this, &ToolBarWidget::themeChangedWhiteSlot);
 
+    connect(g_user_signal, &GlobalUserSignal::toolbarPercentageChangedSignel, this, &ToolBarWidget::percentageChangedSlot);
+
     connect(m_beautyButton, &QPushButton::clicked, this, &ToolBarWidget::beautyButtonClickedSlot);
     connect(m_rectifyButton, &QPushButton::clicked, this, &ToolBarWidget::rectifyButtonClickedSlot);
     connect(m_ocrButton, &QPushButton::clicked, this, &ToolBarWidget::ocrButtonClickedSlot);
@@ -266,6 +268,13 @@ void ToolBarWidget::themeChangedBlackSlot()
     m_percentageLabel->setStyleSheet("width: 32px; height: 18px; color: #D9D9D9;");
     m_zoomInButton->setStyleSheet("background: #373738; box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15); border-radius: 10px;");
 
+}
+
+void ToolBarWidget::percentageChangedSlot()
+{
+    KyInfo() << "percentage = " << g_sane_object->percentage;
+
+    m_percentageLabel->setText(g_sane_object->percentage);
 }
 
 void ToolBarWidget::beautyButtonClickedSlot()

@@ -2,7 +2,10 @@
 #define SHOWIMAGEWIDGET_H
 
 #include <QWidget>
+#include <QWidgetList>
+#include <QStackedWidget>
 #include <QLabel>
+#include <QPainter>
 #include <QImage>
 #include <QMenu>
 #include <QAction>
@@ -14,10 +17,13 @@
 #include <QResizeEvent>
 #include <QKeyEvent>
 #include <QStack>
+#include <QMatrix>
 
 #include "globalsignal.h"
 #include "saneobject.h"
 #include "toolbarwidget.h"
+#include "watermarkdialog.h"
+#include "crop.h"
 
 #define ShowImageWidgetMinimumSize QSize(387, 536)
 
@@ -38,8 +44,12 @@ public:
 
     QImage *imageSave(QString filename);
 
+    QString setPixmapScaled(QImage img, QLabel *lab);
+
+    void setPixmapScaledByProportion(double scaledNumber);
+
 protected:
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+//    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 
 public slots:
@@ -49,17 +59,29 @@ public slots:
 
     void saveImage(QString filename);
 
+    void cropSlot();
+    void rotateSlot();
+    void mirrorSlot();
+    void watermarkSlot();
+    void zoomoutNormalImage();
+    void zoominNormalImage();
+
 private:
     QStack<QImage> m_imageStack;
+    double proportion = 1.0;
 
+    QImage *m_stackImage;
     QImage *m_editImage;
     QImage *m_normalImage;
 
     QLabel *m_showImageLabel;
+    CropLabel *m_cropLabel;
+    QStackedWidget *m_showImageAndCropWidget;
     QHBoxLayout *m_showImageHLayout;
 
     ToolBarWidget *m_toolbarWidget;
     QVBoxLayout *m_mainVLayout;
+
 };
 
 #endif // SHOWIMAGEWIDGET_H

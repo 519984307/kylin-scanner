@@ -98,6 +98,11 @@ void WatermarkDialog::initConnect()
 
 }
 
+QString WatermarkDialog::getLineEditText()
+{
+    return m_watermarkLineEdit->text();
+}
+
 void WatermarkDialog::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
