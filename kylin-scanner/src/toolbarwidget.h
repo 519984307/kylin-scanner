@@ -45,6 +45,9 @@ signals:
 protected:
     void paintEvent(QPaintEvent *event) override;
 
+    void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
+    void keyReleaseEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
+
 
 public slots:
     void themeChangedWhiteSlot();
@@ -57,6 +60,8 @@ public slots:
     void rotateButtonClickedSlot();
     void mirrorButtonClickedSlot();
     void watermarkButtonClickedSlot();
+    void zoomoutButtonClickedSlot();
+    void zoominButtonClickedSlot();
 
 private:
 

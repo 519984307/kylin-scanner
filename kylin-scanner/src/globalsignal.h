@@ -67,18 +67,28 @@ public:
 
     void toolbarBeautyOperation();
     void toolbarRectifyOperation();
-    void toolbarOcrOperation();
+    void toolbarOcrOperationStart();
+    void toolbarOcrOperationStop();
     void toolbarCropOperation();
     void toolbarRotateOperation();
     void toolbarMirrorOperation();
     void toolbarWatermarkOperation();
+    void toolbarZoomoutOperation();
+    void toolbarZoominOperation();
+
+    void stopOcrTimer();
 
 
 signals:
 
+    void stopOcrTimerSignal();
+
+    void toolbarZoominOperationSignal();
+    void toolbarZoomoutOperationSignal();
     void toolbarBeautyOperationSignal();
     void toolbarRectifyOperationSignal();
-    void toolbarOcrOperationSignal();
+    void toolbarOcrOperationStartSignal();
+    void toolbarOcrOperationStopSignal();
     void toolbarCropOperationSignal();
     void toolbarRotateOperationSignal();
     void toolbarMirrorOperationSignal();

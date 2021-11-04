@@ -30,32 +30,39 @@ void ToolBarWidget::setupGui()
     m_beautyButton->setFixedSize(ToolBarWidgetButtonSize);
     m_beautyButton->setIconSize(ToolBarWidgetButtonSize);
     m_beautyButton->setToolTip(tr("Beauty"));
+    m_beautyButton->setFocusPolicy(Qt::NoFocus);
 
     m_rectifyButton->setFixedSize(ToolBarWidgetButtonSize);
     m_rectifyButton->setIconSize(ToolBarWidgetButtonSize);
     m_rectifyButton->setToolTip(tr("Rectify"));
+    m_rectifyButton->setFocusPolicy(Qt::NoFocus);
 
     m_ocrButton->setFixedSize(ToolBarWidgetButtonSize);
     m_ocrButton->setIconSize(ToolBarWidgetButtonSize);
     m_ocrButton->setToolTip(tr("OCR"));
+    m_ocrButton->setFocusPolicy(Qt::NoFocus);
 
     m_leftFrame->setFixedSize(ToolBarWidgetFrameSize);
 
     m_cropButton->setFixedSize(ToolBarWidgetButtonSize);
     m_cropButton->setIconSize(ToolBarWidgetButtonSize);
     m_cropButton->setToolTip(tr("Crop"));
+    m_cropButton->setFocusPolicy(Qt::NoFocus);
 
     m_rotateButton->setFixedSize(ToolBarWidgetButtonSize);
     m_rotateButton->setIconSize(ToolBarWidgetButtonSize);
     m_rotateButton->setToolTip(tr("Rotate"));
+    m_rotateButton->setFocusPolicy(Qt::NoFocus);
 
     m_mirrorButton->setFixedSize(ToolBarWidgetButtonSize);
     m_mirrorButton->setIconSize(ToolBarWidgetButtonSize);
     m_mirrorButton->setToolTip(tr("Mirror"));
+    m_mirrorButton->setFocusPolicy(Qt::NoFocus);
 
     m_watermarkButton->setFixedSize(ToolBarWidgetButtonSize);
     m_watermarkButton->setIconSize(ToolBarWidgetButtonSize);
     m_watermarkButton->setToolTip(tr("Watermark"));
+    m_watermarkButton->setFocusPolicy(Qt::NoFocus);
 
     m_rightFrame->setFixedSize(ToolBarWidgetFrameSize);
 
@@ -67,10 +74,12 @@ void ToolBarWidget::setupGui()
     m_zoomOutButton->setFixedSize(ToolBarWidgetZoomButtonSize);
     m_zoomOutButton->setIconSize(ToolBarWidgetZoomButtonSize);
     m_zoomOutButton->setToolTip(tr("ZoomOut"));
+    m_zoomOutButton->setFocusPolicy(Qt::NoFocus);
 
     m_zoomInButton->setFixedSize(ToolBarWidgetZoomButtonSize);
     m_zoomInButton->setIconSize(ToolBarWidgetZoomButtonSize);
     m_zoomInButton->setToolTip(tr("ZoomIn"));
+    m_zoomInButton->setFocusPolicy(Qt::NoFocus);
 
 
     m_mainHLayout->setSpacing(0);
@@ -123,6 +132,8 @@ void ToolBarWidget::initConnect()
     connect(m_rotateButton, &QPushButton::clicked, this, &ToolBarWidget::rotateButtonClickedSlot);
     connect(m_mirrorButton, &QPushButton::clicked, this, &ToolBarWidget::mirrorButtonClickedSlot);
     connect(m_watermarkButton, &QPushButton::clicked, this, &ToolBarWidget::watermarkButtonClickedSlot);
+    connect(m_zoomOutButton, &QPushButton::clicked, this, &ToolBarWidget::zoomoutButtonClickedSlot);
+    connect(m_zoomInButton, &QPushButton::clicked, this, &ToolBarWidget::zoominButtonClickedSlot);
 }
 
 void ToolBarWidget::themeChangedIconBlackSettings()
@@ -151,6 +162,20 @@ void ToolBarWidget::paintEvent(QPaintEvent *event)
 
     QWidget::paintEvent(event);
 
+}
+
+void ToolBarWidget::keyPressEvent(QKeyEvent *event)
+{
+    Q_UNUSED(event);
+
+    return;
+}
+
+void ToolBarWidget::keyReleaseEvent(QKeyEvent *event)
+{
+    Q_UNUSED(event);
+
+    return;
 }
 
 void ToolBarWidget::themeChangedWhiteSlot()
@@ -245,35 +270,63 @@ void ToolBarWidget::themeChangedBlackSlot()
 
 void ToolBarWidget::beautyButtonClickedSlot()
 {
+    KyInfo() << "click beaty button.";
+
     g_user_signal->toolbarBeautyOperation();
 }
 
 void ToolBarWidget::rectifyButtonClickedSlot()
 {
+    KyInfo() << "click rectify button.";
+
     g_user_signal->toolbarRectifyOperation();
 }
 
 void ToolBarWidget::ocrButtonClickedSlot()
 {
-    g_user_signal->toolbarOcrOperation();
+    KyInfo() << "click ocr button.";
+
+    g_user_signal->toolbarOcrOperationStart();
 }
 
 void ToolBarWidget::cropButtonClickedSlot()
 {
+    KyInfo() << "click crop button.";
+
     g_user_signal->toolbarCropOperation();
 }
 
 void ToolBarWidget::rotateButtonClickedSlot()
 {
+    KyInfo() << "click rotate button.";
+
     g_user_signal->toolbarRotateOperation();
 }
 
 void ToolBarWidget::mirrorButtonClickedSlot()
 {
+    KyInfo() << "click mirror button.";
+
     g_user_signal->toolbarMirrorOperation();
 }
 
 void ToolBarWidget::watermarkButtonClickedSlot()
 {
+    KyInfo() << "click watermark button.";
+
     g_user_signal->toolbarWatermarkOperation();
+}
+
+void ToolBarWidget::zoomoutButtonClickedSlot()
+{
+    KyInfo() << "click zooout button.";
+
+    g_user_signal->toolbarZoomoutOperation();
+}
+
+void ToolBarWidget::zoominButtonClickedSlot()
+{
+    KyInfo() << "click zoomin button.";
+
+    g_user_signal->toolbarZoominOperation();
 }

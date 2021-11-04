@@ -60,6 +60,8 @@ private:
 signals:
 
 public slots:
+    void showOcrWidgetSlot();
+    void showImageWidgetSlot();
 
 };
 

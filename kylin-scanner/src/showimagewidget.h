@@ -11,6 +11,9 @@
 #include <QImage>
 #include <QFile>
 #include <QPdfWriter>
+#include <QResizeEvent>
+#include <QKeyEvent>
+#include <QStack>
 
 #include "globalsignal.h"
 #include "saneobject.h"
@@ -29,12 +32,15 @@ public:
     void setupGui();
     void initConnect();
 
-//    int U(const char *str);
     int toUnicode(QString str);
     void setPdfSize(QPdfWriter *pdfWriter, QString size);
     void saveToPdf(QImage img, QString pathname);
 
     QImage *imageSave(QString filename);
+
+protected:
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 
 public slots:
     void showNormalImageAfterScan();
@@ -44,11 +50,12 @@ public slots:
     void saveImage(QString filename);
 
 private:
+    QStack<QImage> m_imageStack;
 
     QImage *m_editImage;
     QImage *m_normalImage;
 
-    QLabel *m_showImage;
+    QLabel *m_showImageLabel;
     QHBoxLayout *m_showImageHLayout;
 
     ToolBarWidget *m_toolbarWidget;

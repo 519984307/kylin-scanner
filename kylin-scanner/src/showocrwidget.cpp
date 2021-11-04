@@ -1,9 +1,11 @@
-#include "showocrwidget.h".h"
+#include "showocrwidget.h"
 #include <ukui-log4qt.h>
 
 showOcrWidget::showOcrWidget(QWidget *parent) : QLabel(parent)
   , m_ocrImageLabel (new QLabel())
+  , m_ocrImageHLayout (new QHBoxLayout())
   , m_ocrTextEdit (new QTextEdit())
+  , m_ocrTextEditHLayout (new QHBoxLayout())
   , m_toolbarWidget (new ToolBarWidget())
   , m_ocrVLayout (new QVBoxLayout())
 {
@@ -17,14 +19,31 @@ void showOcrWidget::setupGui()
 
     m_ocrImageLabel->setMinimumSize(QSize(108, 150));
 
+    m_ocrImageHLayout->setSpacing(0);
+    m_ocrImageHLayout->addStretch();
+    m_ocrImageHLayout->addWidget(m_ocrImageLabel);
+    m_ocrImageHLayout->addStretch();
+    m_ocrImageHLayout->setContentsMargins(0, 0, 0, 0);
+
+    m_ocrTextEdit->setText("The document is in character recognition ...");
+    m_ocrTextEdit->setReadOnly(true);
     m_ocrTextEdit->setMinimumSize(QSize(612, 398));
+
+    m_ocrTextEditHLayout->setSpacing(0);
+    m_ocrTextEditHLayout->addStretch();
+    m_ocrTextEditHLayout->addWidget(m_ocrTextEdit);
+    m_ocrTextEditHLayout->addStretch();
+    m_ocrTextEditHLayout->setContentsMargins(0, 0, 0, 0);
+
 
     m_ocrVLayout->setSpacing(0);
     m_ocrVLayout->addSpacing(12);
-    m_ocrVLayout->addWidget(m_ocrImageLabel, 0, Qt::AlignVCenter | Qt::AlignCenter);
+//    m_ocrVLayout->addWidget(m_ocrImageLabel, 0, Qt::AlignVCenter | Qt::AlignCenter);
+    m_ocrVLayout->addLayout(m_ocrImageHLayout);
     m_ocrVLayout->addSpacing(12);
     m_ocrVLayout->addStretch();
-    m_ocrVLayout->addWidget(m_ocrTextEdit, 0, Qt::AlignVCenter | Qt::AlignCenter);
+//    m_ocrVLayout->addWidget(m_ocrTextEdit, 0, Qt::AlignVCenter | Qt::AlignCenter);
+    m_ocrVLayout->addLayout(m_ocrTextEditHLayout);
     m_ocrVLayout->addSpacing(12);
     m_ocrVLayout->addStretch();
     m_ocrVLayout->addWidget(m_toolbarWidget, 0, Qt::AlignVCenter | Qt::AlignCenter);
@@ -36,11 +55,13 @@ void showOcrWidget::setupGui()
 
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &showOcrWidget::showScanLine);
-//    timer->start(10);
 }
 
 void showOcrWidget::initConnect()
 {
+    connect(g_user_signal, &GlobalUserSignal::toolbarOcrOperationStartSignal, this, &showOcrWidget::startScanSlot);
+    connect(g_user_signal, &GlobalUserSignal::startScanOperationSignal, this, &showOcrWidget::stopScanStop);
+    connect(g_user_signal, &GlobalUserSignal::stopOcrTimerSignal, this, &showOcrWidget::stopScanStop);
 }
 
 void showOcrWidget::showScanLine()
@@ -70,20 +91,15 @@ void showOcrWidget::showScanLine()
     m_ocrImageLabel->setPixmap(pix);
 }
 
-void showOcrWidget::startScan()
+void showOcrWidget::startScanSlot()
 {
+    if (g_sane_object->ocrFlag == 0)
     timer->start(10);
     scanHeight = 0;
-
 }
 
-void showOcrWidget::stopScan()
+void showOcrWidget::stopScanStop()
 {
-    QPixmap pix;
-    QString pixFileName = QString("/home/yushuoqi/scanner01.jpg");
-    pix.load(pixFileName );
-    pix = pix.scaled(m_ocrImageLabel->width(), m_ocrImageLabel->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    m_ocrImageLabel->setPixmap(pix);
-
     timer->stop();
+    scanHeight = 0;
 }

@@ -152,11 +152,13 @@ public:
     int ocrFlag = 0;
 
     int resolutionValue;
+
+    QString normalImagePath;
     QString saveFullScanFileName;
     QString loadFullScanFileName;
     bool haveScanSuccessImage = false;
 
-    QString outText;
+    QString ocrOutputText;
 
 
 private:

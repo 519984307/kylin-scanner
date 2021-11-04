@@ -51,10 +51,41 @@ void LeftImageHandleSuccessPageWidget::setupGui()
 
 void LeftImageHandleSuccessPageWidget::initConnect()
 {
+    connect(g_user_signal, &GlobalUserSignal::toolbarOcrOperationStartSignal, this, &LeftImageHandleSuccessPageWidget::showOcrWidgetSlot);
+    connect(g_user_signal, &GlobalUserSignal::startScanOperationSignal, this, &LeftImageHandleSuccessPageWidget::showImageWidgetSlot);
 
 }
 
 void LeftImageHandleSuccessPageWidget::initSettings()
 {
 
+}
+
+void LeftImageHandleSuccessPageWidget::showOcrWidgetSlot()
+{
+    KyInfo() << "current ocrFlag = " << g_sane_object->ocrFlag;
+
+    if (g_sane_object->ocrFlag == 0) {
+        g_sane_object->ocrFlag = 1;
+        KyInfo() << "After switch to ocr page, ocrFlag = " << g_sane_object->ocrFlag;
+
+        m_showImageOrOcrStackWidget->setCurrentWidget(m_showOcrWidget);
+    } else {
+        g_sane_object->ocrFlag = 0;
+
+        KyInfo() << "After switch to show image page, ocrFlag = " << g_sane_object->ocrFlag;
+
+        m_showImageOrOcrStackWidget->setCurrentWidget(m_showImageWidget);
+
+        g_user_signal->stopOcrTimer();
+    }
+
+}
+
+void LeftImageHandleSuccessPageWidget::showImageWidgetSlot()
+{
+    m_showImageOrOcrStackWidget->setCurrentWidget(m_showImageWidget);
+    g_sane_object->ocrFlag = 0;
+
+    g_user_signal->stopOcrTimer();
 }

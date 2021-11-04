@@ -4,7 +4,7 @@
 ShowImageWidget::ShowImageWidget(QWidget *parent) : QWidget(parent)
   , m_editImage( new QImage())
   , m_normalImage (new QImage())
-  , m_showImage (new QLabel())
+  , m_showImageLabel (new QLabel())
   , m_showImageHLayout (new QHBoxLayout())
   , m_toolbarWidget (new ToolBarWidget())
   , m_mainVLayout (new QVBoxLayout())
@@ -17,22 +17,23 @@ ShowImageWidget::ShowImageWidget(QWidget *parent) : QWidget(parent)
 void ShowImageWidget::setupGui()
 {
     this->setMinimumSize(QSize(644, 636));
+    this->setFocusPolicy(Qt::StrongFocus);
 
     m_normalImage->load(scannerImagePath+ QString("/scan.pnm"));
     KyInfo() << "loadm_normalImage size: " << m_normalImage->size()
              << "showImageWidget size: " << this->size();
 
-    m_showImage->setMinimumSize(QSize(387, 536));
+    m_showImageLabel->setMinimumSize(QSize(387, 536));
 
-    m_normalImage->scaled(m_showImage->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    m_normalImage->scaled(m_showImageLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-    m_showImage->setScaledContents(true);
-    m_showImage->setPixmap(QPixmap::fromImage(*m_normalImage));
+    m_showImageLabel->setScaledContents(true);
+    m_showImageLabel->setPixmap(QPixmap::fromImage(*m_normalImage));
 
     m_showImageHLayout->setSpacing(0);
     m_showImageHLayout->addSpacing(128);
     m_showImageHLayout->addStretch();
-    m_showImageHLayout->addWidget(m_showImage);
+    m_showImageHLayout->addWidget(m_showImageLabel);
     m_showImageHLayout->addSpacing(129);
     m_showImageHLayout->addStretch();
     m_showImageHLayout->setContentsMargins(0, 0, 0, 0);
@@ -153,11 +154,42 @@ QImage *ShowImageWidget::imageSave(QString filename)
             filename += ".txt";
         QFile file(filename);
         file.open(QIODevice::ReadWrite | QIODevice::Text);
-        QByteArray str = g_sane_object->outText.toUtf8();
+        QByteArray str = g_sane_object->ocrOutputText.toUtf8();
         file.write(str);
         file.close();
     }
     return NULL;
+}
+
+void ShowImageWidget::resizeEvent(QResizeEvent *event)
+{
+    Q_UNUSED(event);
+}
+
+void ShowImageWidget::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key()) {
+    case Qt::Key_Return:
+    case Qt::Key_Enter:
+    case Qt::Key_Space:
+        KyInfo() << "pressed key(Enter): " << event->key();
+        break;
+
+    case Qt::Key_Z:
+        if (event->modifiers() == Qt::ControlModifier) {
+            KyInfo() << "pressed key(ctrl+z): " << event->key();
+
+        }
+        break;
+    case Qt::Key_Escape:
+        KyInfo() << "pressed key(Esc): " << event->key();
+
+        break;
+
+    default:
+        KyInfo() << "pressed key: " << event->key();
+        break;
+    }
 }
 
 void ShowImageWidget::showNormalImageAfterScan()
@@ -168,13 +200,14 @@ void ShowImageWidget::showNormalImageAfterScan()
     KyInfo() << "loadPath = " << loadPath
              << "loadm_normalImage size: " << m_normalImage->size() << "showImageWidget size: " << m_normalImage->size();
 
-    m_normalImage->scaled(m_showImage->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    m_normalImage->scaled(m_showImageLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-    m_showImage->setScaledContents(true);
-    m_showImage->setPixmap(QPixmap::fromImage(*m_normalImage));
+    m_showImageLabel->setScaledContents(true);
+    m_showImageLabel->setPixmap(QPixmap::fromImage(*m_normalImage));
 
     QString savePath = g_sane_object->saveFullScanFileName;
     KyInfo() << "savePath = " << savePath;
+
 
     saveImage(savePath);
 }
@@ -183,10 +216,10 @@ void ShowImageWidget::showImageAfterClickedThumbnail(QString loadPath)
 {
     KyInfo() << "loadPath = " << loadPath;
     m_normalImage->load(loadPath);
-    m_normalImage->scaled(m_showImage->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    m_normalImage->scaled(m_showImageLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-    m_showImage->setScaledContents(true);
-    m_showImage->setPixmap(QPixmap::fromImage(*m_normalImage));
+    m_showImageLabel->setScaledContents(true);
+    m_showImageLabel->setPixmap(QPixmap::fromImage(*m_normalImage));
 }
 
 void ShowImageWidget::saveImage(QString filename)

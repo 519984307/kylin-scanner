@@ -131,9 +131,14 @@ void GlobalUserSignal::toolbarRectifyOperation()
     emit toolbarRectifyOperationSignal();
 }
 
-void GlobalUserSignal::toolbarOcrOperation()
+void GlobalUserSignal::toolbarOcrOperationStart()
 {
-    emit toolbarOcrOperationSignal();
+    emit toolbarOcrOperationStartSignal();
+}
+
+void GlobalUserSignal::toolbarOcrOperationStop()
+{
+    emit toolbarOcrOperationStopSignal();
 }
 
 void GlobalUserSignal::toolbarCropOperation()
@@ -154,6 +159,20 @@ void GlobalUserSignal::toolbarMirrorOperation()
 void GlobalUserSignal::toolbarWatermarkOperation()
 {
     emit toolbarWatermarkOperationSignal();
+}
+
+void GlobalUserSignal::toolbarZoomoutOperation()
+{
+    emit toolbarZoomoutOperationSignal();
+}
+void GlobalUserSignal::toolbarZoominOperation()
+{
+    emit toolbarZoominOperationSignal();
+}
+
+void GlobalUserSignal::stopOcrTimer()
+{
+    emit stopOcrTimerSignal();
 }
 
 
