@@ -195,10 +195,15 @@ QString ShowImageWidget::setPixmapScaled(QImage img, QLabel *lab)
         proportion = labHeight / imgHeight;
     }
 
-//    m_normalImage->scaled(lab->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    m_normalImage->scaled(lab->size()*proportion, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+#if 0
+    m_normalImage->scaled(lab->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     lab->setScaledContents(true);
     lab->setPixmap(QPixmap::fromImage(*m_normalImage));
+#endif
+
+    QPixmap pixmap = QPixmap::fromImage(img);
+    QPixmap fitpixmap = pixmap.scaled(lab->size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
+    lab->setPixmap(fitpixmap);
 
     KyInfo() << "proportion: " << proportion;
     int proportionInt = static_cast<int>(proportion * 100);
@@ -246,22 +251,22 @@ void ShowImageWidget::keyPressEvent(QKeyEvent *event)
 
             int x1, y1, x2, y2;
             if (m_cropLabel->getStartX() <= m_cropLabel->getEndX()) {
-                x1 = m_cropLabel->getStartX() - ((m_cropLabel->width() - m_editImage->width()*proportion)/2);
-                x2 = m_cropLabel->getEndX() - ((m_cropLabel->width() - m_editImage->width()*proportion)/2);
+                x1 = m_cropLabel->getStartX() - ((m_cropLabel->width() - m_editImage->width())/2);
+                x2 = m_cropLabel->getEndX() - ((m_cropLabel->width() - m_editImage->width())/2);
             } else {
-                x1 = m_cropLabel->getEndX()- ((m_cropLabel->width() - m_editImage->width()*proportion)/2);
-                x2 = m_cropLabel->getStartX()- ((m_cropLabel->width() - m_editImage->width()*proportion)/2);
+                x1 = m_cropLabel->getEndX()- ((m_cropLabel->width() - m_editImage->width())/2);
+                x2 = m_cropLabel->getStartX()- ((m_cropLabel->width() - m_editImage->width())/2);
             }
 
             if (m_cropLabel->getStartY() <= m_cropLabel->getEndY()) {
-                y1 = m_cropLabel->getStartY()- ((m_cropLabel->height() - m_editImage->height()*proportion)/2);
-                y2 = m_cropLabel->getEndY()- ((m_cropLabel->height() - m_editImage->height()*proportion)/2);
+                y1 = m_cropLabel->getStartY()- ((m_cropLabel->height() - m_editImage->height())/2);
+                y2 = m_cropLabel->getEndY()- ((m_cropLabel->height() - m_editImage->height())/2);
             } else {
-                y1 = m_cropLabel->getEndY()- ((m_cropLabel->height() - m_editImage->height()*proportion)/2);
-                y2 = m_cropLabel->getStartY()- ((m_cropLabel->height() - m_editImage->height()*proportion)/2);
+                y1 = m_cropLabel->getEndY()- ((m_cropLabel->height() - m_editImage->height())/2);
+                y2 = m_cropLabel->getStartY()- ((m_cropLabel->height() - m_editImage->height())/2);
             }
 
-            QImage cropImage = m_normalImage->copy(x1/proportion, y1/proportion, (x2-x1)/proportion, (y2-y1)/proportion);
+            QImage cropImage = m_normalImage->copy(x1, y1, (x2-x1), (y2-y1));
 
             *m_editImage = cropImage;
             setPixmapScaled(*m_editImage, m_showImageLabel);

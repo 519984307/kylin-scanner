@@ -837,7 +837,12 @@ void ScanSettingsWidget::updateSettingsStatusForStartScan()
     m_scanButton->setEnabled(false);
     m_deviceComboBox->setEnabled(false);
     m_pageNumberComboBox->setEnabled(false);
-    m_timeComboBox->setEnabled(false);
+
+
+    int countRow = m_settingsFormLayout->rowCount();
+    if (countRow == 13) {
+        m_timeComboBox->setEnabled(false);
+    }
     m_typeComboBox->setEnabled(false);
     m_colorComboBox->setEnabled(false);
     m_resolutionComboBox->setEnabled(false);
@@ -859,7 +864,10 @@ void ScanSettingsWidget::updateSettingsStatusForEndScan(int saneStatus)
 
         m_scanButton->setEnabled(true);
         m_pageNumberComboBox->setEnabled(true);
-        m_timeComboBox->setEnabled(true);
+        int countRow = m_settingsFormLayout->rowCount();
+        if (countRow == 13) {
+            m_timeComboBox->setEnabled(true);
+        }
         m_typeComboBox->setEnabled(true);
         m_colorComboBox->setEnabled(true);
         m_resolutionComboBox->setEnabled(true);
@@ -873,7 +881,12 @@ void ScanSettingsWidget::updateSettingsStatusForEndScan(int saneStatus)
     } else if (saneStatus == SANE_STATUS_INVAL) {
         m_scanButton->setEnabled(true);
         m_pageNumberComboBox->setEnabled(true);
-        m_timeComboBox->setEnabled(true);
+
+        int countRow = m_settingsFormLayout->rowCount();
+        if (countRow == 13) {
+            m_timeComboBox->setEnabled(true);
+        }
+
         m_typeComboBox->setEnabled(true);
         m_colorComboBox->setEnabled(true);
         m_resolutionComboBox->setEnabled(true);
@@ -893,7 +906,11 @@ void ScanSettingsWidget::updateSettingsStatusForEndScan(int saneStatus)
         }
         m_scanButton->setEnabled(saneStatusBool);
         m_pageNumberComboBox->setEnabled(saneStatusBool);
-        m_timeComboBox->setEnabled(saneStatusBool);
+
+        int countRow = m_settingsFormLayout->rowCount();
+        if (countRow == 13) {
+            m_timeComboBox->setEnabled(saneStatusBool);
+        }
         m_typeComboBox->setEnabled(saneStatusBool);
         m_colorComboBox->setEnabled(saneStatusBool);
         m_resolutionComboBox->setEnabled(saneStatusBool);

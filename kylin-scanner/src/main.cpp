@@ -208,7 +208,7 @@ int main(int argc, char *argv[])
         app.w = &w;
         w.show();
 
-        int exitCode = app.exec();
+        return app.exec();
 #if 0
         // For restart application
         if (exitCode == MainWidget::EXIT_CODE_REBOOT) {
@@ -216,6 +216,5 @@ int main(int argc, char *argv[])
             return 0;
         }
 #endif
-        return exitCode;
     }
 }
