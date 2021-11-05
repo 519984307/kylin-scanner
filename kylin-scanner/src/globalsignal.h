@@ -65,10 +65,22 @@ public:
     void saveAsButtonClicked(QString filepath);
     void sendMailButtonClicked();
 
-    void toolbarBeautyOperation();
-    void toolbarRectifyOperation();
+    void toolbarBeautyOperationStart();
+    void doBeautyOperation();
+    void doBeautyOperationFinished();
+    void toolbarBeautyOperationStop();
+
+    void toolbarRectifyOperationStart();
+    void doRectifyOperation();
+    void doRectifyOperationFinished();
+    void toolbarRectifyOperationStop();
+
     void toolbarOcrOperationStart();
+    void doOcrOperation();
+    void toolbarOcrOperationFinished();
     void toolbarOcrOperationStop();
+    void stopOcrTimer();
+
     void toolbarCropOperation();
     void toolbarRotateOperation();
     void toolbarMirrorOperation();
@@ -77,24 +89,34 @@ public:
     void toolbarZoominOperation();
     void toolbarPercentageChanged();
 
-    void stopOcrTimer();
 
 
 signals:
 
-    void stopOcrTimerSignal();
 
     void toolbarPercentageChangedSignel();
     void toolbarZoominOperationSignal();
     void toolbarZoomoutOperationSignal();
-    void toolbarBeautyOperationSignal();
-    void toolbarRectifyOperationSignal();
-    void toolbarOcrOperationStartSignal();
-    void toolbarOcrOperationStopSignal();
-    void toolbarCropOperationSignal();
-    void toolbarRotateOperationSignal();
-    void toolbarMirrorOperationSignal();
     void toolbarWatermarkOperationSignal();
+    void toolbarMirrorOperationSignal();
+    void toolbarRotateOperationSignal();
+    void toolbarCropOperationSignal();
+
+    void stopOcrTimerSignal();
+    void toolbarOcrOperationStartSignal();
+    void doOcrOperationSignal();
+    void toolbarOcrOperationFinishedSignal();
+    void toolbarOcrOperationStopSignal();
+
+    void toolbarBeautyOperationStartSignal();
+    void doBeautyOperationSignal();
+    void doBeautyOperationFinishedSignal();
+    void toolbarBeautyOperationStopSignal();
+
+    void toolbarRectifyOperationStartSignal();
+    void doRectifyOperationSignal();
+    void doRectifyOperationFinishedSignal();
+    void toolbarRectifyOperationStopSignal();
 
     void sendMailButtonClickedSignal();
     void saveAsButtonClickedSignal(QString filepath);

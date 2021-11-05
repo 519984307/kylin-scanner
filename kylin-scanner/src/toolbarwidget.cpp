@@ -281,14 +281,14 @@ void ToolBarWidget::beautyButtonClickedSlot()
 {
     KyInfo() << "click beaty button.";
 
-    g_user_signal->toolbarBeautyOperation();
+    g_user_signal->toolbarBeautyOperationStart();
 }
 
 void ToolBarWidget::rectifyButtonClickedSlot()
 {
     KyInfo() << "click rectify button.";
 
-    g_user_signal->toolbarRectifyOperation();
+    g_user_signal->toolbarRectifyOperationStart();
 }
 
 void ToolBarWidget::ocrButtonClickedSlot()

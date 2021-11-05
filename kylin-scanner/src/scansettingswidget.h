@@ -81,7 +81,8 @@ public:
     void updateSaveDirectorySettings();
     void updateSendMailSettings();
     void updateSaveAsSettings();
-    void updateSaveAsText();
+    void updateSaveAsTextStore();
+    void updateSaveAsTextRecover();
     void updateSettingsForDetectDevices();
     void updateSettingsForSwitchDevices();
     void updateSettingsStatusForStartScan();

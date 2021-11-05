@@ -39,9 +39,9 @@ void LeftImageHandleSuccessPageWidget::setupGui()
 
     m_leftImageHandleSuccessPageHLayout->setSpacing(0);
     m_leftImageHandleSuccessPageHLayout->addWidget(m_thumbnailWidget);
-    m_leftImageHandleSuccessPageHLayout->addStretch();
+//    m_leftImageHandleSuccessPageHLayout->addStretch();
     m_leftImageHandleSuccessPageHLayout->addWidget(m_showImageOrOcrStackWidget);
-    m_leftImageHandleSuccessPageHLayout->addStretch();
+//    m_leftImageHandleSuccessPageHLayout->addStretch();
     m_leftImageHandleSuccessPageHLayout->setContentsMargins(0, 0, 0, 0);
 
 
@@ -67,15 +67,20 @@ void LeftImageHandleSuccessPageWidget::showOcrWidgetSlot()
 
     if (g_sane_object->ocrFlag == 0) {
         g_sane_object->ocrFlag = 1;
+        g_user_signal->doOcrOperationSignal();
+
         KyInfo() << "After switch to ocr page, ocrFlag = " << g_sane_object->ocrFlag;
 
         m_showImageOrOcrStackWidget->setCurrentWidget(m_showOcrWidget);
+
     } else {
         g_sane_object->ocrFlag = 0;
 
         KyInfo() << "After switch to show image page, ocrFlag = " << g_sane_object->ocrFlag;
 
         m_showImageOrOcrStackWidget->setCurrentWidget(m_showImageWidget);
+
+        g_user_signal->toolbarOcrOperationStopSignal();
 
         g_user_signal->stopOcrTimer();
     }

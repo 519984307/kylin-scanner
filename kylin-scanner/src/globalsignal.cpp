@@ -121,19 +121,59 @@ void GlobalUserSignal::sendMailButtonClicked()
     emit sendMailButtonClickedSignal();
 }
 
-void GlobalUserSignal::toolbarBeautyOperation()
+void GlobalUserSignal::toolbarBeautyOperationStart()
 {
-    emit toolbarBeautyOperationSignal();
+    emit toolbarBeautyOperationStartSignal();
 }
 
-void GlobalUserSignal::toolbarRectifyOperation()
+void GlobalUserSignal::doBeautyOperation()
 {
-    emit toolbarRectifyOperationSignal();
+    emit doBeautyOperationSignal();
+}
+
+void GlobalUserSignal::doBeautyOperationFinished()
+{
+    emit doBeautyOperationFinishedSignal();
+}
+
+void GlobalUserSignal::toolbarBeautyOperationStop()
+{
+    emit toolbarBeautyOperationStopSignal();
+}
+
+void GlobalUserSignal::toolbarRectifyOperationStart()
+{
+    emit toolbarRectifyOperationStartSignal();
+}
+
+void GlobalUserSignal::doRectifyOperation()
+{
+    emit doRectifyOperationSignal();
+}
+
+void GlobalUserSignal::doRectifyOperationFinished()
+{
+    emit doRectifyOperationFinishedSignal();
+}
+
+void GlobalUserSignal::toolbarRectifyOperationStop()
+{
+    emit toolbarRectifyOperationStopSignal();
 }
 
 void GlobalUserSignal::toolbarOcrOperationStart()
 {
     emit toolbarOcrOperationStartSignal();
+}
+
+void GlobalUserSignal::doOcrOperation()
+{
+    emit doOcrOperationSignal();
+}
+
+void GlobalUserSignal::toolbarOcrOperationFinished()
+{
+    emit toolbarOcrOperationFinishedSignal();
 }
 
 void GlobalUserSignal::toolbarOcrOperationStop()

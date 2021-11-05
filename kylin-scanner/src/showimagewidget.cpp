@@ -22,7 +22,7 @@ void ShowImageWidget::setupGui()
     this->setMinimumSize(QSize(644, 636));
     this->setFocusPolicy(Qt::StrongFocus);
 
-    m_cropLabel->setMinimumSize(QSize(387, 536));
+    m_cropLabel->setMinimumSize(QSize(defaultImageLableWidth*0.2, defaultImageLableHeight*0.2));
     m_normalImage->load(scannerImagePath+ QString("/scan.pnm"));
     setPixmapScaled(*m_normalImage, m_cropLabel);
 
@@ -30,7 +30,7 @@ void ShowImageWidget::setupGui()
              << "showImageWidget size: " << this->size();
 
 
-    m_showImageLabel->setMinimumSize(QSize(387, 536));
+    m_showImageLabel->setMinimumSize(QSize(387*0.2, 536*0.2));
 
     setPixmapScaled(*m_normalImage, m_showImageLabel);
     g_user_signal->toolbarPercentageChanged();
@@ -42,20 +42,20 @@ void ShowImageWidget::setupGui()
 
     m_showImageHLayout->setSpacing(0);
     m_showImageHLayout->addSpacing(128);
-    m_showImageHLayout->addStretch();
-    m_showImageHLayout->addWidget(m_showImageAndCropWidget);
-    m_showImageHLayout->addSpacing(129);
-    m_showImageHLayout->addStretch();
+//    m_showImageHLayout->addStretch();
+    m_showImageHLayout->addWidget(m_showImageAndCropWidget, 0, Qt::AlignCenter | Qt::AlignVCenter | Qt::AlignHCenter);
+    m_showImageHLayout->addSpacing(128);
+//    m_showImageHLayout->addStretch();
     m_showImageHLayout->setContentsMargins(0, 0, 0, 0);
 
     m_mainVLayout->setSpacing(0);
     m_mainVLayout->addSpacing(24);
-    m_mainVLayout->addStretch();
+//    m_mainVLayout->addStretch();
     m_mainVLayout->addLayout(m_showImageHLayout);
     m_mainVLayout->addSpacing(24);
     m_mainVLayout->addWidget(m_toolbarWidget, 0, Qt::AlignVCenter | Qt::AlignCenter);
     m_mainVLayout->addSpacing(16);
-    m_mainVLayout->addStretch();
+//    m_mainVLayout->addStretch();
     m_mainVLayout->setContentsMargins(0, 0, 0, 0);
 
     this->setLayout(m_mainVLayout);
@@ -76,6 +76,14 @@ void ShowImageWidget::initConnect()
 
     connect(g_user_signal, &GlobalUserSignal::toolbarZoomoutOperationSignal, this, &ShowImageWidget::zoomoutNormalImage);
     connect(g_user_signal, &GlobalUserSignal::toolbarZoominOperationSignal, this, &ShowImageWidget::zoominNormalImage);
+
+    connect(g_user_signal, &GlobalUserSignal::toolbarBeautyOperationStartSignal, this, &ShowImageWidget::beautyStartSlot);
+    connect(g_user_signal, &GlobalUserSignal::doBeautyOperationFinishedSignal, this, &ShowImageWidget::beautyStopSlot);
+
+    connect(g_user_signal, &GlobalUserSignal::toolbarRectifyOperationStartSignal, this, &ShowImageWidget::rectifyStartSlot);
+    connect(g_user_signal, &GlobalUserSignal::doRectifyOperationFinishedSignal, this, &ShowImageWidget::rectifyStopSlot);
+
+    connect(g_user_signal, &GlobalUserSignal::toolbarOcrOperationStartSignal, this, &ShowImageWidget::ocrStartSlot);
 }
 
 constexpr inline int U(const char *str)
@@ -181,38 +189,53 @@ QImage *ShowImageWidget::imageSave(QString filename)
 
 QString ShowImageWidget::setPixmapScaled(QImage img, QLabel *lab)
 {
-    double labWidth = lab->width();
-    double labHeight = lab->height();
+    double labWidth = this->width() - 128 - 128;
+    double labHeight = this->height() - 24 -24 - 36 -16;
 
     double imgWidth = img.width();
     double imgHeight = img.height();
 
-    proportion = 1.0;
+    double proportion = 1.0;
 
-    if ((labWidth / imgWidth) <= (labHeight / imgHeight)) {
+    KyInfo() << "label size: " << lab->size()
+             << "this size: " << this->size()
+             << "this labsize: " << labWidth << labHeight
+             << "defaultImage size: " << defaultScanImageSize
+             << "image size: " << img.size();
+
+    if ((labWidth / imgHeight) <= (labHeight / imgHeight)) {
         proportion = labWidth / imgWidth;
     } else {
         proportion = labHeight / imgHeight;
     }
 
-#if 0
-    m_normalImage->scaled(lab->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    lab->setScaledContents(true);
-    lab->setPixmap(QPixmap::fromImage(*m_normalImage));
-#endif
+    if ((imgWidth / defaultScanImageSize.height()) <= (imgHeight / defaultScanImageSize.width())) {
+        proportionForPercentage = imgWidth / defaultScanImageSize.width();
+    } else {
+        proportionForPercentage = imgHeight / defaultScanImageSize.height();
+    }
 
     QPixmap pixmap = QPixmap::fromImage(img);
-    QPixmap fitpixmap = pixmap.scaled(lab->size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
-    lab->setPixmap(fitpixmap);
+    QPixmap fitpixmap = pixmap.scaled(img.size()*proportion, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
 
-    KyInfo() << "proportion: " << proportion;
-    int proportionInt = static_cast<int>(proportion * 100);
+    lab->setPixmap(fitpixmap);
+    lab->setFixedSize(QSize(fitpixmap.size()));
+    lab->setScaledContents(true);
+    lab->setAlignment(Qt::AlignCenter);
+
+
+    KyInfo() << "proportion: " << proportion
+             << "proportionForPercentage: " << proportionForPercentage;
+
+    int proportionInt = static_cast<int>(proportionForPercentage * 100);
 
     KyInfo() << "proportionInt: " << proportionInt;
     QString proportionString = QString("%1").arg(proportionInt) + "%";
 
     KyInfo() << "proportionString: " << proportionString;
     g_sane_object->percentage = proportionString;
+
+    g_user_signal->toolbarPercentageChanged();
 
     return proportionString;
 }
@@ -234,10 +257,14 @@ void ShowImageWidget::setPixmapScaledByProportion(double scaledNumber)
     m_showImageLabel->setScaledContents(true);
 }
 
-//void ShowImageWidget::resizeEvent(QResizeEvent *event)
-//{
-//    Q_UNUSED(event);
-//}
+void ShowImageWidget::resizeEvent(QResizeEvent *event)
+{
+    // Must override, otherwise, m_showImageLabel will not auto resize
+    setPixmapScaled(*m_normalImage, m_showImageLabel);
+
+    QWidget::resizeEvent(event);
+}
+
 
 void ShowImageWidget::keyPressEvent(QKeyEvent *event)
 {
@@ -251,22 +278,22 @@ void ShowImageWidget::keyPressEvent(QKeyEvent *event)
 
             int x1, y1, x2, y2;
             if (m_cropLabel->getStartX() <= m_cropLabel->getEndX()) {
-                x1 = m_cropLabel->getStartX() - ((m_cropLabel->width() - m_editImage->width())/2);
-                x2 = m_cropLabel->getEndX() - ((m_cropLabel->width() - m_editImage->width())/2);
+                x1 = m_cropLabel->getStartX() - ((m_cropLabel->width() - m_normalImage->width()*proportion)/2);
+                x2 = m_cropLabel->getEndX() - ((m_cropLabel->width() - m_normalImage->width()*proportion)/2);
             } else {
-                x1 = m_cropLabel->getEndX()- ((m_cropLabel->width() - m_editImage->width())/2);
-                x2 = m_cropLabel->getStartX()- ((m_cropLabel->width() - m_editImage->width())/2);
+                x1 = m_cropLabel->getEndX()- ((m_cropLabel->width() - m_normalImage->width()*proportion)/2);
+                x2 = m_cropLabel->getStartX()- ((m_cropLabel->width() - m_normalImage->width()*proportion)/2);
             }
 
             if (m_cropLabel->getStartY() <= m_cropLabel->getEndY()) {
-                y1 = m_cropLabel->getStartY()- ((m_cropLabel->height() - m_editImage->height())/2);
-                y2 = m_cropLabel->getEndY()- ((m_cropLabel->height() - m_editImage->height())/2);
+                y1 = m_cropLabel->getStartY()- ((m_cropLabel->height() - m_normalImage->height()*proportion)/2);
+                y2 = m_cropLabel->getEndY()- ((m_cropLabel->height() - m_normalImage->height()*proportion)/2);
             } else {
-                y1 = m_cropLabel->getEndY()- ((m_cropLabel->height() - m_editImage->height())/2);
-                y2 = m_cropLabel->getStartY()- ((m_cropLabel->height() - m_editImage->height())/2);
+                y1 = m_cropLabel->getEndY()- ((m_cropLabel->height() - m_normalImage->height()*proportion)/2);
+                y2 = m_cropLabel->getStartY()- ((m_cropLabel->height() - m_normalImage->height()*proportion)/2);
             }
 
-            QImage cropImage = m_normalImage->copy(x1, y1, (x2-x1), (y2-y1));
+            QImage cropImage = m_normalImage->copy(x1/proportion, y1/proportion, (x2-x1)/proportion, (y2-y1)/proportion);
 
             *m_editImage = cropImage;
             setPixmapScaled(*m_editImage, m_showImageLabel);
@@ -299,6 +326,13 @@ void ShowImageWidget::keyPressEvent(QKeyEvent *event)
         break;
     case Qt::Key_Escape:
         KyInfo() << "pressed key(Esc): " << event->key();
+        if (! m_imageStack.isEmpty()) {
+            *m_editImage = m_imageStack.pop();
+            setPixmapScaled(*m_editImage, m_showImageLabel);
+
+            *m_normalImage = m_editImage->copy();
+            setPixmapScaled(*m_normalImage, m_showImageLabel);
+        }
 
         break;
 
@@ -310,18 +344,23 @@ void ShowImageWidget::keyPressEvent(QKeyEvent *event)
 
 void ShowImageWidget::showNormalImageAfterScan()
 {
+    m_imageStack.clear();
+    proportionForPercentage = 1.0;
+
     m_showImageAndCropWidget->setCurrentWidget(m_showImageLabel);
 
     QString loadPath = g_sane_object->loadFullScanFileName;
     m_normalImage->load(loadPath);
 
+
+    defaultScanImageSize = m_normalImage->size();
+
     KyInfo() << "loadPath = " << loadPath
-             << "loadm_normalImage size: " << m_normalImage->size() << "showImageWidget size: " << m_normalImage->size();
+             << "defaultScanImage size: " << defaultScanImageSize
+             << "loadm_normalImage size: " << m_normalImage->size()
+             << "showImageWidget size: " << m_showImageLabel->size();
 
     QString percentagedouble = setPixmapScaled(*m_normalImage, m_showImageLabel);
-    g_user_signal->toolbarPercentageChanged();
-    KyInfo() << "percentagedouble = " << percentagedouble;
-
 
     QString savePath = g_sane_object->saveFullScanFileName;
     KyInfo() << "savePath = " << savePath;
@@ -333,12 +372,15 @@ void ShowImageWidget::showNormalImageAfterScan()
 
 void ShowImageWidget::showImageAfterClickedThumbnail(QString loadPath)
 {
+    m_imageStack.clear();
+    proportionForPercentage = 1.0;
+
     KyInfo() << "loadPath = " << loadPath;
     m_normalImage->load(loadPath);
+    defaultScanImageSize = m_normalImage->size();
+
 
     QString percentagedouble = setPixmapScaled(*m_normalImage, m_showImageLabel);
-    KyInfo() << "percentagedouble = " << percentagedouble;
-    g_user_signal->toolbarPercentageChanged();
 
     g_sane_object->normalImagePath = loadPath;
 }
@@ -359,7 +401,6 @@ void ShowImageWidget::cropSlot()
     KyInfo() << "Crop begin";
 
     if (g_sane_object->cropFlag == 0) {
-        m_cropLabel->setFixedSize(m_showImageLabel->size());
         m_showImageAndCropWidget->setCurrentWidget(m_cropLabel);
 
         *m_editImage = m_normalImage->copy();
@@ -382,7 +423,7 @@ void ShowImageWidget::rotateSlot()
 
     matrix.rotate(270);
     *m_editImage = m_normalImage->transformed(matrix);
-    setPixmapScaled(*m_editImage, m_showImageLabel);
+//    setPixmapScaled(*m_editImage, m_showImageLabel);
     *m_normalImage = m_editImage->copy();
     setPixmapScaled(*m_normalImage, m_showImageLabel);
 
@@ -515,3 +556,54 @@ void ShowImageWidget::zoominNormalImage()
     g_user_signal->toolbarPercentageChanged();
 }
 
+void ShowImageWidget::beautyStartSlot()
+{
+    *m_stackImage = m_normalImage->copy();
+    m_imageStack.push(*m_stackImage);
+
+    saveCurrentPicture();
+}
+
+void ShowImageWidget::beautyStopSlot()
+{
+    loadAfterBROPicture();
+}
+
+void ShowImageWidget::rectifyStartSlot()
+{
+    *m_stackImage = m_normalImage->copy();
+    m_imageStack.push(*m_stackImage);
+
+    saveCurrentPicture();
+}
+
+void ShowImageWidget::rectifyStopSlot()
+{
+    loadAfterBROPicture();
+
+}
+
+void ShowImageWidget::ocrStartSlot()
+{
+    *m_stackImage = m_normalImage->copy();
+    m_imageStack.push(*m_stackImage);
+
+    saveCurrentPicture();
+}
+
+void ShowImageWidget::ocrStopSlot()
+{
+    loadAfterBROPicture();
+
+}
+
+void ShowImageWidget::saveCurrentPicture()
+{
+    m_normalImage->save(ScanningPicture);
+}
+
+void ShowImageWidget::loadAfterBROPicture()
+{
+    m_normalImage->load(ScanningPicture);
+    setPixmapScaled(*m_normalImage, m_showImageLabel);
+}

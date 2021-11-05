@@ -107,6 +107,7 @@ void TitleBar::on_m_maxBtn_clicked(bool checked)
 
 void TitleBar::on_m_closeBtn_clicked()
 {
+    KyInfo() << "window close.";
     g_user_signal->exitApplication();
 }
 

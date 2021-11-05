@@ -1,5 +1,0 @@
-#!/bin/bash
-
-rm -f $HOME/postrm.txt
-
-echo "asdf" > /tmp/ddd

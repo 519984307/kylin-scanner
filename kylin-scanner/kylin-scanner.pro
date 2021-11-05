@@ -31,6 +31,7 @@ PKGCONFIG   += \
         gsettings-qt
 
 LIBS += \
+        -llept \
         -lpthread \
         -ltesseract \
         -lX11 \
@@ -57,7 +58,6 @@ SOURCES += \
     src/about/about.cpp \
     src/beauty.cpp \
     src/crop.cpp \
-    src/deskew.cpp \
     src/detectpagewidget.cpp \
     src/displaywidget.cpp \
     src/failedpagewidget.cpp \
@@ -66,6 +66,8 @@ SOURCES += \
     src/leftsuccesspagewidget.cpp \
     src/main.cpp \
     src/mainwidget.cpp \
+    src/rectify.cpp \
+    src/runningdialog.cpp \
     src/saneobject.cpp \
     src/savefile.cpp \
     src/scandialog.cpp \
@@ -90,7 +92,6 @@ HEADERS += \
     src/about/about.h \
     src/beauty.h \
     src/crop.h \
-    src/deskew.h \
     src/detectpagewidget.h \
     src/displaywidget.h \
     src/failedpagewidget.h \
@@ -100,6 +101,8 @@ HEADERS += \
     src/leftimagehandlesuccesspagewidget.h \
     src/leftsuccesspagewidget.h \
     src/mainwidget.h \
+    src/rectify.h \
+    src/runningdialog.h \
     src/saneobject.h \
     src/savefile.h \
     src/scandialog.h \

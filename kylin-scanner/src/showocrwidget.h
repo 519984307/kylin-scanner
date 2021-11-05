@@ -13,6 +13,7 @@
 #include "globalsignal.h"
 #include "toolbarwidget.h"
 #include "saneobject.h"
+#include "include/common.h"
 
 class showOcrWidget : public QLabel
 {
@@ -23,6 +24,9 @@ public:
     void setupGui();
     void initConnect();
 
+protected:
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+
 
 public slots:
     void showScanLine();
@@ -30,12 +34,14 @@ public slots:
     void startScanSlot();
     void stopScanStop();
 
+    void updateOcrTextEdit();
+
 private:
     QLabel *m_ocrImageLabel;
-    QHBoxLayout *m_ocrImageHLayout;
+//    QHBoxLayout *m_ocrImageHLayout;
 
     QTextEdit *m_ocrTextEdit;
-    QHBoxLayout *m_ocrTextEditHLayout;
+//    QHBoxLayout *m_ocrTextEditHLayout;
 
     ToolBarWidget *m_toolbarWidget;
 

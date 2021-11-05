@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2020, KylinSoft Co., Ltd.
+* Copyright (C) 2021, KylinSoft Co., Ltd.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
 *
 */
 
-#ifndef DESKEW_H
-#define DESKEW_H
+#ifndef RECTIFY_H
+#define RECTIFY_H
 
 #include <cmath>
 #include <iostream>
@@ -31,9 +31,11 @@
 using namespace cv;
 using namespace std;
 
+#include "include/common.h"
+
 #define ERROR 1234
 
 
 int ImageRectify(const char *pInFileName);
 
-#endif // DESKEW_H
+#endif // RECTIFY_H

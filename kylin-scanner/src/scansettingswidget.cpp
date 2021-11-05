@@ -152,6 +152,7 @@ void ScanSettingsWidget::deviceCurrentTextChangedSlot(QString text)
     g_sane_object->saneClose();
 
     // while switch scan device, we should open the scan device to get some parameters
+    g_sane_object->openDeviceIndex = index;
     g_sane_object->openSaneDeviceForPage(index);
 
     updateSettingsForSwitchDevices();
@@ -785,9 +786,17 @@ void ScanSettingsWidget::updateSaveAsSettings()
     m_SaveAsButton->setEnabled(saneStatus);
 }
 
-void ScanSettingsWidget::updateSaveAsText()
+void ScanSettingsWidget::updateSaveAsTextStore()
 {
+    m_SaveAsButton->setText(tr("Store text"));
 
+    qDebug() << "m_SaveAsButton text: " << m_SaveAsButton->text();
+}
+
+void ScanSettingsWidget::updateSaveAsTextRecover()
+{
+    qDebug() << "m_SaveAsButton text: " << m_SaveAsButton->text();
+    m_SaveAsButton->setText(tr("Save as"));
 }
 
 

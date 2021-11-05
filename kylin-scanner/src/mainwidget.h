@@ -39,9 +39,14 @@
 #include <QX11Info>
 #include <QGSettings>
 #include <QThread>
+#include <tesseract/baseapi.h>
+#include <leptonica/allheaders.h>
+#include <QInputDialog>
+#include <qmath.h>
 
 #include  <ukui-log4qt.h>
 
+#include "runningdialog.h"
 #include "scandialog.h"
 #include "about/about.h"
 #include "displaywidget.h"
@@ -50,8 +55,10 @@
 #include "utils/xatom-helper.h"
 #include "titlebar/titlebar.h"
 #include "globalsignal.h"
+#include "usb.h"
+#include "beauty.h"
+#include "rectify.h"
 
-#include "usbhotplugthread.h"
 
 class ScanThread : public QThread
 {
@@ -75,6 +82,61 @@ public:
 
 Q_SIGNALS:
     void detectScanDevicesFinishedSignal(bool);
+};
+
+
+class UsbHotplugThread : public QThread
+{
+    Q_OBJECT
+public:
+    void run() Q_DECL_OVERRIDE;
+
+    bool exitWindowFlag = false;
+    int hotplug_sock;
+
+Q_SIGNALS:
+    void usbRemove(QString);
+    void usbAdd(QString);
+};
+
+class BeautyThread : public QThread
+{
+    Q_OBJECT
+public:
+    explicit BeautyThread(QObject *parent = 0);
+    ~BeautyThread();
+
+    void run() Q_DECL_OVERRIDE;
+
+    void  beautyThreadStop();
+
+};
+
+class RectifyThread : public QThread
+{
+    Q_OBJECT
+public:
+    explicit RectifyThread(QObject *parent = 0);
+    ~RectifyThread();
+
+    void run() Q_DECL_OVERRIDE;
+
+    void rectifyThreadStop();
+    void waitDialog();
+
+};
+
+class OcrThread : public QThread
+{
+    Q_OBJECT
+public:
+    explicit OcrThread(QObject *parent = 0);
+    ~OcrThread();
+
+    void run() Q_DECL_OVERRIDE;
+
+    void ocrThreadStop();
+
 };
 
 class MainWidget : public QWidget
@@ -120,9 +182,18 @@ private:
     UsbHotplugThread m_usbHotplugThread;
 
     ScanThread m_scanThread;
-    KYCAboutDialog *m_aboutDialog;
+    AboutDialog *m_aboutDialog;
     ScanDialog *m_scanDialog;
     WatermarkDialog *m_watermarkDialog;
+
+    RunningDialog *m_beautyRunningDialog;
+    BeautyThread m_beautyThread;
+
+    RunningDialog *m_rectifyRunningDialog;
+    RectifyThread m_rectifyThread;
+
+    OcrThread m_ocrThread;
+
 
 public slots:
     void maximizeWindowSlot();
@@ -140,6 +211,16 @@ public slots:
     void stopScanOperationSlot();
     void showScanDialogSlot();
     void scanThreadFinishedSlot(int saneStatus);
+
+    void startOcrOperationSlot();
+
+    void showBeautyRunningDialog();
+    void startBeautyOperationSlot();
+    void hideBeautyRunningDialog();
+
+    void showRectifyRunningDialog();
+    void startRectifyOperationSlot();
+    void hideRectifyRunningDialog();
 
 };
 #endif // MainWidget_H

@@ -12,14 +12,15 @@ Files: Doxyfile
        man/*
        docs/*
        kylin-scanner.pro
-       src/include/*.h
+       src/include/*
+       src/about/*
+       src/icons/*
        src/*.cpp
        src/*.h
-       src/titlebar/*.cpp
-       src/titlebar/*.h
-       src/utils/*.cpp
-       src/utils/*.h
-Copyright: 2020, KylinSoft Co., Ltd.
+       src/qss/*
+       src/titlebar/*
+       src/utils/*
+Copyright: 2021, KylinSoft Co., Ltd.
 License: GPL-3+
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

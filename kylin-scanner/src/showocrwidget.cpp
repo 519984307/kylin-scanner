@@ -3,9 +3,9 @@
 
 showOcrWidget::showOcrWidget(QWidget *parent) : QLabel(parent)
   , m_ocrImageLabel (new QLabel())
-  , m_ocrImageHLayout (new QHBoxLayout())
+//  , m_ocrImageHLayout (new QHBoxLayout())
   , m_ocrTextEdit (new QTextEdit())
-  , m_ocrTextEditHLayout (new QHBoxLayout())
+//  , m_ocrTextEditHLayout (new QHBoxLayout())
   , m_toolbarWidget (new ToolBarWidget())
   , m_ocrVLayout (new QVBoxLayout())
 {
@@ -19,36 +19,36 @@ void showOcrWidget::setupGui()
 
     m_ocrImageLabel->setMinimumSize(QSize(108, 150));
 
-    m_ocrImageHLayout->setSpacing(0);
-    m_ocrImageHLayout->addStretch();
-    m_ocrImageHLayout->addWidget(m_ocrImageLabel);
-    m_ocrImageHLayout->addStretch();
-    m_ocrImageHLayout->setContentsMargins(0, 0, 0, 0);
+//    m_ocrImageHLayout->setSpacing(0);
+//    m_ocrImageHLayout->addStretch();
+//    m_ocrImageHLayout->addWidget(m_ocrImageLabel, 0, Qt::AlignCenter | Qt::AlignVCenter | Qt::AlignHCenter);
+//    m_ocrImageHLayout->addStretch();
+//    m_ocrImageHLayout->setContentsMargins(0, 0, 0, 0);
 
     m_ocrTextEdit->setText("The document is in character recognition ...");
     m_ocrTextEdit->setReadOnly(true);
     m_ocrTextEdit->setMinimumSize(QSize(612, 398));
 
-    m_ocrTextEditHLayout->setSpacing(0);
-    m_ocrTextEditHLayout->addStretch();
-    m_ocrTextEditHLayout->addWidget(m_ocrTextEdit);
-    m_ocrTextEditHLayout->addStretch();
-    m_ocrTextEditHLayout->setContentsMargins(0, 0, 0, 0);
+//    m_ocrTextEditHLayout->setSpacing(0);
+//    m_ocrTextEditHLayout->addStretch();
+//    m_ocrTextEditHLayout->addWidget(m_ocrTextEdit, 0, Qt::AlignCenter | Qt::AlignVCenter |Qt::AlignHCenter);
+//    m_ocrTextEditHLayout->addStretch();
+//    m_ocrTextEditHLayout->setContentsMargins(0, 0, 0, 0);
 
 
     m_ocrVLayout->setSpacing(0);
     m_ocrVLayout->addSpacing(12);
-//    m_ocrVLayout->addWidget(m_ocrImageLabel, 0, Qt::AlignVCenter | Qt::AlignCenter);
-    m_ocrVLayout->addLayout(m_ocrImageHLayout);
+//    m_ocrVLayout->addLayout(m_ocrImageHLayout);
+    m_ocrVLayout->addWidget(m_ocrImageLabel, 0, Qt::AlignCenter | Qt::AlignVCenter | Qt::AlignHCenter);
     m_ocrVLayout->addSpacing(12);
-    m_ocrVLayout->addStretch();
-//    m_ocrVLayout->addWidget(m_ocrTextEdit, 0, Qt::AlignVCenter | Qt::AlignCenter);
-    m_ocrVLayout->addLayout(m_ocrTextEditHLayout);
+//    m_ocrVLayout->addStretch();
+//    m_ocrVLayout->addLayout(m_ocrTextEditHLayout);
+    m_ocrVLayout->addWidget(m_ocrTextEdit, 0, Qt::AlignCenter | Qt::AlignVCenter |Qt::AlignHCenter);
     m_ocrVLayout->addSpacing(12);
-    m_ocrVLayout->addStretch();
+//    m_ocrVLayout->addStretch();
     m_ocrVLayout->addWidget(m_toolbarWidget, 0, Qt::AlignVCenter | Qt::AlignCenter);
     m_ocrVLayout->addSpacing(16);
-    m_ocrVLayout->addStretch();
+//    m_ocrVLayout->addStretch();
     m_ocrVLayout->setContentsMargins(0, 0, 0, 0);
 
     this->setLayout(m_ocrVLayout);
@@ -60,13 +60,22 @@ void showOcrWidget::setupGui()
 void showOcrWidget::initConnect()
 {
     connect(g_user_signal, &GlobalUserSignal::toolbarOcrOperationStartSignal, this, &showOcrWidget::startScanSlot);
+    connect(g_user_signal, &GlobalUserSignal::toolbarOcrOperationFinishedSignal, this, &showOcrWidget::updateOcrTextEdit);
+
     connect(g_user_signal, &GlobalUserSignal::startScanOperationSignal, this, &showOcrWidget::stopScanStop);
     connect(g_user_signal, &GlobalUserSignal::stopOcrTimerSignal, this, &showOcrWidget::stopScanStop);
 }
 
+void showOcrWidget::resizeEvent(QResizeEvent *event)
+{
+    // todo: auto update size of m_ocrImageLabel, m_ocrTextEdit, m_toolbarWidget
+
+    QWidget::resizeEvent(event);
+}
+
 void showOcrWidget::showScanLine()
 {
-    KyInfo() << "showScanLine";
+//    KyInfo() << "showScanLine";
     scanHeight += 1;
 
     if (scanHeight >=m_ocrImageLabel->height()) {
@@ -75,7 +84,7 @@ void showOcrWidget::showScanLine()
 
 
     QPixmap pix;
-    QString pixFileName = QString("/home/yushuoqi/scanner01.jpg");
+    QString pixFileName = QString(ScanningPicture);
 
     QPixmap pixScan(":/scan-line.png");
 
@@ -93,13 +102,24 @@ void showOcrWidget::showScanLine()
 
 void showOcrWidget::startScanSlot()
 {
-    if (g_sane_object->ocrFlag == 0)
+    m_ocrTextEdit->setText("The document is in character recognition ...");
     timer->start(10);
     scanHeight = 0;
+
 }
 
 void showOcrWidget::stopScanStop()
 {
+    m_ocrTextEdit->setText("The document is in character recognition ...");
     timer->stop();
     scanHeight = 0;
+}
+
+void showOcrWidget::updateOcrTextEdit()
+{
+    KyInfo() << "ocrTextEdit = " << g_sane_object->ocrOutputText;
+    timer->stop();
+    scanHeight = 0;
+
+    m_ocrTextEdit->setText(g_sane_object->ocrOutputText);
 }

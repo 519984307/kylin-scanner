@@ -18,14 +18,19 @@
 #include <QKeyEvent>
 #include <QStack>
 #include <QMatrix>
+#include <QThread>
 
 #include "globalsignal.h"
 #include "saneobject.h"
 #include "toolbarwidget.h"
 #include "watermarkdialog.h"
 #include "crop.h"
+#include "beauty.h"
+#include "rectify.h"
 
 #define ShowImageWidgetMinimumSize QSize(387, 536)
+
+
 
 class ShowImageWidget : public QWidget
 {
@@ -33,7 +38,6 @@ class ShowImageWidget : public QWidget
 public:
     explicit ShowImageWidget(QWidget *parent = nullptr);
 
-    const QString scannerImagePath;
 
     void setupGui();
     void initConnect();
@@ -48,8 +52,15 @@ public:
 
     void setPixmapScaledByProportion(double scaledNumber);
 
+    const QString scannerImagePath;
+    const int defaultImageLableWidth = 387;
+    const int defaultImageLableHeight = 536;
+
+    QSize defaultScanImageSize;
+
+
 protected:
-//    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 
 public slots:
@@ -66,9 +77,20 @@ public slots:
     void zoomoutNormalImage();
     void zoominNormalImage();
 
+    void beautyStartSlot();
+    void beautyStopSlot();
+    void rectifyStartSlot();
+    void rectifyStopSlot();
+    void ocrStartSlot();
+    void ocrStopSlot();
+
+    void saveCurrentPicture();
+    void loadAfterBROPicture();
+
 private:
     QStack<QImage> m_imageStack;
-    double proportion = 1.0;
+    double proportion = 1;
+    double proportionForPercentage = 1;
 
     QImage *m_stackImage;
     QImage *m_editImage;

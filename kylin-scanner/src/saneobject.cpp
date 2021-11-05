@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2020, KylinSoft Co., Ltd.
+* Copyright (C) 2021, KylinSoft Co., Ltd.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -1303,6 +1303,7 @@ static SANE_Status startSaneScan(SANE_Handle sane_handle, SANE_String_Const file
     if (status != SANE_STATUS_GOOD) {
         KyInfo() << "start scan error, status = " << status;
     }
+//    sane_cancel(sane_handle);
 
     return status;
 }
@@ -1846,6 +1847,7 @@ QString SaneObject::getFullScanFileNameExceptFormat()
 int SaneObject::startScanning(UserSelectedInfo info)
 {
     KyInfo() << "startScanning";
+//    openSaneDevice(g_sane_object->openDeviceIndex);
 
     SANE_Status status = SANE_STATUS_GOOD;
 
@@ -1871,6 +1873,8 @@ int SaneObject::startScanning(UserSelectedInfo info)
     if (g_sane_object->getSaneHaveHandle()) {
         sane_cancel(g_sane_object->handle);
     }
+
+
 
     return status;
 }

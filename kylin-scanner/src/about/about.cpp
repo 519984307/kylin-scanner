@@ -2,7 +2,7 @@
 #include "ui_about.h"
 
 
-KYCAboutDialog::KYCAboutDialog(QWidget *parent)
+AboutDialog::AboutDialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::KYCAboutDialog)
     , style_settings (new QGSettings(ORG_UKUI_STYLE))
@@ -20,14 +20,14 @@ KYCAboutDialog::KYCAboutDialog(QWidget *parent)
 }
 
 
-void KYCAboutDialog::titlebar_icon_theme_changed(QString)
+void AboutDialog::titlebar_icon_theme_changed(QString)
 {
     setWindowIcon(QIcon::fromTheme("kylin-scanner"));
     ui->labelLogo->setPixmap(QIcon::fromTheme("kylin-scanner").pixmap(ui->labelLogo->size()));
     ui->labelIcon->setPixmap(QIcon::fromTheme("kylin-scanner").pixmap(96, 96));
 }
 
-void KYCAboutDialog::titlebar_style_changed(QString)
+void AboutDialog::titlebar_style_changed(QString)
 {
     QPalette pal = QApplication::style()->standardPalette();
     QPalette pp = QApplication::style()->standardPalette();
@@ -71,12 +71,12 @@ void KYCAboutDialog::titlebar_style_changed(QString)
     ui->labelSupport->setPalette(pp);
 }
 
-KYCAboutDialog::~KYCAboutDialog()
+AboutDialog::~AboutDialog()
 {
     delete ui;
 }
 
-void KYCAboutDialog::initWindow()
+void AboutDialog::initWindow()
 {
     MotifWmHints hints;
     hints.flags = MWM_HINTS_FUNCTIONS | MWM_HINTS_DECORATIONS;
@@ -89,7 +89,7 @@ void KYCAboutDialog::initWindow()
     setWindowIcon(QIcon::fromTheme("kylin-scanner"));
 }
 
-void KYCAboutDialog::initLayout()
+void AboutDialog::initLayout()
 {
     QString appVersion = QCoreApplication::applicationVersion();
     ui->labelVersion->setText(tr("Version: " ) + appVersion);
@@ -110,7 +110,7 @@ void KYCAboutDialog::initLayout()
     ui->labelSupport->setContextMenuPolicy(Qt::NoContextMenu); // no right click menu
 }
 
-void KYCAboutDialog::initStyle()
+void AboutDialog::initStyle()
 {
     stylelist << STYLE_NAME_KEY_DARK << STYLE_NAME_KEY_BLACK;
     iconthemelist << ICON_THEME_KEY_BASIC << ICON_THEME_KEY_CLASSICAL << ICON_THEME_KEY_DEFAULT;
@@ -162,7 +162,7 @@ void KYCAboutDialog::initStyle()
     ui->labelSupport->setPalette(pp);
 }
 
-void KYCAboutDialog::initConnect()
+void AboutDialog::initConnect()
 {
     connect(ui->btnClose, SIGNAL(clicked()), this, SLOT(hide()));
     connect(ui->labelSupport, &QLabel::linkActivated, [ = ](QString s) {
@@ -173,7 +173,7 @@ void KYCAboutDialog::initConnect()
     connect(icon_theme_settings, SIGNAL(changed(QString)), this, SLOT(titlebar_icon_theme_changed(QString)));
 }
 
-void KYCAboutDialog::setFontStyle()
+void AboutDialog::setFontStyle()
 {
     QFont f = ui->labelTitle->font();
     f.setPixelSize(14);
@@ -190,7 +190,7 @@ void KYCAboutDialog::setFontStyle()
     ui->labelSupport->setFont(f);
 }
 
-void KYCAboutDialog::moveCenter()
+void AboutDialog::moveCenter()
 {
     QScreen *screen = QGuiApplication::primaryScreen ();
     QRect screenRect =  screen->availableGeometry();

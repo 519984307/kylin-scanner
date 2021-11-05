@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2020, KylinSoft Co., Ltd.
+* Copyright (C) 2021, KylinSoft Co., Ltd.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -32,13 +32,13 @@ class KYCAboutDialog;
 #include "../include/theme.h"
 #include "../utils/xatom-helper.h"
 
-class KYCAboutDialog : public QDialog
+class AboutDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit KYCAboutDialog(QWidget *parent = nullptr);
-    ~KYCAboutDialog();
+    explicit AboutDialog(QWidget *parent = nullptr);
+    ~AboutDialog();
 
     void initWindow();
     void initLayout();

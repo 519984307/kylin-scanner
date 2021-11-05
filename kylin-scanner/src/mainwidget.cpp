@@ -55,9 +55,25 @@ MainWidget::~MainWidget()
     }
 
     if (m_usbHotplugThread.isRunning()) {
+        m_usbHotplugThread.terminate(); // must terminate(), cannot be quit()
         m_usbHotplugThread.wait();
-        m_usbHotplugThread.quit();
     }
+
+    if (m_beautyThread.isRunning()) {
+        m_beautyThread.terminate();
+        m_beautyThread.wait();
+    }
+
+    if (m_rectifyThread.isRunning()) {
+        m_rectifyThread.terminate();
+        m_rectifyThread.wait();
+    }
+
+    if (m_ocrThread.isRunning()) {
+        m_ocrThread.terminate();
+        m_ocrThread.wait();
+    }
+
 }
 
 void MainWidget::setupGui()
@@ -115,6 +131,15 @@ void MainWidget::initConnect()
 
     connect(g_user_signal, &GlobalUserSignal::scanThreadFinishedSignal, this, &MainWidget::scanThreadFinishedSlot);
 
+    connect(g_user_signal, &GlobalUserSignal::toolbarBeautyOperationStartSignal, this, &MainWidget::showBeautyRunningDialog);
+    connect(g_user_signal, &GlobalUserSignal::doBeautyOperationSignal, this, &MainWidget::startBeautyOperationSlot);
+    connect(g_user_signal, &GlobalUserSignal::doBeautyOperationFinishedSignal, this, &MainWidget::hideBeautyRunningDialog);
+
+    connect(g_user_signal, &GlobalUserSignal::toolbarRectifyOperationStartSignal, this, &MainWidget::showRectifyRunningDialog);
+    connect(g_user_signal, &GlobalUserSignal::doRectifyOperationSignal, this, &MainWidget::startRectifyOperationSlot);
+    connect(g_user_signal, &GlobalUserSignal::doRectifyOperationFinishedSignal, this, &MainWidget::hideRectifyRunningDialog);
+
+    connect(g_user_signal, &GlobalUserSignal::doOcrOperationSignal, this, &MainWidget::startOcrOperationSlot);
 }
 
 void MainWidget::initGsettings()
@@ -244,6 +269,7 @@ void MainWidget::reboot()
 
 void MainWidget::resizeEvent(QResizeEvent *event)
 {
+
     return;
 
     QWidget::resizeEvent(event);
@@ -304,12 +330,41 @@ void MainWidget::maximizeWindowSlot()
 void MainWidget::closeWindowSlot()
 {
     this->close();
+
+    m_usbHotplugThread.exitWindowFlag = true;
     stopScanOperationSlot();
+
+    if (m_scanThread.isRunning()) {
+        KyInfo() << "stop scan operation.";
+        isExited = true;
+        m_scanThread.quit();
+        m_scanThread.wait();
+    }
+
+    if (m_usbHotplugThread.isRunning()) {
+        m_usbHotplugThread.terminate();
+        m_usbHotplugThread.wait();
+    }
+
+    if (m_beautyThread.isRunning()) {
+        m_beautyThread.terminate();
+        m_beautyThread.wait();
+    }
+
+    if (m_rectifyThread.isRunning()) {
+        m_rectifyThread.terminate();
+        m_rectifyThread.wait();
+    }
+
+    if (m_ocrThread.isRunning()) {
+        m_ocrThread.terminate();
+        m_ocrThread.wait();
+    }
 }
 
 void MainWidget::showAboutWindowSlot()
 {
-    m_aboutDialog = new KYCAboutDialog(this);
+    m_aboutDialog = new AboutDialog(this);
 
     QPoint globalPos = this->mapToGlobal(QPoint(0, 0));
     m_aboutDialog->move(globalPos.x() + (this->width() - m_aboutDialog->width())/2,
@@ -465,12 +520,10 @@ void MainWidget::startScanOperationSlot()
 
 void MainWidget::stopScanOperationSlot()
 {
-    KyInfo() << "pageNumber = " << m_scanDialog->pageNumber();
-    if (m_scanThread.isRunning()) {
-        KyInfo() << "stop scan operation.";
-        isExited = true;
-        m_scanThread.quit();
-        m_scanThread.wait();
+    if (m_detectScanDevicesThread.isRunning()) {
+        KyInfo() << "Quit window, so quit detect scan devices thread ...";
+        m_detectScanDevicesThread.terminate();
+        m_detectScanDevicesThread.wait();
     }
 
 }
@@ -507,6 +560,69 @@ void MainWidget::scanThreadFinishedSlot(int saneStatus)
     }
 }
 
+void MainWidget::startOcrOperationSlot()
+{
+    m_ocrThread.start();
+}
+
+void MainWidget::showBeautyRunningDialog()
+{
+    m_beautyRunningDialog = new RunningDialog(this, tr("Running beauty ..."));
+
+    QPoint globalPos = this->mapToGlobal(QPoint(0, 0));
+    int m_x = (this->width() - m_beautyRunningDialog->width()) / 2;
+    int m_y = (this->height() - m_beautyRunningDialog->height()) / 2;
+
+    m_beautyRunningDialog->move(globalPos.x() + m_x, globalPos.y() + m_y);
+
+    m_beautyRunningDialog->setModal(true);
+
+    if (m_beautyRunningDialog->exec() == QDialog::Accepted)
+    {
+
+    }
+
+    g_user_signal->doBeautyOperation();
+}
+
+void MainWidget::startBeautyOperationSlot()
+{
+    m_beautyThread.start();
+}
+
+void MainWidget::hideBeautyRunningDialog()
+{
+    m_beautyRunningDialog->hide();
+    m_beautyRunningDialog->reject();
+}
+
+void MainWidget::showRectifyRunningDialog()
+{
+    m_rectifyRunningDialog = new RunningDialog(this, tr("Running rectify ..."));
+
+    QPoint globalPos = this->mapToGlobal(QPoint(0, 0));
+    int m_x = (this->width() - m_rectifyRunningDialog->width()) / 2;
+    int m_y = (this->height() - m_rectifyRunningDialog->height()) / 2;
+
+    m_rectifyRunningDialog->move(globalPos.x() + m_x, globalPos.y() + m_y);
+
+    m_rectifyRunningDialog->setModal(true);
+    m_rectifyRunningDialog->show();
+
+    g_user_signal->doRectifyOperation();
+}
+
+void MainWidget::startRectifyOperationSlot()
+{
+    m_rectifyThread.start();
+}
+
+void MainWidget::hideRectifyRunningDialog()
+{
+    m_rectifyRunningDialog->hide();
+    m_rectifyRunningDialog->reject();
+}
+
 
 void DetectScanDevicesThread::run()
 {
@@ -539,6 +655,7 @@ void ScanThread::run()
     }
 
     do {
+
         KyInfo() << "start_scanning start";
         ret = g_sane_object->startScanning(g_sane_object->userInfo);
         KyInfo() << "start_scanning end, status = " << ret;
@@ -563,6 +680,40 @@ void ScanThread::run()
     } while ((sleepTime != 0) && (! isExited));
 }
 
+void UsbHotplugThread::run()
+{
+        hotplug_sock = init_hotplug_sock();
+        do {
+            /* Netlink message buffer */
+            char buf[UEVENT_BUFFER_SIZE * 2] = {0};
+            recv(hotplug_sock, &buf, sizeof(buf), 0);
+
+
+            QString recvData = QString(QLatin1String(buf));
+
+#if 0
+            if (! recvData.isEmpty()) {
+                KyInfo() << "recvData: " << recvData;
+            }
+#endif
+
+            if (recvData.contains("add@", Qt::CaseInsensitive)
+                    && recvData.contains("devices", Qt::CaseInsensitive)
+                    && recvData.contains("usb", Qt::CaseInsensitive)
+                    && recvData.endsWith(":1.0", Qt::CaseInsensitive)) {
+                // ":1.0" means each usb device first directory, which is must
+                emit usbAdd(recvData);
+            } else if (recvData.contains("remove@", Qt::CaseInsensitive)
+                       && recvData.contains("devices", Qt::CaseInsensitive)
+                       && recvData.contains("usb", Qt::CaseInsensitive)
+                       && recvData.endsWith(":1.0", Qt::CaseInsensitive)) {
+                emit usbRemove(recvData);
+            }
+        } while (! exitWindowFlag);
+        quit();
+}
+
+
 int ScanThread::getSleepTime(QString &time)
 {
     if (QString::compare(time, "3s", Qt::CaseInsensitive) == 0
@@ -580,5 +731,137 @@ int ScanThread::getSleepTime(QString &time)
     } else if (QString::compare(time, "15s", Qt::CaseInsensitive) == 0
                || QString::compare(time, tr("15s"), Qt::CaseInsensitive) == 0) {
         return 15;
+    }
+}
+
+BeautyThread::BeautyThread(QObject *parent)
+    : QThread(parent)
+{
+    KyInfo() << "Create beauty thread.";
+
+}
+
+BeautyThread::~BeautyThread()
+{
+}
+
+void BeautyThread::run()
+{
+    KyInfo() << "begin to run beauty thread.";
+
+    oneClickBeauty(ScanningPicture);
+
+    KyInfo() << "end oneClickBeauty()";
+
+    g_user_signal->doBeautyOperationFinished();
+
+}
+
+void BeautyThread::beautyThreadStop()
+{
+    KyInfo() << "beauty thread stop";
+    if(isRunning())
+    {
+        terminate();
+        wait();
+    }
+}
+
+
+RectifyThread::RectifyThread(QObject *parent)
+    : QThread(parent)
+{
+    KyInfo() << "Create rectify thread.";
+}
+
+RectifyThread::~RectifyThread()
+{
+}
+
+void RectifyThread::run()
+{
+    KyInfo() << "begin to run rectify thread.";
+
+    ImageRectify(ScanningPicture);
+
+    KyInfo() << "end ImageRectify()";
+    g_user_signal->doRectifyOperationFinished();
+
+}
+
+void RectifyThread::rectifyThreadStop()
+{
+    if(isRunning())
+    {
+        terminate();
+        wait();
+    }
+}
+
+
+OcrThread::OcrThread(QObject *parent)
+    : QThread(parent)
+{
+    KyInfo() << "Create OCR Thread.";
+}
+
+OcrThread::~OcrThread()
+{
+}
+
+void OcrThread::run()
+{
+    KyInfo() << "begin to run ocr thread !\n";
+    tesseract::TessBaseAPI  *api = new tesseract::TessBaseAPI();
+
+    if (api->Init(NULL, "chi_sim")) {
+        KyInfo() << "Could not initialize tesseract.\n";
+        g_sane_object->ocrOutputText = tr("Unable to read text");
+
+        terminate();
+        wait();
+
+        g_user_signal->toolbarOcrOperationFinished();
+        return;
+    }
+
+    KyInfo() << "before pixRead.";
+    Pix *image = pixRead(ScanningPicture);
+    if (! image) {
+        KyInfo() << "pixRead error!";
+        g_sane_object->ocrOutputText = tr("Unable to read text");
+        if (api)
+            api->End();
+
+        terminate();
+        wait();
+
+        g_user_signal->toolbarOcrOperationFinished();
+
+        return;
+    }
+    if (image) {
+        KyInfo() << "before setImage.";
+        api->SetImage(image);
+        g_sane_object->ocrOutputText = api->GetUTF8Text();
+    }
+
+    KyInfo() << "before destroy image.";
+    if (api) {
+        api->End();
+    }
+    if (image) {
+        pixDestroy(&image);
+    }
+
+    g_user_signal->toolbarOcrOperationFinished();
+}
+
+void OcrThread::ocrThreadStop()
+{
+    if(isRunning())
+    {
+        terminate();
+        wait();
     }
 }
