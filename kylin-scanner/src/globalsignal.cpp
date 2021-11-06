@@ -17,6 +17,8 @@
 */
 #include "globalsignal.h"
 
+#include <ukui-log4qt.h>
+
 GlobalUserSignal* GlobalUserSignal::instance = new GlobalUserSignal;
 
 GlobalUserSignal *GlobalUserSignal::getInstance()
