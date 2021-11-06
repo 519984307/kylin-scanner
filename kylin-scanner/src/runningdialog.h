@@ -30,7 +30,6 @@
 #include <QFileInfoList>
 #include <QString>
 #include <QTimer>
-#include <QDebug>
 #include <QDir>
 
 #include "utils/xatom-helper.h"

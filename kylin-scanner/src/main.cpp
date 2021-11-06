@@ -20,6 +20,7 @@
 #include "mainwidget.h"
 #include "scandialog.h"
 #include "singleapplication.h"
+
 #include <ukui-log4qt.h>
 
 
@@ -72,7 +73,7 @@ static QString getCurrentUserName()
     process->waitForFinished();
     QString userNow = QString::fromLocal8Bit(process->readAllStandardOutput().trimmed());
 
-    qDebug() << "Exist user: " << userNow;
+    KyInfo() << "Exist user: " << userNow;
 
     return userNow;
 }
@@ -81,7 +82,7 @@ static void doWrite(QString userNow, int pidNow)
 {
     QFile file(UserExistFile);
     if (!file.open(QIODevice::ReadWrite | QIODevice::Truncate)) {
-        qDebug() << "open this file error!";
+        KyInfo() << "open this file error!";
         return;
     }
 
@@ -92,7 +93,7 @@ static void doWrite(QString userNow, int pidNow)
                         | QFileDevice::ReadOther | QFileDevice::WriteOther);
 
     QString message = userNow + "," + QString::number(pidNow);
-    qDebug() << "doWrite: message= " << message;
+    KyInfo() << "doWrite: message= " << message;
 
     QTextStream text_stream(&file);
     text_stream << message << "\r\n";

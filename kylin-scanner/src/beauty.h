@@ -24,7 +24,6 @@
 #include <fstream>
 #include <QWidget>
 #include <QPainter>
-#include <QDebug>
 #include <opencv2/core/utility.hpp>
 #include <opencv2/photo.hpp>
 #include <opencv2/imgcodecs.hpp>

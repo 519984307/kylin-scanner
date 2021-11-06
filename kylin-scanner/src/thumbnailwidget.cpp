@@ -1,4 +1,5 @@
 #include "thumbnailwidget.h"
+#include <ukui-log4qt.h>
 
 int ThumbnailWidget::scanPictureCount = 0;
 

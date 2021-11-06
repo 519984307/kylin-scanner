@@ -212,9 +212,9 @@ SingleApplication::SingleApplication(int &argc, char **argv)
 
     QLocale lang;
     if (lang.language() == QLocale::English) {
-        qDebug() << "English";
+        KyInfo() << "English";
     } else if (lang.language() == QLocale::Chinese){
-        qDebug() << "Chinese";
+        KyInfo() << "Chinese";
     }
 
     KyInfo() << "DISPLAY: " << QLatin1String(getenv ("DISPLAY"));

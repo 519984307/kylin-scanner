@@ -17,8 +17,8 @@
 */
 #include "svghandler.h"
 #include <QApplication>
-#include <QDebug>
 
+#include <ukui-log4qt.h>
 
 const QPixmap SVGHandler::loadSvgColor(const QString &path, const QString &color, int size)
 {

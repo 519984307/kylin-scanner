@@ -23,7 +23,6 @@
 #include <QDir>
 #include <QFileInfo>
 
-#include "ukui-log4qt.h"
 
 
 /**

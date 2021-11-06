@@ -18,6 +18,8 @@
 
 #include "crop.h"
 
+#include <ukui-log4qt.h>
+
 CropLabel::CropLabel(QLabel *parent)
     : QLabel(parent)
 {
@@ -106,7 +108,7 @@ void CropLabel::mouseMoveEvent(QMouseEvent *event)
 
 int CropLabel::judgePosition(int origin, int min, int max)
 {
-    qDebug() << "origin = " << origin
+    KyInfo() << "origin = " << origin
              << "min = " << min
              << "max = " << max;
 

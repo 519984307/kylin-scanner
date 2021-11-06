@@ -17,6 +17,7 @@
 */
 #include "scansettingswidget.h"
 #include "include/common.h"
+
 #include <ukui-log4qt.h>
 
 #include <QFileInfo>
@@ -790,12 +791,12 @@ void ScanSettingsWidget::updateSaveAsTextStore()
 {
     m_SaveAsButton->setText(tr("Store text"));
 
-    qDebug() << "m_SaveAsButton text: " << m_SaveAsButton->text();
+    KyInfo() << "m_SaveAsButton text: " << m_SaveAsButton->text();
 }
 
 void ScanSettingsWidget::updateSaveAsTextRecover()
 {
-    qDebug() << "m_SaveAsButton text: " << m_SaveAsButton->text();
+    KyInfo() << "m_SaveAsButton text: " << m_SaveAsButton->text();
     m_SaveAsButton->setText(tr("Save as"));
 }
 

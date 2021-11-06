@@ -20,9 +20,10 @@
 #include <QStandardPaths>
 #include <QLineEdit>
 #include <QComboBox>
-#include <QDebug>
 #include <QLineEdit>
 #include <QPoint>
+
+#include <ukui-log4qt.h>
 
 SaveFileDialog::SaveFileDialog(QWidget *parent) : QFileDialog(parent)
 {
@@ -61,7 +62,7 @@ SaveFileDialog::SaveFileDialog(QWidget *parent, int ocrFlag, QString filename, Q
     setAcceptMode(QFileDialog::AcceptSave);
 
     QFileInfo filenameInfo(filename);
-    qDebug() << "filename = " << filename;
+    KyInfo() << "filename = " << filename;
 
     this->findChildren<QLineEdit *>("fileNameEdit").at(0)->setText(filename);
 
@@ -69,7 +70,7 @@ SaveFileDialog::SaveFileDialog(QWidget *parent, int ocrFlag, QString filename, Q
         filetype = ".txt";
         filter = QLatin1String("*.txt");
     } else {
-        qDebug() << "First choose save format: " << filenameInfo.suffix();
+        KyInfo() << "First choose save format: " << filenameInfo.suffix();
         if (filename.endsWith(".jpg")) {
             filetype = ".jpg";
             filter = QLatin1String("*.jpg;;*.png;;*.pdf;;*.bmp");
@@ -85,8 +86,8 @@ SaveFileDialog::SaveFileDialog(QWidget *parent, int ocrFlag, QString filename, Q
         }
     }
     setNameFilter(filter);
-    qDebug() << "filetype = " << filetype;
-    qDebug() << "filter = " << filter
+    KyInfo() << "filetype = " << filetype;
+    KyInfo() << "filter = " << filter
              << "0: " << filter.mid(1, 4)
              << "1: " << filter.mid(8, 4)
              << "2: " << filter.mid(15, 4)
@@ -94,7 +95,7 @@ SaveFileDialog::SaveFileDialog(QWidget *parent, int ocrFlag, QString filename, Q
 
     connect(this->findChildren<QComboBox *>("fileTypeCombo").at(0),
     QOverload<int>::of(&QComboBox::currentIndexChanged), [ = ](int index) {
-        qDebug() << "currentIndexChanged: index = " << index;
+        KyInfo() << "currentIndexChanged: index = " << index;
         switch (index) {
         case 0:
             if (ocrFlag == 1) {

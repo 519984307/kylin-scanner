@@ -32,7 +32,6 @@
 #include <iostream>
 #include <QObject>
 #include <QWidget>
-#include <QDebug>
 #include <QString>
 #include <QStringList>
 #include <QtMath>

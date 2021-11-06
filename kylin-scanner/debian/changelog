@@ -1,3 +1,21 @@
+kylin-scanner (3.1.0-4) v101; urgency=medium
+
+  * handle  <ukui-log4qt.h> error 
+
+ -- yushuoqi <yushuoqi@kylinos.cn>  Sat, 06 Nov 2021 12:17:29 +0800
+
+kylin-scanner (3.1.0-3) v101; urgency=medium
+
+  * add libukui-log4qt-dev package 
+
+ -- yushuoqi <yushuoqi@kylinos.cn>  Sat, 06 Nov 2021 11:51:47 +0800
+
+kylin-scanner (3.1.0-2) v101; urgency=medium
+
+  * handle build problem by ukui-logrqt  header file
+
+ -- yushuoqi <yushuoqi@kylinos.cn>  Sat, 06 Nov 2021 11:29:32 +0800
+
 kylin-scanner (3.1.0-1) v101; urgency=medium
 
   * [需求号]: 

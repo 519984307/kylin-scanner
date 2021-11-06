@@ -25,7 +25,6 @@
 #include <opencv2/highgui.hpp>
 #include <QImage>
 #include <QPixmap>
-#include <QDebug>
 #include <QVector>
 
 using namespace cv;

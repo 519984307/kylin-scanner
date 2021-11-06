@@ -30,7 +30,6 @@
 #include <QApplication>
 #include <QPixmap>
 #include <QImage>
-#include <QDebug>
 
 #define EPLISION 1e-6
 
