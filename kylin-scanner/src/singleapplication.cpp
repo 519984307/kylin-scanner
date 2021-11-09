@@ -182,39 +182,23 @@ SingleApplication::SingleApplication(int &argc, char **argv)
     , _isExitWindow(false)
     , _localServer(NULL)
 {
-    // Translation
-    QTranslator app_trans;
-    QTranslator qt_trans;
-    QString locale = QLocale::system().name();
-    QString trans_path;
-    QString qt_trans_path;
+    QTranslator qtTranslator;
+    qtTranslator.load("qt_" + QLocale::system().name(),
+                      QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    qApp->installTranslator(&qtTranslator);
+    // For translations with different language environments
+    QTranslator translator;
+    QString localePath("/usr/share/kylin-scanner/translations/kylin-scanner_");
+    QString locale = localePath + QLocale::system().name();
 
-    if (QDir("/usr/share/kylin-scanner/translations").exists()) {
-        trans_path = "/usr/share/kylin-scanner/translations";
-    } else {
-        trans_path = qApp->applicationDirPath();
-    }
-    qt_trans_path = QLibraryInfo::location(QLibraryInfo::TranslationsPath); // /usr/share/qt5/translations
-
-    if (locale == QLocale::Chinese) {
-        if(! app_trans.load("kylin-scanner_" + locale + ".qm", trans_path)){
-            KyInfo() << "Load translation file："<< "kylin-scanner_" + locale + ".qm from" << trans_path << "failed!";
-        } else {
-            qApp->installTranslator(&app_trans);
-        }
-
-        if (! qt_trans.load("qt_" + locale + ".qm", qt_trans_path)){
-            KyInfo() << "Load translation file："<< "qt_" + locale + ".qm from" << qt_trans_path << "failed!";
-        } else {
-            qApp->installTranslator(&qt_trans);
-        }
-    }
+    translator.load(locale);
+    qApp->installTranslator(&translator);
 
     QLocale lang;
     if (lang.language() == QLocale::English) {
-        KyInfo() << "English";
+        qDebug() << "English";
     } else if (lang.language() == QLocale::Chinese){
-        KyInfo() << "Chinese";
+        qDebug() << "Chinese";
     }
 
     KyInfo() << "DISPLAY: " << QLatin1String(getenv ("DISPLAY"));

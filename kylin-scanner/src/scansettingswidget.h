@@ -74,7 +74,7 @@ public:
     void updateTimeSettings();
     void updateTypeSettings();
     void updateColorSettings();
-    void updateResolutionSettings();
+    void updateResolutionSettings(bool DetectedDevices);
     void updateSizeSettings();
     void updateFormatSettings();
     void updateSaveNameTextSettings();

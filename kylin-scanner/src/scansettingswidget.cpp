@@ -696,7 +696,7 @@ void ScanSettingsWidget::updateColorSettings()
     setComboboxAttributes(m_colorComboBox, colorStringList);
 }
 
-void ScanSettingsWidget::updateResolutionSettings()
+void ScanSettingsWidget::updateResolutionSettings(bool DetectedDevices)
 {
     QStringList resolutionStringList;
 
@@ -710,11 +710,23 @@ void ScanSettingsWidget::updateResolutionSettings()
 
     if (! resolutionStringList.isEmpty()) {
         KyInfo() << "resolution: " << resolutionStringList;
+
+        m_resolutionComboBox->setEnabled(saneStatus);
+        setComboboxAttributes(m_resolutionComboBox, resolutionStringList);
+    } else {
+        /// Cannot get resolution from scanner: FUJITSU fi-7140
+        resolutionStringList.clear();
+        KyInfo() << "resolution is empty! ";
+        m_resolutionComboBox->setEnabled(false);
+
+        if (DetectedDevices) {
+            QString msg = tr("Resolution is empty!");
+            warnMsg(msg);
+        }
     }
 
-    m_resolutionComboBox->setEnabled(saneStatus);
-    setComboboxAttributes(m_resolutionComboBox, resolutionStringList);
 }
+
 
 void ScanSettingsWidget::updateSizeSettings()
 {
@@ -813,7 +825,7 @@ void ScanSettingsWidget::updateSettingsForDetectDevices()
     updateTimeSettings();
     updateTypeSettings();
     updateColorSettings();
-    updateResolutionSettings();
+    updateResolutionSettings(true);
     updateSizeSettings();
     updateFormatSettings();
     updateSaveNameTextSettings();
@@ -829,7 +841,7 @@ void ScanSettingsWidget::updateSettingsForSwitchDevices()
     updatePageNumberSettings();
     updateTypeSettings();
     updateColorSettings();
-    updateResolutionSettings();
+    updateResolutionSettings(true);
     updateSizeSettings();
     updateFormatSettings();
     updateSaveNameTextSettings();

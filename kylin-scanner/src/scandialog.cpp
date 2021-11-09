@@ -102,7 +102,6 @@ void ScanDialog::initConnect()
 
     connect(g_user_signal, &GlobalUserSignal::scanThreadFinishedSignal, this, &ScanDialog::updatePageNumberWhileScanning);
     connect(g_user_signal, &GlobalUserSignal::stopScanOperationSignal, this, &ScanDialog::updatePageNumberWhileStopScanning);
-
 }
 
 int ScanDialog::pageNumber() const
@@ -127,9 +126,17 @@ void ScanDialog::setScanMsg(const QString &scanMsg)
 
 void ScanDialog::updatePageNumberWhileScanning()
 {
-    m_pageNumber += 1;
-    m_scanMsg = tr("Number of pages being scanned: ") + QString::number(m_pageNumber);
-    m_msgLabel->setText(m_scanMsg);
+    QString text = g_sane_object->userInfo.resolution;
+
+    if (text.compare("Multiple", Qt::CaseInsensitive) == 0
+            || text.compare("多页扫描", Qt::CaseInsensitive) == 0
+            || text.compare(tr("Multiple"), Qt::CaseInsensitive) == 0) {
+        m_pageNumber += 1;
+        m_scanMsg = tr("Number of pages being scanned: ") + QString::number(m_pageNumber);
+        m_msgLabel->setText(m_scanMsg);
+    } else {
+        this->close();
+    }
 }
 
 void ScanDialog::updatePageNumberWhileStopScanning()

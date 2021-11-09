@@ -509,11 +509,13 @@ void MainWidget::startScanOperationSlot()
     g_sane_object->ocrFlag = 0;
     m_scanThread.start();
 
+#if 0
     QString pageNumber = g_sane_object->userInfo.pageNumber;
     int retCompare = QString::compare(pageNumber, tr("Single"), Qt::CaseInsensitive);
     if (retCompare == 0 ) {
         return;
     }
+#endif
 
     showScanDialogSlot();
 }

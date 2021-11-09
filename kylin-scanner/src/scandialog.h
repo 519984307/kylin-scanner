@@ -16,6 +16,8 @@
 #define ScanDialogLabelHeight 24
 #define ScanDialogButtonSize QSize(96, 36)
 
+#include "saneobject.h"
+
 class ScanDialog : public QDialog
 {
     Q_OBJECT
